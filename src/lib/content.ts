@@ -26,6 +26,12 @@ const galleryImageSchema = z.object({
   image: z.string().min(1, "Gallery image is required"),
 });
 
+const timelineEventSchema = z.object({
+  title: z.string().min(1, "Timeline title is required"),
+  description: z.string().min(1, "Timeline description is required"),
+  timestamp: z.string().min(1, "Timeline timestamp is required"),
+});
+
 const siteSchema = z.object({
   brand: z.string().min(1, "Brand is required"),
   navigation: z.array(navigationSchema).min(1, "At least one navigation item is required"),
@@ -51,6 +57,11 @@ const siteSchema = z.object({
     description: z.string().min(1, "Home & life description is required"),
     highlights: z.array(highlightSchema).min(1, "At least one highlight is required"),
   }),
+  timeline: z.object({
+    title: z.string().min(1, "Timeline title is required"),
+    description: z.string().min(1, "Timeline description is required"),
+    events: z.array(timelineEventSchema).min(1, "At least one timeline event is required"),
+  }),
   gallery: z.object({
     title: z.string().min(1, "Gallery title is required"),
     images: z.array(galleryImageSchema).min(1, "At least one gallery image is required"),
@@ -67,6 +78,7 @@ export type NavigationItem = z.infer<typeof navigationSchema>;
 export type Person = z.infer<typeof personSchema>;
 export type Highlight = z.infer<typeof highlightSchema>;
 export type GalleryImage = z.infer<typeof galleryImageSchema>;
+export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 
 const parsed = YAML.parse(rawSiteContent);
