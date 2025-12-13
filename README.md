@@ -32,4 +32,4 @@ The static files are emitted to `dist/` and can be deployed to any static host.
 ## Deploying
 
 - **Vercel:** Import the repo and use the `npm run build` command. Set the output directory to `dist`.
-- **GitHub Pages / Actions:** Build with `npm run build` in a workflow and publish the `dist` folder with the `actions/upload-pages-artifact` and `actions/deploy-pages` actions.
+- **GitHub Pages / Actions:** Build with `npm run build` in a workflow and publish the `dist` folder with the `actions/upload-pages-artifact` and `actions/deploy-pages` actions. Configure the repository’s Pages source to **GitHub Actions** (not a branch such as `gh-pages`) so the deployed site serves the built files under `dist/`.
