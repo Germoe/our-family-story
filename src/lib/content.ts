@@ -15,10 +15,16 @@ const personSchema = z.object({
   image: z.string().min(1, "Image filename is required"),
 });
 
-const highlightSchema = z.object({
-  title: z.string().min(1, "Highlight title is required"),
-  text: z.string().min(1, "Highlight text is required"),
-  image: z.string().min(1, "Highlight image is required"),
+const homeSpotlightSchema = z.object({
+  title: z.string().min(1, "Spotlight title is required"),
+  description: z.string().min(1, "Spotlight description is required"),
+  image: z.string().min(1, "Spotlight image is required"),
+});
+
+const homeFeatureSchema = z.object({
+  title: z.string().min(1, "Feature title is required"),
+  description: z.string().min(1, "Feature description is required"),
+  icon: z.string().min(1, "Feature icon is required"),
 });
 
 const activitySchema = z.object({
@@ -73,8 +79,10 @@ const siteSchema = z.object({
   }),
   home_life: z.object({
     title: z.string().min(1, "Home & life title is required"),
+    subtitle: z.string().min(1, "Home & life subtitle is required"),
     description: z.string().min(1, "Home & life description is required"),
-    highlights: z.array(highlightSchema).min(1, "At least one highlight is required"),
+    spotlights: z.array(homeSpotlightSchema).min(1, "At least one spotlight is required"),
+    features: z.array(homeFeatureSchema).min(1, "At least one feature is required"),
   }),
   daily_glimpse: z.object({
     title: z.string().min(1, "Daily glimpse title is required"),
@@ -100,7 +108,8 @@ const siteSchema = z.object({
 
 export type NavigationItem = z.infer<typeof navigationSchema>;
 export type Person = z.infer<typeof personSchema>;
-export type Highlight = z.infer<typeof highlightSchema>;
+export type HomeSpotlight = z.infer<typeof homeSpotlightSchema>;
+export type HomeFeature = z.infer<typeof homeFeatureSchema>;
 export type Activity = z.infer<typeof activitySchema>;
 export type GalleryImage = z.infer<typeof galleryImageSchema>;
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
