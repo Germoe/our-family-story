@@ -6,6 +6,8 @@ navigation:
     href: "#home-life"
   - label: "Our Journey"
     href: "#timeline"
+  - label: "Daily Glimpse"
+    href: "#glimpse"
   - label: "Gallery"
     href: "#gallery"
   - label: "Contact"
@@ -63,6 +65,19 @@ timeline:
     - title: "Choosing adoption with full hearts"
       timestamp: "This year"
       description: "After years of conversations, volunteering with kids, and dreaming about the future, we knew adoption was the path meant for us."
+daily_glimpse:
+  title: "A Glimpse Into Our Days"
+  description: "From slow mornings to weekend adventures, we love the simple rhythms that make our life feel warm, connected, and full of wonder."
+  activities:
+    - title: "Outdoor adventures"
+      description: "We head to the nearby trails whenever we can—walking our dog, spotting wildlife, and soaking up fresh mountain air together."
+      image: "hiking-adventure.jpg"
+    - title: "Cooking & creating"
+      description: "Our kitchen is the heart of our home. We cook side-by-side, try new recipes, and invite friends over for cozy dinners."
+      image: "cooking-together.jpg"
+    - title: "Time with friends"
+      description: "Game nights, backyard bonfires, and block parties keep us close to the people we love and the community we cherish."
+      image: "friends-gathering.jpg"
 gallery:
   title: "Little glimpses of our life"
   images:

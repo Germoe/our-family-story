@@ -50,6 +50,28 @@ const HighlightCard = ({ highlight }: { highlight: (typeof siteContent.home_life
   );
 };
 
+const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimpse.activities)[number] }) => {
+  const imageUrl = getAssetUrl(activity.image);
+
+  return (
+    <article className="group overflow-hidden rounded-3xl border border-border/60 bg-white/90 shadow-soft transition-transform duration-300 hover:-translate-y-1">
+      <div className="flex flex-col md:flex-row md:items-stretch">
+        <div className="md:w-1/2 h-48 md:h-auto overflow-hidden">
+          <img
+            src={imageUrl}
+            alt={activity.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <div className="flex-1 p-8 md:p-10 space-y-3 flex flex-col justify-center">
+          <h3 className="text-2xl font-semibold text-terracotta-dark">{activity.title}</h3>
+          <p className="text-base text-foreground/80 leading-relaxed">{activity.description}</p>
+        </div>
+      </div>
+    </article>
+  );
+};
+
 const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[number] }) => {
   const imageUrl = getAssetUrl(item.image);
   return (
@@ -81,7 +103,7 @@ const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[n
 );
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, home_life, timeline, gallery, contact } = siteContent;
+  const { brand, navigation, cta, hero, about, home_life, daily_glimpse, timeline, gallery, contact } = siteContent;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -107,7 +129,7 @@ const App = () => {
         </div>
       </header>
 
-      <main id="top" className="space-y-24 pb-24">
+      <main id="top" className="space-y-20 pb-20">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -left-20 -top-20 h-64 w-64 bg-terracotta/10 rounded-full blur-3xl" />
@@ -130,7 +152,7 @@ const App = () => {
           </div>
         </section>
 
-        <section id="about" className="section-container space-y-10">
+        <section id="about" className="section-container space-y-8">
           <SectionHeading title={about.title} subtitle="Who we are" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{about.intro}</p>
           <div className="grid md:grid-cols-2 gap-8">
@@ -148,7 +170,7 @@ const App = () => {
           </div>
         </section>
 
-        <section id="home-life" className="section-container space-y-10">
+        <section id="home-life" className="section-container space-y-8">
           <SectionHeading title={home_life.title} subtitle="Where we live" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{home_life.description}</p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -158,7 +180,7 @@ const App = () => {
           </div>
         </section>
 
-        <section id="timeline" className="section-container space-y-10">
+        <section id="timeline" className="section-container space-y-8">
           <SectionHeading title={timeline.title} subtitle="Our journey" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
           <div className="relative">
@@ -185,7 +207,17 @@ const App = () => {
           </div>
         </section>
 
-        <section id="gallery" className="section-container space-y-10">
+        <section id="glimpse" className="section-container space-y-8">
+          <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
+          <div className="space-y-6">
+            {daily_glimpse.activities.map((activity) => (
+              <ActivityCard key={activity.title} activity={activity} />
+            ))}
+          </div>
+        </section>
+
+        <section id="gallery" className="section-container space-y-8">
           <SectionHeading title={gallery.title} subtitle="Photos" />
           <div className="grid md:grid-cols-3 gap-6">
             {gallery.images.map((item) => (

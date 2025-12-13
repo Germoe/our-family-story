@@ -21,6 +21,12 @@ const highlightSchema = z.object({
   image: z.string().min(1, "Highlight image is required"),
 });
 
+const activitySchema = z.object({
+  title: z.string().min(1, "Activity title is required"),
+  description: z.string().min(1, "Activity description is required"),
+  image: z.string().min(1, "Activity image is required"),
+});
+
 const galleryImageSchema = z.object({
   caption: z.string().min(1, "Image caption is required"),
   image: z.string().min(1, "Gallery image is required"),
@@ -57,6 +63,11 @@ const siteSchema = z.object({
     description: z.string().min(1, "Home & life description is required"),
     highlights: z.array(highlightSchema).min(1, "At least one highlight is required"),
   }),
+  daily_glimpse: z.object({
+    title: z.string().min(1, "Daily glimpse title is required"),
+    description: z.string().min(1, "Daily glimpse description is required"),
+    activities: z.array(activitySchema).min(1, "At least one daily activity is required"),
+  }),
   timeline: z.object({
     title: z.string().min(1, "Timeline title is required"),
     description: z.string().min(1, "Timeline description is required"),
@@ -77,6 +88,7 @@ const siteSchema = z.object({
 export type NavigationItem = z.infer<typeof navigationSchema>;
 export type Person = z.infer<typeof personSchema>;
 export type Highlight = z.infer<typeof highlightSchema>;
+export type Activity = z.infer<typeof activitySchema>;
 export type GalleryImage = z.infer<typeof galleryImageSchema>;
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
