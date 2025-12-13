@@ -196,6 +196,20 @@ const App = () => {
             >
               {hero.cta_label}
             </a>
+            <div className="w-full max-w-4xl">
+              <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
+                <div className="aspect-video">
+                  <iframe
+                    src={hero.video_url}
+                    title={hero.video_title}
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
+              </div>
+            </div>
             <div className="flex flex-col items-center pt-6 text-sm text-warm-gray">
               <span>{hero.scroll_hint}</span>
               <span aria-hidden className="text-2xl">↓</span>
