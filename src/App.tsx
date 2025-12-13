@@ -186,17 +186,39 @@ const App = () => {
             <div className="absolute -left-20 -top-20 h-64 w-64 bg-terracotta/10 rounded-full blur-3xl" />
             <div className="absolute right-10 top-20 h-72 w-72 bg-sage/20 rounded-full blur-3xl" />
           </div>
-          <div className="section-container relative pt-16 pb-20 flex flex-col items-center text-center gap-6">
-            <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/80">{hero.eyebrow}</p>
-            <h1 className="heading-display max-w-4xl text-terracotta-dark">{hero.headline}</h1>
-            <p className="body-large max-w-3xl text-foreground/80">{hero.description}</p>
-            <a
-              href={hero.cta_href}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition"
-            >
-              {hero.cta_label}
-            </a>
-            <div className="flex flex-col items-center pt-6 text-sm text-warm-gray">
+          <div className="section-container relative pt-16 pb-20 space-y-10">
+            <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] items-center">
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left gap-6">
+                <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/80">{hero.eyebrow}</p>
+                <h1 className="heading-display max-w-4xl text-terracotta-dark">{hero.headline}</h1>
+                <p className="body-large max-w-3xl text-foreground/80">{hero.description}</p>
+                <a
+                  href={hero.cta_href}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition"
+                >
+                  {hero.cta_label}
+                </a>
+              </div>
+              <div className="relative w-full">
+                <div className="relative overflow-hidden rounded-3xl border border-border/80 shadow-soft bg-black/60">
+                  <div className="aspect-[16/9] w-full">
+                    <iframe
+                      src={hero.video_url}
+                      title="Our family video"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="h-full w-full"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                </div>
+                <p className="mt-3 text-sm text-foreground/70 text-center lg:text-left">
+                  Watch a quick glimpse of our life together.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center text-sm text-warm-gray">
               <span>{hero.scroll_hint}</span>
               <span aria-hidden className="text-2xl">↓</span>
             </div>

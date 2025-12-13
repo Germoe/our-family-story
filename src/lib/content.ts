@@ -65,6 +65,7 @@ const siteSchema = z.object({
     cta_label: z.string().min(1, "Hero CTA label is required"),
     cta_href: z.string().min(1, "Hero CTA href is required"),
     scroll_hint: z.string().min(1, "Hero scroll hint is required"),
+    video_url: z.string().url("Hero video URL must be a valid URL"),
   }),
   about: z.object({
     title: z.string().min(1, "About title is required"),
