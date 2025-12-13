@@ -281,6 +281,7 @@ interface AdminContextType {
   user: User | null;
   session: Session | null;
   isAuthenticated: boolean;
+  isAdminUser: boolean;
   authLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string) => Promise<{ error: any }>;
@@ -291,6 +292,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdminUser, setIsAdminUser] = useState(false);
   const [data, setData] = useState<ProfileData>(defaultData);
   
   // Auth state
@@ -298,13 +300,23 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [session, setSession] = useState<Session | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Set up auth listener
+  // Set up auth listener and check admin status
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setAuthLoading(false);
+        
+        // Check admin status when auth changes
+        if (session?.user) {
+          setTimeout(() => {
+            checkAdminStatus(session.user.id);
+          }, 0);
+        } else {
+          setIsAdminUser(false);
+          setIsAdmin(false);
+        }
       }
     );
 
@@ -312,10 +324,28 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setSession(session);
       setUser(session?.user ?? null);
       setAuthLoading(false);
+      
+      if (session?.user) {
+        checkAdminStatus(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  const checkAdminStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('admin_users')
+        .select('id')
+        .eq('user_id', userId)
+        .maybeSingle();
+      
+      setIsAdminUser(!!data && !error);
+    } catch {
+      setIsAdminUser(false);
+    }
+  };
 
   // Load data from database on mount
   useEffect(() => {
@@ -457,6 +487,7 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       user,
       session,
       isAuthenticated: !!session,
+      isAdminUser,
       authLoading,
       signIn,
       signUp,
