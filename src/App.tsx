@@ -168,17 +168,16 @@ const App = () => {
                 const isLeft = index % 2 === 0;
 
                 return (
-                  <div
-                    key={event.title}
-                    className="relative md:grid md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-10"
-                  >
-                    <div className={`${isLeft ? "md:pr-10" : "md:col-start-3 md:pl-10"}`}>
+                  <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start md:gap-12">
+                    <div className={`${isLeft ? "md:pr-10" : "md:col-start-2 md:pl-10"}`}>
                       <TimelineCard event={event} />
                     </div>
-                    <div className="hidden md:flex flex-col items-center pt-2">
+                    <div
+                      className={`${isLeft ? "hidden md:block" : "hidden md:block md:col-start-1"} md:pr-10 md:pl-10`}
+                    />
+                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-7">
                       <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-8 ring-white" />
                     </div>
-                    <div className={`${isLeft ? "hidden md:block md:col-start-3" : "hidden md:block"}`} />
                   </div>
                 );
               })}
