@@ -4,6 +4,8 @@ navigation:
     href: "#about"
   - label: "Home & Life"
     href: "#home-life"
+  - label: "Our Village"
+    href: "#our-village"
   - label: "Our Journey"
     href: "#timeline"
   - label: "Daily Glimpse"
@@ -36,6 +38,19 @@ about:
       bio: "Jordan is a community organizer who loves building connections. Their favorite place is the local park, where we spend weekends walking our dog and meeting neighbors."
       quote: "I'm looking forward to sharing life with a child and creating memories in the everyday moments."
       image: "partner2.jpg"
+our_village:
+  title: "Our Village"
+  subtitle: "The people who cheer us on"
+  intro: "We are surrounded by a loving circle of family and friends who are ready to welcome a child with open arms and warm hearts."
+  entries:
+    - title: "Friends & Family"
+      subtitle: "Weekly traditions and constant support"
+      body: "Our closest friends and siblings gather for Sunday dinners, game nights, and backyard bonfires. They show up for every milestone and can't wait to share their joy, stories, and traditions with a little one."
+      image: "friends-gathering.jpg"
+    - title: "Grandparents"
+      subtitle: "Endless love and gentle wisdom"
+      body: "Both sets of grandparents live nearby and bring patience, laughter, and the sweetest homemade treats. They are eager for park walks, library trips, and cozy storytimes with their future grandchild."
+      image: "couple-together.jpg"
 home_life:
   title: "Our Home & Life"
   description: "We live in a cozy, light-filled house on a quiet street, surrounded by parks, libraries, and a welcoming community."
