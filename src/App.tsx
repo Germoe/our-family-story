@@ -34,21 +34,52 @@ const AboutCard = ({ person }: { person: (typeof siteContent.about.people)[numbe
   );
 };
 
-const HighlightCard = ({ highlight }: { highlight: (typeof siteContent.home_life.highlights)[number] }) => {
-  const imageUrl = getAssetUrl(highlight.image);
+const HomeSpotlightCard = ({ spotlight }: { spotlight: (typeof siteContent.home_life.spotlights)[number] }) => {
+  const imageUrl = getAssetUrl(spotlight.image);
 
   return (
-    <div className="flex flex-col gap-4 bg-white/70 border border-border/60 rounded-2xl p-6 shadow-soft">
-      <div className="relative h-40 rounded-xl overflow-hidden">
-        <img src={imageUrl} alt={highlight.title} className="w-full h-full object-cover" />
+    <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 shadow-soft">
+      <div className="h-64 md:h-72 overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={spotlight.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
       </div>
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold text-terracotta-dark">{highlight.title}</h3>
-        <p className="text-sm text-foreground/80 leading-relaxed">{highlight.text}</p>
+      <div className="absolute inset-0 bg-gradient-to-t from-terracotta/70 via-terracotta/30 to-transparent" />
+      <div className="absolute inset-0 flex items-end p-6">
+        <div className="text-white space-y-1">
+          <p className="text-sm uppercase tracking-[0.25em] text-white/80">Our place</p>
+          <h3 className="text-2xl font-semibold drop-shadow">{spotlight.title}</h3>
+          <p className="text-sm text-white/90 leading-relaxed max-w-xl drop-shadow">{spotlight.description}</p>
+        </div>
       </div>
     </div>
   );
 };
+
+const getFeatureIconSymbol = (icon: string) => {
+  const map: Record<string, string> = {
+    home: "🏠",
+    park: "🌳",
+    school: "🎒",
+    community: "🤝",
+  };
+
+  return map[icon] ?? "★";
+};
+
+const HomeFeatureCard = ({ feature }: { feature: (typeof siteContent.home_life.features)[number] }) => (
+  <div className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center">
+    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-2xl">
+      {getFeatureIconSymbol(feature.icon)}
+    </div>
+    <div className="space-y-2">
+      <h3 className="text-lg font-semibold text-terracotta-dark">{feature.title}</h3>
+      <p className="text-sm text-foreground/80 leading-relaxed">{feature.description}</p>
+    </div>
+  </div>
+);
 
 const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimpse.activities)[number] }) => {
   const imageUrl = getAssetUrl(activity.image);
@@ -191,11 +222,16 @@ const App = () => {
         </section>
 
         <section id="home-life" className="section-container space-y-8">
-          <SectionHeading title={home_life.title} subtitle="Where we live" />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{home_life.description}</p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {home_life.highlights.map((highlight) => (
-              <HighlightCard key={highlight.title} highlight={highlight} />
+          <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
+          <div className="grid md:grid-cols-2 gap-6">
+            {home_life.spotlights.map((spotlight) => (
+              <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} />
+            ))}
+          </div>
+          <p className="text-center max-w-4xl mx-auto body-large text-foreground/80">{home_life.description}</p>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {home_life.features.map((feature) => (
+              <HomeFeatureCard key={feature.title} feature={feature} />
             ))}
           </div>
         </section>
