@@ -6,6 +6,8 @@ navigation:
     href: "#home-life"
   - label: "Our Journey"
     href: "#timeline"
+  - label: "Daily Glimpse"
+    href: "#glimpse"
   - label: "Gallery"
     href: "#gallery"
   - label: "Contact"
