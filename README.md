@@ -2,6 +2,11 @@
 
 This repo hosts a lightweight, single-page React site built with Vite and Tailwind CSS. Content is managed through YAML so copy and images can be updated without touching the layout code.
 
+## Prerequisites
+
+- Use **Node.js 20 LTS**. A `.nvmrc` file is included so `nvm use` will select the correct version. Homebrew installs of
+  Node 22 can fail with missing `libicui18n` errors; switching to Node 20 resolves that issue.
+
 ## Editing content
 
 - Update text and links in [`src/content/site.yaml`](src/content/site.yaml). The YAML is validated at build time so missing
