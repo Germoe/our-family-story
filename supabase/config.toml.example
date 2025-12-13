@@ -1,0 +1,2 @@
+# Copy this file to config.toml and replace with your Supabase project details.
+project_id = "your-project-id"
