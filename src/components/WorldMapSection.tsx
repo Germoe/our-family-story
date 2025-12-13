@@ -23,14 +23,31 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
         <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{map.intro}</p>
       ) : null}
 
+      {activeMarker ? (
+        <div className="md:hidden rounded-2xl border border-border/70 bg-white/90 p-5 shadow-soft">
+          <div className="flex items-center gap-3">
+            <div className="h-14 w-14 overflow-hidden rounded-xl border border-border/70">
+              <img src={getAssetUrl(activeMarker.image)} alt={activeMarker.title} className="h-full w-full object-cover" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">{activeMarker.subtitle}</p>
+              <h3 className="text-lg font-semibold text-terracotta-dark">{activeMarker.title}</h3>
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/80">{activeMarker.description}</p>
+        </div>
+      ) : null}
+
       <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-white/80 shadow-soft">
         <div className="relative p-4 md:p-6">
           <div className="relative aspect-[4/5] md:aspect-[16/9] overflow-hidden rounded-2xl bg-sage/10">
-            <img
-              src={mapIllustration}
-              alt="Stylized world map"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            <div className="absolute inset-0">
+              <img
+                src={mapIllustration}
+                alt="Stylized world map"
+                className="h-full w-full object-contain"
+              />
+            </div>
             <div className="absolute inset-0">
               {map.markers.map((marker) => {
                 const isActive = marker.title === activeMarker?.title;
@@ -44,7 +61,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                   >
                     <button
                       type="button"
-                      className={`group relative flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                      className={`group relative flex h-10 w-10 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                         isActive ? "scale-105 shadow-glow" : "hover:scale-105"
                       }`}
                       aria-label={`${marker.title} marker`}
@@ -59,7 +76,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
 
                     {isActive ? (
                       <div
-                        className={`absolute mt-3 w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition ${
+                        className={`absolute mt-3 hidden w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition md:block ${
                           alignment === "center"
                             ? "left-1/2 -translate-x-1/2"
                             : alignment === "left"
@@ -91,20 +108,6 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
         </div>
       </div>
 
-      {activeMarker ? (
-        <div className="md:hidden rounded-2xl border border-border/70 bg-white/90 p-5 shadow-soft">
-          <div className="flex items-center gap-3">
-            <div className="h-14 w-14 overflow-hidden rounded-xl border border-border/70">
-              <img src={getAssetUrl(activeMarker.image)} alt={activeMarker.title} className="h-full w-full object-cover" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">{activeMarker.subtitle}</p>
-              <h3 className="text-lg font-semibold text-terracotta-dark">{activeMarker.title}</h3>
-            </div>
-          </div>
-          <p className="mt-3 text-sm leading-relaxed text-foreground/80">{activeMarker.description}</p>
-        </div>
-      ) : null}
     </section>
   );
 };
