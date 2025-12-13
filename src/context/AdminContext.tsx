@@ -279,14 +279,42 @@ interface AdminContextType {
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
+// Helper to safely save to localStorage (only saves text content, not base64 images)
+const saveToLocalStorage = (data: ProfileData) => {
+  try {
+    // Only save text content, not image data URLs
+    const dataToSave = JSON.stringify(data, (key, value) => {
+      // Skip base64 image data
+      if (typeof value === 'string' && value.startsWith('data:image')) {
+        return undefined;
+      }
+      return value;
+    });
+    localStorage.setItem('adoptionProfileData', dataToSave);
+  } catch (e) {
+    console.warn('Could not save to localStorage:', e);
+    // Clear storage if quota exceeded
+    try {
+      localStorage.removeItem('adoptionProfileData');
+    } catch {
+      // Ignore
+    }
+  }
+};
+
 export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [data, setData] = useState<ProfileData>(() => {
-    const saved = localStorage.getItem('adoptionProfileData');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      // Merge with defaults to ensure new fields exist
-      return { ...defaultData, ...parsed };
+    try {
+      const saved = localStorage.getItem('adoptionProfileData');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Merge with defaults to ensure new fields exist and images are restored
+        return { ...defaultData, ...parsed };
+      }
+    } catch (e) {
+      console.warn('Could not load from localStorage:', e);
+      localStorage.removeItem('adoptionProfileData');
     }
     return defaultData;
   });
@@ -311,13 +339,17 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       }
       
       current[keys[keys.length - 1]] = value;
-      localStorage.setItem('adoptionProfileData', JSON.stringify(newData));
+      saveToLocalStorage(newData);
       return newData;
     });
   }, []);
 
   const resetData = useCallback(() => {
-    localStorage.removeItem('adoptionProfileData');
+    try {
+      localStorage.removeItem('adoptionProfileData');
+    } catch {
+      // Ignore
+    }
     setData(defaultData);
   }, []);
 
