@@ -76,7 +76,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
 
                     {isActive ? (
                       <div
-                        className={`absolute mt-3 w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition ${
+                        className={`absolute mt-3 hidden w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition md:block ${
                           alignment === "center"
                             ? "left-1/2 -translate-x-1/2"
                             : alignment === "left"
