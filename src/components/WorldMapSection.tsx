@@ -40,7 +40,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
 
       <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-white/80 shadow-soft">
         <div className="relative p-4 md:p-6">
-          <div className="relative aspect-[4/2] md:aspect-[16/9] overflow-hidden rounded-2xl bg-sage/10">
+          <div className="relative aspect-[4/2] md:aspect-[16/8] overflow-hidden rounded-2xl bg-sage/10">
             <div className="absolute inset-0">
               <img
                 src={mapIllustration}
