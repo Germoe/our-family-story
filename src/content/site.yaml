@@ -24,6 +24,9 @@ hero:
   cta_label: "Learn more about us"
   cta_href: "#about"
   scroll_hint: "Scroll to explore"
+  video_url: "https://www.youtube.com/embed/0syaBf0x3mU?si=tr6-ZfzTjJtm7-t2"
+  video_title: "A glimpse into our family's story"
+  video_caption: "Take a quick look at the warmth, laughter, and adventures that fill our days."
 about:
   title: "Meet Us"
   intro: "We believe that family is built on unconditional love, and we're excited to grow ours through adoption."
