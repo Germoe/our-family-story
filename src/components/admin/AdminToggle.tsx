@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { useAdmin } from '@/context/AdminContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Settings, Eye, EyeOff, LogIn, LogOut, Loader2 } from 'lucide-react';
+import { Settings, EyeOff, LogIn, LogOut, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
 
 export const AdminToggle: React.FC = () => {
-  const { isAdmin, toggleAdmin, isAuthenticated, authLoading, signIn, signUp, signOut, user } = useAdmin();
+  const { isAdmin, toggleAdmin, isAuthenticated, isAdminUser, authLoading, signIn, signOut, user } = useAdmin();
   const [showAuthForm, setShowAuthForm] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+
+  // Check for ?admin=login in URL to show login form
+  const urlParams = new URLSearchParams(window.location.search);
+  const showAdminLogin = urlParams.get('admin') === 'login';
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { error } = isSignUp 
-        ? await signUp(email, password)
-        : await signIn(email, password);
+      const { error } = await signIn(email, password);
 
       if (error) {
         toast({
@@ -32,15 +33,13 @@ export const AdminToggle: React.FC = () => {
         });
       } else {
         toast({
-          title: isSignUp ? "Account Created" : "Signed In",
-          description: isSignUp ? "You can now edit the profile." : "Welcome back!",
+          title: "Signed In",
+          description: "Welcome back!",
         });
         setShowAuthForm(false);
         setEmail('');
         setPassword('');
-        if (!isSignUp) {
-          toggleAdmin();
-        }
+        // Admin status will be checked automatically via context
       }
     } catch (err) {
       toast({
@@ -77,9 +76,18 @@ export const AdminToggle: React.FC = () => {
     }
   };
 
+  // Still loading auth state
   if (authLoading) {
     return null;
   }
+
+  // Not an admin user and not showing auth form and no URL param - hide completely
+  if (!isAdminUser && !showAuthForm && !showAdminLogin) {
+    return null;
+  }
+
+  // Show login button if URL param is set
+  const shouldShowLoginButton = showAdminLogin && !isAuthenticated;
 
   return (
     <motion.div
@@ -98,7 +106,7 @@ export const AdminToggle: React.FC = () => {
             className="absolute bottom-full right-0 mb-3 w-80 p-6 glass-card rounded-xl shadow-lg"
           >
             <h3 className="text-lg font-semibold text-foreground mb-4">
-              {isSignUp ? 'Create Admin Account' : 'Admin Sign In'}
+              Admin Sign In
             </h3>
             <form onSubmit={handleAuth} className="space-y-4">
               <Input
@@ -124,18 +132,12 @@ export const AdminToggle: React.FC = () => {
                 ) : (
                   <LogIn className="w-4 h-4 mr-2" />
                 )}
-                {isSignUp ? 'Create Account' : 'Sign In'}
+                Sign In
               </Button>
             </form>
             <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors w-full text-center"
-            >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Create one"}
-            </button>
-            <button
               onClick={() => setShowAuthForm(false)}
-              className="mt-2 text-sm text-muted-foreground hover:text-foreground transition-colors w-full text-center"
+              className="mt-4 text-sm text-muted-foreground hover:text-foreground transition-colors w-full text-center"
             >
               Cancel
             </button>
@@ -143,9 +145,21 @@ export const AdminToggle: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* Main Toggle Button */}
-      <div className="flex flex-col items-end gap-2">
-        {isAuthenticated && (
+      {/* Login button for ?admin=login URL */}
+      {shouldShowLoginButton && !showAuthForm && (
+        <Button
+          onClick={() => setShowAuthForm(true)}
+          size="lg"
+          className="rounded-full shadow-medium px-6 bg-card text-foreground hover:bg-muted border border-border"
+        >
+          <LogIn className="w-4 h-4 mr-2" />
+          Admin Login
+        </Button>
+      )}
+
+      {/* Main Toggle Button - only show if admin user */}
+      {isAdminUser && (
+        <div className="flex flex-col items-end gap-2">
           <Button
             onClick={handleSignOut}
             size="sm"
@@ -155,46 +169,46 @@ export const AdminToggle: React.FC = () => {
             <LogOut className="w-3 h-3 mr-1" />
             Sign Out ({user?.email?.split('@')[0]})
           </Button>
-        )}
-        
-        <Button
-          onClick={handleToggleAdmin}
-          size="lg"
-          className={`
-            rounded-full shadow-medium px-6 transition-all duration-300
-            ${isAdmin 
-              ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
-              : 'bg-card text-foreground hover:bg-muted border border-border'
-            }
-          `}
-        >
-          <AnimatePresence mode="wait">
-            {isAdmin ? (
-              <motion.div
-                key="admin"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                className="flex items-center gap-2"
-              >
-                <EyeOff className="w-4 h-4" />
-                <span>Exit Edit Mode</span>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="visitor"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                className="flex items-center gap-2"
-              >
-                <Settings className="w-4 h-4" />
-                <span>Edit Profile</span>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </Button>
-      </div>
+          
+          <Button
+            onClick={handleToggleAdmin}
+            size="lg"
+            className={`
+              rounded-full shadow-medium px-6 transition-all duration-300
+              ${isAdmin 
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90' 
+                : 'bg-card text-foreground hover:bg-muted border border-border'
+              }
+            `}
+          >
+            <AnimatePresence mode="wait">
+              {isAdmin ? (
+                <motion.div
+                  key="admin"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  className="flex items-center gap-2"
+                >
+                  <EyeOff className="w-4 h-4" />
+                  <span>Exit Edit Mode</span>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="visitor"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  className="flex items-center gap-2"
+                >
+                  <Settings className="w-4 h-4" />
+                  <span>Edit Profile</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Button>
+        </div>
+      )}
       
       <AnimatePresence>
         {isAdmin && (
