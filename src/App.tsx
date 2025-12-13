@@ -54,17 +54,19 @@ const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimps
   const imageUrl = getAssetUrl(activity.image);
 
   return (
-    <article className="group h-full bg-white/80 border border-border/60 rounded-3xl overflow-hidden shadow-soft transition-transform duration-300 hover:-translate-y-1">
-      <div className="relative h-56 overflow-hidden">
-        <img
-          src={imageUrl}
-          alt={activity.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-      <div className="p-7 space-y-3">
-        <h3 className="text-xl font-semibold text-terracotta-dark">{activity.title}</h3>
-        <p className="text-sm text-foreground/80 leading-relaxed">{activity.description}</p>
+    <article className="group overflow-hidden rounded-3xl border border-border/60 bg-white/90 shadow-soft transition-transform duration-300 hover:-translate-y-1">
+      <div className="flex flex-col md:flex-row md:items-stretch">
+        <div className="md:w-1/2 h-56 md:h-auto overflow-hidden">
+          <img
+            src={imageUrl}
+            alt={activity.title}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+        <div className="flex-1 p-8 md:p-10 space-y-3 flex flex-col justify-center">
+          <h3 className="text-2xl font-semibold text-terracotta-dark">{activity.title}</h3>
+          <p className="text-base text-foreground/80 leading-relaxed">{activity.description}</p>
+        </div>
       </div>
     </article>
   );
@@ -208,7 +210,7 @@ const App = () => {
         <section id="glimpse" className="section-container space-y-10">
           <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="space-y-6">
             {daily_glimpse.activities.map((activity) => (
               <ActivityCard key={activity.title} activity={activity} />
             ))}
