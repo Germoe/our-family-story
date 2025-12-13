@@ -1,0 +1,24 @@
+<svg viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title>Minimal world map illustration</title>
+  <desc>Soft abstract illustration of the world map for location markers.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f5ef" />
+      <stop offset="100%" stop-color="#f1eadf" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#cba698" flood-opacity="0.25" />
+    </filter>
+  </defs>
+  <rect width="1440" height="900" fill="url(#bg)" />
+  <g fill="#d7c8b9" opacity="0.7" filter="url(#shadow)">
+    <path d="M247 252c51-48 139-60 217-34 63 21 111 61 169 72 58 11 124-7 178-35 53-28 94-64 159-69 72-5 166 22 211 76 37 44 29 93 12 140-20 56-51 112-101 146-63 44-154 55-232 44-71-9-121-45-191-48-86-4-176 48-257 22-60-19-93-86-131-141-39-57-93-107-88-165 3-32 21-67 54-88Z" />
+    <path d="M344 579c46-22 103-17 151 3 52 22 97 61 153 70 53 8 110-12 160-38 59-30 112-65 177-67 61-2 126 14 171 52 37 31 53 79 35 117-21 45-78 83-126 110-65 37-131 84-204 82-68-1-124-51-190-62-64-11-133 13-194-11-56-23-86-80-130-120-39-36-101-61-107-109-4-32 24-62 54-77Z" />
+  </g>
+  <g stroke="#e6d8cc" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 10" opacity="0.7">
+    <path d="M240 320c220-40 520-60 840 10" />
+    <path d="M260 520c260-40 500-20 780 60" />
+    <path d="M360 200c-20 120 0 260 80 380" />
+    <path d="M880 190c-60 140-60 290 10 430" />
+  </g>
+</svg>

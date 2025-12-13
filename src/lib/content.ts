@@ -51,6 +51,21 @@ const villageEntrySchema = z.object({
   image: z.string().min(1, "Village entry image is required"),
 });
 
+const mapMarkerSchema = z.object({
+  title: z.string().min(1, "Marker title is required"),
+  subtitle: z.string().min(1, "Marker subtitle is required"),
+  description: z.string().min(1, "Marker description is required"),
+  image: z.string().min(1, "Marker image is required"),
+  x_percent: z
+    .number({ invalid_type_error: "Marker x_percent must be a number" })
+    .min(0, "x_percent must be at least 0")
+    .max(100, "x_percent must be at most 100"),
+  y_percent: z
+    .number({ invalid_type_error: "Marker y_percent must be a number" })
+    .min(0, "y_percent must be at least 0")
+    .max(100, "y_percent must be at most 100"),
+});
+
 const siteSchema = z.object({
   brand: z.string().min(1, "Brand is required"),
   navigation: z.array(navigationSchema).min(1, "At least one navigation item is required"),
@@ -87,6 +102,11 @@ const siteSchema = z.object({
     spotlights: z.array(homeSpotlightSchema).min(1, "At least one spotlight is required"),
     features: z.array(homeFeatureSchema).min(1, "At least one feature is required"),
   }),
+  map: z.object({
+    heading: z.string().optional(),
+    intro: z.string().optional(),
+    markers: z.array(mapMarkerSchema).min(1, "At least one map marker is required"),
+  }),
   daily_glimpse: z.object({
     title: z.string().min(1, "Daily glimpse title is required"),
     description: z.string().min(1, "Daily glimpse description is required"),
@@ -117,6 +137,7 @@ export type Activity = z.infer<typeof activitySchema>;
 export type GalleryImage = z.infer<typeof galleryImageSchema>;
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type VillageEntry = z.infer<typeof villageEntrySchema>;
+export type MapMarker = z.infer<typeof mapMarkerSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 
 const parsed = YAML.parse(rawSiteContent);

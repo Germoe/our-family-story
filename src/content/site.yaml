@@ -4,6 +4,8 @@ navigation:
     href: "#about"
   - label: "Home & Life"
     href: "#home-life"
+  - label: "Our World"
+    href: "#map"
   - label: "Our Village"
     href: "#our-village"
   - label: "Our Journey"
@@ -78,6 +80,28 @@ home_life:
     - title: "Friendly Community"
       description: "A close-knit neighborhood with block parties, holiday celebrations, and warm, caring neighbors."
       icon: "community"
+map:
+  heading: "Where our story is rooted"
+  intro: "From coastlines to mountain trails, these are the places that have shaped our love story, family traditions, and dreams for the future."
+  markers:
+    - title: "Hometown"
+      subtitle: "Alex's roots"
+      description: "The small coastal city where Alex grew up biking to the pier, visiting the farmer's market, and learning to cook with their grandmother."
+      image: "home-exterior.jpg"
+      x_percent: 30
+      y_percent: 46
+    - title: "Where we met"
+      subtitle: "A neighborhood concert"
+      description: "We first crossed paths at a summer block party filled with live music, string lights, and the laughter of new friends."
+      image: "friends-gathering.jpg"
+      x_percent: 41
+      y_percent: 52
+    - title: "Weekend escape"
+      subtitle: "Our favorite trail"
+      description: "A mountain hike just a short drive away where we recharge with fresh air, big views, and quiet walks together."
+      image: "hiking-adventure.jpg"
+      x_percent: 56
+      y_percent: 40
 timeline:
   title: "Our Journey to Adoption"
   description: "Moments that brought us from our first hello to the heartfelt decision to grow our family through adoption."
