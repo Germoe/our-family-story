@@ -23,6 +23,21 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
         <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{map.intro}</p>
       ) : null}
 
+      {activeMarker ? (
+        <div className="md:hidden rounded-2xl border border-border/70 bg-white/90 p-5 shadow-soft">
+          <div className="flex items-center gap-3">
+            <div className="h-14 w-14 overflow-hidden rounded-xl border border-border/70">
+              <img src={getAssetUrl(activeMarker.image)} alt={activeMarker.title} className="h-full w-full object-cover" />
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">{activeMarker.subtitle}</p>
+              <h3 className="text-lg font-semibold text-terracotta-dark">{activeMarker.title}</h3>
+            </div>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-foreground/80">{activeMarker.description}</p>
+        </div>
+      ) : null}
+
       <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-white/80 shadow-soft">
         <div className="relative p-4 md:p-6">
           <div className="relative aspect-[4/5] md:aspect-[16/9] overflow-hidden rounded-2xl bg-sage/10">
@@ -93,20 +108,6 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
         </div>
       </div>
 
-      {activeMarker ? (
-        <div className="md:hidden rounded-2xl border border-border/70 bg-white/90 p-5 shadow-soft">
-          <div className="flex items-center gap-3">
-            <div className="h-14 w-14 overflow-hidden rounded-xl border border-border/70">
-              <img src={getAssetUrl(activeMarker.image)} alt={activeMarker.title} className="h-full w-full object-cover" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">{activeMarker.subtitle}</p>
-              <h3 className="text-lg font-semibold text-terracotta-dark">{activeMarker.title}</h3>
-            </div>
-          </div>
-          <p className="mt-3 text-sm leading-relaxed text-foreground/80">{activeMarker.description}</p>
-        </div>
-      ) : null}
     </section>
   );
 };
