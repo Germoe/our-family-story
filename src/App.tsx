@@ -165,7 +165,7 @@ const App = () => {
             href="#top"
             className="flex items-center gap-2 font-semibold text-terracotta-dark text-lg focus-ring pressable"
           >
-            <span className="h-10 w-10 rounded-full bg-terracotta/15 border border-terracotta/30 flex items-center justify-center text-terracotta-dark font-serif text-xl">❤</span>
+            <span className="h-10 w-10 rounded-full bg-terracotta/15 border border-terracotta/30 flex items-center justify-center text-terracotta-dark font-serif text-xl">&#x2764;&#xFE0E;</span>
             {brand}
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-foreground/70">
