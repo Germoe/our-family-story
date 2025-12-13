@@ -1,4 +1,5 @@
 import { siteContent, getAssetUrl } from "./lib/content";
+import WorldMapSection from "./components/WorldMapSection";
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -153,7 +154,7 @@ const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[n
 );
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, our_village, home_life, daily_glimpse, timeline, gallery, contact } =
+  const { brand, navigation, cta, hero, about, our_village, home_life, map, daily_glimpse, timeline, gallery, contact } =
     siteContent;
 
   return (
@@ -249,6 +250,8 @@ const App = () => {
             ))}
           </div>
         </section>
+
+        <WorldMapSection map={map} />
 
         <section id="our-village" className="section-container space-y-8">
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
