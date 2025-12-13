@@ -50,6 +50,26 @@ const HighlightCard = ({ highlight }: { highlight: (typeof siteContent.home_life
   );
 };
 
+const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimpse.activities)[number] }) => {
+  const imageUrl = getAssetUrl(activity.image);
+
+  return (
+    <article className="group h-full bg-white/80 border border-border/60 rounded-3xl overflow-hidden shadow-soft transition-transform duration-300 hover:-translate-y-1">
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={activity.title}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+      <div className="p-7 space-y-3">
+        <h3 className="text-xl font-semibold text-terracotta-dark">{activity.title}</h3>
+        <p className="text-sm text-foreground/80 leading-relaxed">{activity.description}</p>
+      </div>
+    </article>
+  );
+};
+
 const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[number] }) => {
   const imageUrl = getAssetUrl(item.image);
   return (
@@ -81,7 +101,7 @@ const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[n
 );
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, home_life, timeline, gallery, contact } = siteContent;
+  const { brand, navigation, cta, hero, about, home_life, daily_glimpse, timeline, gallery, contact } = siteContent;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -182,6 +202,16 @@ const App = () => {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        <section id="glimpse" className="section-container space-y-10">
+          <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
+          <div className="grid md:grid-cols-3 gap-6">
+            {daily_glimpse.activities.map((activity) => (
+              <ActivityCard key={activity.title} activity={activity} />
+            ))}
           </div>
         </section>
 
