@@ -40,7 +40,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
 
       <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-white/80 shadow-soft">
         <div className="relative p-4 md:p-6">
-          <div className="relative aspect-[4/5] md:aspect-[16/9] overflow-hidden rounded-2xl bg-sage/10">
+          <div className="relative aspect-[4/2] md:aspect-[16/9] overflow-hidden rounded-2xl bg-sage/10">
             <div className="absolute inset-0">
               <img
                 src={mapIllustration}
@@ -61,28 +61,26 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                   >
                     <button
                       type="button"
-                      className={`group relative flex h-10 w-10 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
-                        isActive ? "scale-105 shadow-glow" : "hover:scale-105"
-                      }`}
+                      className={`group relative flex h-6 w-6 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-white ${isActive ? "scale-105 shadow-glow" : "hover:scale-105"
+                        }`}
                       aria-label={`${marker.title} marker`}
                       aria-pressed={isActive}
                       onMouseEnter={() => setActiveTitle(marker.title)}
                       onFocus={() => setActiveTitle(marker.title)}
                       onClick={() => setActiveTitle(marker.title)}
                     >
-                      <span className="text-xl">❤</span>
+                      <span className="text-sm md:text-xl">❤</span>
                       <span className="sr-only">{marker.subtitle}</span>
                     </button>
 
                     {isActive ? (
                       <div
-                        className={`absolute mt-3 hidden w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition md:block ${
-                          alignment === "center"
-                            ? "left-1/2 -translate-x-1/2"
-                            : alignment === "left"
+                        className={`absolute mt-3 hidden w-64 max-w-xs rounded-2xl border border-border/70 bg-white/95 p-4 text-left shadow-soft backdrop-blur transition md:block ${alignment === "center"
+                          ? "left-1/2 -translate-x-1/2"
+                          : alignment === "left"
                             ? "left-0"
                             : "right-0"
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center gap-3">
                           <div className="h-14 w-14 overflow-hidden rounded-xl border border-border/70">
