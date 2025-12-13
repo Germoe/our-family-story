@@ -88,6 +88,25 @@ const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[numbe
   );
 };
 
+const VillageCard = ({ entry }: { entry: (typeof siteContent.our_village.entries)[number] }) => {
+  const imageUrl = getAssetUrl(entry.image);
+
+  return (
+    <article className="bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden h-full flex flex-col">
+      <div className="h-56 overflow-hidden">
+        <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
+      </div>
+      <div className="p-8 space-y-3 flex-1 flex flex-col">
+        <div className="space-y-1">
+          <h3 className="text-xl font-semibold text-terracotta-dark">{entry.title}</h3>
+          <p className="text-sm uppercase tracking-[0.2em] text-terracotta-dark/70">{entry.subtitle}</p>
+        </div>
+        <p className="text-base leading-relaxed text-foreground/80">{entry.body}</p>
+      </div>
+    </article>
+  );
+};
+
 const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[number] }) => (
   <div className="relative pl-12 md:pl-0 ml-6 md:ml-0">
     <div className="absolute left-0 top-7 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[6px] ring-white md:hidden" />
@@ -103,7 +122,8 @@ const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[n
 );
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, home_life, daily_glimpse, timeline, gallery, contact } = siteContent;
+  const { brand, navigation, cta, hero, about, our_village, home_life, daily_glimpse, timeline, gallery, contact } =
+    siteContent;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -176,6 +196,16 @@ const App = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {home_life.highlights.map((highlight) => (
               <HighlightCard key={highlight.title} highlight={highlight} />
+            ))}
+          </div>
+        </section>
+
+        <section id="our-village" className="section-container space-y-8">
+          <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {our_village.entries.map((entry) => (
+              <VillageCard key={entry.title} entry={entry} />
             ))}
           </div>
         </section>
