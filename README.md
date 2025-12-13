@@ -4,7 +4,8 @@ This repo hosts a lightweight, single-page React site built with Vite and Tailwi
 
 ## Editing content
 
-- Update text and links in [`src/content/site.yaml`](src/content/site.yaml).
+- Update text and links in [`src/content/site.yaml`](src/content/site.yaml). The YAML is validated at build time so missing
+  fields or typos are caught with a clear error message.
 - Place photos in [`src/assets`](src/assets) and reference the filenames in the YAML file.
 - The layout automatically pulls from the YAML and will rebuild with the new content.
 

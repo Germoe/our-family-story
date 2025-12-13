@@ -1,67 +1,86 @@
 import YAML from "yaml";
 import rawSiteContent from "@/content/site.yaml?raw";
+import { z } from "zod";
 
-export type NavigationItem = {
-  label: string;
-  href: string;
-};
+const navigationSchema = z.object({
+  label: z.string().min(1, "Navigation label is required"),
+  href: z.string().min(1, "Navigation href is required"),
+});
 
-export type Person = {
-  name: string;
-  title: string;
-  bio: string;
-  quote: string;
-  image: string;
-};
+const personSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  title: z.string().min(1, "Title is required"),
+  bio: z.string().min(1, "Bio is required"),
+  quote: z.string().min(1, "Quote is required"),
+  image: z.string().min(1, "Image filename is required"),
+});
 
-export type Highlight = {
-  title: string;
-  text: string;
-  image: string;
-};
+const highlightSchema = z.object({
+  title: z.string().min(1, "Highlight title is required"),
+  text: z.string().min(1, "Highlight text is required"),
+  image: z.string().min(1, "Highlight image is required"),
+});
 
-export type GalleryImage = {
-  caption: string;
-  image: string;
-};
+const galleryImageSchema = z.object({
+  caption: z.string().min(1, "Image caption is required"),
+  image: z.string().min(1, "Gallery image is required"),
+});
 
-export type SiteContent = {
-  brand: string;
-  navigation: NavigationItem[];
-  cta: { label: string; href: string };
-  hero: {
-    eyebrow: string;
-    headline: string;
-    description: string;
-    cta_label: string;
-    cta_href: string;
-    scroll_hint: string;
-  };
-  about: {
-    title: string;
-    intro: string;
-    people: Person[];
-  };
-  home_life: {
-    title: string;
-    description: string;
-    highlights: Highlight[];
-  };
-  gallery: {
-    title: string;
-    images: GalleryImage[];
-  };
-  contact: {
-    title: string;
-    message: string;
-    button_label: string;
-    button_href: string;
-  };
-};
+const siteSchema = z.object({
+  brand: z.string().min(1, "Brand is required"),
+  navigation: z.array(navigationSchema).min(1, "At least one navigation item is required"),
+  cta: z.object({
+    label: z.string().min(1, "CTA label is required"),
+    href: z.string().min(1, "CTA href is required"),
+  }),
+  hero: z.object({
+    eyebrow: z.string().min(1, "Hero eyebrow is required"),
+    headline: z.string().min(1, "Hero headline is required"),
+    description: z.string().min(1, "Hero description is required"),
+    cta_label: z.string().min(1, "Hero CTA label is required"),
+    cta_href: z.string().min(1, "Hero CTA href is required"),
+    scroll_hint: z.string().min(1, "Hero scroll hint is required"),
+  }),
+  about: z.object({
+    title: z.string().min(1, "About title is required"),
+    intro: z.string().min(1, "About intro is required"),
+    people: z.array(personSchema).min(1, "At least one person is required"),
+  }),
+  home_life: z.object({
+    title: z.string().min(1, "Home & life title is required"),
+    description: z.string().min(1, "Home & life description is required"),
+    highlights: z.array(highlightSchema).min(1, "At least one highlight is required"),
+  }),
+  gallery: z.object({
+    title: z.string().min(1, "Gallery title is required"),
+    images: z.array(galleryImageSchema).min(1, "At least one gallery image is required"),
+  }),
+  contact: z.object({
+    title: z.string().min(1, "Contact title is required"),
+    message: z.string().min(1, "Contact message is required"),
+    button_label: z.string().min(1, "Contact button label is required"),
+    button_href: z.string().min(1, "Contact button href is required"),
+  }),
+});
 
-const parsed = YAML.parse(rawSiteContent) as SiteContent;
+export type NavigationItem = z.infer<typeof navigationSchema>;
+export type Person = z.infer<typeof personSchema>;
+export type Highlight = z.infer<typeof highlightSchema>;
+export type GalleryImage = z.infer<typeof galleryImageSchema>;
+export type SiteContent = z.infer<typeof siteSchema>;
 
-export const siteContent: SiteContent = parsed;
+const parsed = YAML.parse(rawSiteContent);
+
+const result = siteSchema.safeParse(parsed);
+
+if (!result.success) {
+  const issueList = result.error.issues
+    .map((issue) => `- ${issue.path.join(".") || "root"}: ${issue.message}`)
+    .join("\n");
+  throw new Error(`Invalid site content. Please fix src/content/site.yaml:\n${issueList}`);
+}
+
+export const siteContent: SiteContent = result.data;
 
 export const getAssetUrl = (filename: string) =>
   new URL(`../assets/${filename}`, import.meta.url).href;
