@@ -1,6 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { User, Session } from '@supabase/supabase-js';
+import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 // Import default images
 import partner1Image from '@/assets/partner1.jpg';
@@ -108,7 +106,7 @@ const defaultData: ProfileData = {
   hero: {
     title: "Welcome to Our Family",
     subtitle: "We're Alex & Jordan, and we can't wait to share our story with you",
-    videoUrl: "",
+    videoUrl: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
   },
   aboutUs: {
     title: "Meet Us",
@@ -121,8 +119,8 @@ const defaultData: ProfileData = {
     },
     partner2: {
       name: "Jordan",
-      role: "Architect & Nature Lover",
-      bio: "I design spaces that bring people together, but my favorite place is our home with Alex. I love hiking, stargazing, and building elaborate blanket forts. I can't wait to share these adventures with a child and watch them discover their own passions.",
+      role: "Engineer & Adventurer",
+      bio: "I'm a civil engineer who loves problem-solving and building things—from bridges at work to treehouses in our backyard. I balance my technical side with a creative streak for woodworking and a love for exploring new hiking trails.",
       image: partner2Image,
     },
   },
@@ -277,160 +275,24 @@ interface AdminContextType {
   data: ProfileData;
   updateData: (path: string, value: any) => void;
   resetData: () => void;
-  // Auth
-  user: User | null;
-  session: Session | null;
-  isAuthenticated: boolean;
-  isAdminUser: boolean;
-  authLoading: boolean;
-  signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
-  signOut: () => Promise<{ error: any }>;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
 export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [isAdminUser, setIsAdminUser] = useState(false);
   const [data, setData] = useState<ProfileData>(defaultData);
-  
-  // Auth state
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
-
-  // Set up auth listener and check admin status
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setAuthLoading(false);
-        
-        // Check admin status when auth changes
-        if (session?.user) {
-          setTimeout(() => {
-            checkAdminStatus(session.user.id);
-          }, 0);
-        } else {
-          setIsAdminUser(false);
-          setIsAdmin(false);
-        }
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setAuthLoading(false);
-      
-      if (session?.user) {
-        checkAdminStatus(session.user.id);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const checkAdminStatus = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('admin_users')
-        .select('id')
-        .eq('user_id', userId)
-        .maybeSingle();
-      
-      setIsAdminUser(!!data && !error);
-    } catch {
-      setIsAdminUser(false);
-    }
-  };
-
-  // Load data from database on mount
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const { data: contentData, error } = await supabase
-          .from('profile_content')
-          .select('content_key, content_value');
-
-        if (error) {
-          console.error('Error loading profile data:', error);
-          return;
-        }
-
-        if (contentData && contentData.length > 0) {
-          const loadedData = { ...defaultData };
-          
-          contentData.forEach((item) => {
-            if (item.content_value) {
-              const keys = item.content_key.split('.');
-              let current: any = loadedData;
-              
-              for (let i = 0; i < keys.length - 1; i++) {
-                if (current[keys[i]] !== undefined) {
-                  current = current[keys[i]];
-                }
-              }
-              
-              const lastKey = keys[keys.length - 1];
-              if (current && lastKey in current) {
-                try {
-                  // Try to parse JSON for arrays/objects
-                  current[lastKey] = JSON.parse(item.content_value);
-                } catch {
-                  // If not JSON, use as string
-                  current[lastKey] = item.content_value;
-                }
-              }
-            }
-          });
-          
-          setData(loadedData);
-        }
-      } catch (error) {
-        console.error('Error loading profile data:', error);
-      }
-    };
-
-    loadData();
-  }, []);
-
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
-  };
-
-  const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { emailRedirectTo: redirectUrl }
-    });
-    return { error };
-  };
-
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      setIsAdmin(false);
-    }
-    return { error };
-  };
 
   const toggleAdmin = useCallback(() => {
     setIsAdmin(prev => !prev);
   }, []);
 
-  const updateData = useCallback(async (path: string, value: any) => {
-    // Update local state immediately
+  const updateData = useCallback((path: string, value: any) => {
     setData(prev => {
       const newData = { ...prev };
       const keys = path.split('.');
       let current: any = newData;
-      
+
       for (let i = 0; i < keys.length - 1; i++) {
         if (Array.isArray(current[keys[i]])) {
           current[keys[i]] = [...current[keys[i]]];
@@ -439,59 +301,24 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }
         current = current[keys[i]];
       }
-      
+
       current[keys[keys.length - 1]] = value;
       return newData;
     });
+  }, []);
 
-    // Save to database if authenticated
-    if (session) {
-      try {
-        const valueToSave = typeof value === 'object' ? JSON.stringify(value) : String(value);
-        
-        const { error } = await supabase
-          .from('profile_content')
-          .upsert(
-            { content_key: path, content_value: valueToSave },
-            { onConflict: 'content_key' }
-          );
-
-        if (error) {
-          console.error('Error saving to database:', error);
-        }
-      } catch (error) {
-        console.error('Error saving to database:', error);
-      }
-    }
-  }, [session]);
-
-  const resetData = useCallback(async () => {
+  const resetData = useCallback(() => {
     setData(defaultData);
-    
-    if (session) {
-      try {
-        await supabase.from('profile_content').delete().neq('id', '00000000-0000-0000-0000-000000000000');
-      } catch (error) {
-        console.error('Error resetting data:', error);
-      }
-    }
-  }, [session]);
+    setIsAdmin(false);
+  }, []);
 
   return (
-    <AdminContext.Provider value={{ 
-      isAdmin, 
-      toggleAdmin, 
-      data, 
-      updateData, 
+    <AdminContext.Provider value={{
+      isAdmin,
+      toggleAdmin,
+      data,
+      updateData,
       resetData,
-      user,
-      session,
-      isAuthenticated: !!session,
-      isAdminUser,
-      authLoading,
-      signIn,
-      signUp,
-      signOut,
     }}>
       {children}
     </AdminContext.Provider>

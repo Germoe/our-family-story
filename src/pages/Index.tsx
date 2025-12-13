@@ -10,7 +10,6 @@ import { GallerySection } from '@/components/sections/GallerySection';
 import { PromiseSection } from '@/components/sections/PromiseSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { Footer } from '@/components/sections/Footer';
-import { AdminToggle } from '@/components/admin/AdminToggle';
 import { Helmet } from 'react-helmet-async';
 
 const Index = () => {
@@ -35,7 +34,6 @@ const Index = () => {
           <ContactSection />
         </main>
         <Footer />
-        <AdminToggle />
       </div>
     </AdminProvider>
   );
