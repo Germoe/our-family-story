@@ -66,8 +66,22 @@ const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[numbe
   );
 };
 
+const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[number] }) => (
+  <div className="relative pl-12 md:pl-0 ml-6 md:ml-0">
+    <div className="absolute left-0 top-7 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[6px] ring-white md:hidden" />
+    <div className="bg-white/80 border border-border/70 rounded-2xl shadow-soft p-6 md:p-7 space-y-3">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage/30 text-sage-dark text-sm font-semibold">
+        <span className="h-2 w-2 rounded-full bg-terracotta-dark" />
+        {event.timestamp}
+      </div>
+      <h3 className="text-xl font-semibold text-terracotta-dark">{event.title}</h3>
+      <p className="text-sm text-foreground/80 leading-relaxed">{event.description}</p>
+    </div>
+  </div>
+);
+
 const App = () => {
-  const { brand, navigation, cta, hero, about, home_life, gallery, contact } = siteContent;
+  const { brand, navigation, cta, hero, about, home_life, timeline, gallery, contact } = siteContent;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -141,6 +155,34 @@ const App = () => {
             {home_life.highlights.map((highlight) => (
               <HighlightCard key={highlight.title} highlight={highlight} />
             ))}
+          </div>
+        </section>
+
+        <section id="timeline" className="section-container space-y-10">
+          <SectionHeading title={timeline.title} subtitle="Our journey" />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
+          <div className="relative">
+            <div className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/80 md:-translate-x-1/2" />
+            <div className="space-y-10 md:space-y-14">
+              {timeline.events.map((event, index) => {
+                const isLeft = index % 2 === 0;
+
+                return (
+                  <div
+                    key={event.title}
+                    className="relative md:grid md:grid-cols-[1fr_auto_1fr] md:items-start md:gap-10"
+                  >
+                    <div className={`${isLeft ? "md:pr-10" : "md:col-start-3 md:pl-10"}`}>
+                      <TimelineCard event={event} />
+                    </div>
+                    <div className="hidden md:flex flex-col items-center pt-2">
+                      <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-8 ring-white" />
+                    </div>
+                    <div className={`${isLeft ? "hidden md:block md:col-start-3" : "hidden md:block"}`} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </section>
 
