@@ -6,6 +6,12 @@ import partner2Image from '@/assets/partner2.jpg';
 import gallery1Image from '@/assets/gallery-1.jpg';
 import gallery2Image from '@/assets/gallery-2.jpg';
 import gallery3Image from '@/assets/gallery-3.jpg';
+import homeExteriorImage from '@/assets/home-exterior.jpg';
+import neighborhoodParkImage from '@/assets/neighborhood-park.jpg';
+import grandparentsImage from '@/assets/grandparents.jpg';
+import friendsGatheringImage from '@/assets/friends-gathering.jpg';
+import hikingAdventureImage from '@/assets/hiking-adventure.jpg';
+import cookingTogetherImage from '@/assets/cooking-together.jpg';
 
 export interface ProfileData {
   hero: {
@@ -28,6 +34,42 @@ export interface ProfileData {
       bio: string;
       image: string;
     };
+  };
+  home: {
+    title: string;
+    subtitle: string;
+    description: string;
+    homeImage: string;
+    neighborhoodImage: string;
+    features: Array<{
+      id: string;
+      icon: string;
+      title: string;
+      description: string;
+    }>;
+  };
+  familyFriends: {
+    title: string;
+    subtitle: string;
+    description: string;
+    members: Array<{
+      id: string;
+      name: string;
+      relationship: string;
+      description: string;
+      image: string;
+    }>;
+  };
+  ourLife: {
+    title: string;
+    subtitle: string;
+    description: string;
+    activities: Array<{
+      id: string;
+      title: string;
+      description: string;
+      image: string;
+    }>;
   };
   timeline: {
     title: string;
@@ -81,6 +123,79 @@ const defaultData: ProfileData = {
       bio: "I design spaces that bring people together, but my favorite place is our home with Alex. I love hiking, stargazing, and building elaborate blanket forts. I can't wait to share these adventures with a child and watch them discover their own passions.",
       image: partner2Image,
     },
+  },
+  home: {
+    title: "Our Home & Neighborhood",
+    subtitle: "Where love lives and memories are made",
+    description: "Our cozy four-bedroom home sits on a tree-lined street in a welcoming neighborhood. We have a big backyard perfect for playing, a sunny kitchen where we love to cook together, and a dedicated playroom ready for a child's imagination. The neighborhood is full of families, and there's always someone to wave hello to on our evening walks.",
+    homeImage: homeExteriorImage,
+    neighborhoodImage: neighborhoodParkImage,
+    features: [
+      {
+        id: "1",
+        icon: "Home",
+        title: "Cozy Family Home",
+        description: "4 bedrooms, a big backyard, and a room waiting for a child to make their own.",
+      },
+      {
+        id: "2",
+        icon: "Trees",
+        title: "Great Parks Nearby",
+        description: "Walking distance to 3 parks with playgrounds, trails, and a community garden.",
+      },
+      {
+        id: "3",
+        icon: "GraduationCap",
+        title: "Excellent Schools",
+        description: "Top-rated elementary school just 5 minutes away with wonderful teachers.",
+      },
+      {
+        id: "4",
+        icon: "Users",
+        title: "Friendly Community",
+        description: "Active neighborhood with block parties, holiday celebrations, and caring neighbors.",
+      },
+    ],
+  },
+  familyFriends: {
+    title: "Our Village of Love",
+    subtitle: "The amazing people who will be part of your child's life",
+    description: "We're blessed with incredibly supportive families and friends who can't wait to welcome a child into our extended family. Our parents are eager grandparents-in-waiting, our siblings are excited to be aunts and uncles, and our friends have already offered to babysit!",
+    members: [
+      {
+        id: "1",
+        name: "Alex's Parents",
+        relationship: "Loving Grandparents",
+        description: "Retired teachers who live just 20 minutes away and dream of weekend sleepovers and baking cookies with their grandchild.",
+        image: grandparentsImage,
+      },
+      {
+        id: "2",
+        name: "Our Friend Group",
+        relationship: "Chosen Family",
+        description: "A diverse group of friends we've known for years, many with kids of their own. They're already planning playdates!",
+        image: friendsGatheringImage,
+      },
+    ],
+  },
+  ourLife: {
+    title: "A Glimpse Into Our Days",
+    subtitle: "The rhythms and joys of everyday life",
+    description: "Our life is a beautiful mix of cozy routines and exciting adventures. We believe in the magic of ordinary moments—morning pancakes on Saturdays, bedtime stories every night, and spontaneous dance parties in the kitchen. We're ready to share all of this with a child.",
+    activities: [
+      {
+        id: "1",
+        title: "Outdoor Adventures",
+        description: "We love hiking, camping, and exploring nature. Maple always comes along! We can't wait to introduce a child to the wonder of catching fireflies and building campfires.",
+        image: hikingAdventureImage,
+      },
+      {
+        id: "2",
+        title: "Cooking & Creating",
+        description: "Our kitchen is the heart of our home. We cook together almost every night, trying new recipes and perfecting our favorites. There's always room for little helpers!",
+        image: cookingTogetherImage,
+      },
+    ],
   },
   timeline: {
     title: "Our Journey Together",
@@ -159,6 +274,7 @@ interface AdminContextType {
   toggleAdmin: () => void;
   data: ProfileData;
   updateData: (path: string, value: any) => void;
+  resetData: () => void;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
@@ -167,7 +283,12 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [isAdmin, setIsAdmin] = useState(false);
   const [data, setData] = useState<ProfileData>(() => {
     const saved = localStorage.getItem('adoptionProfileData');
-    return saved ? JSON.parse(saved) : defaultData;
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Merge with defaults to ensure new fields exist
+      return { ...defaultData, ...parsed };
+    }
+    return defaultData;
   });
 
   const toggleAdmin = useCallback(() => {
@@ -195,8 +316,13 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
   }, []);
 
+  const resetData = useCallback(() => {
+    localStorage.removeItem('adoptionProfileData');
+    setData(defaultData);
+  }, []);
+
   return (
-    <AdminContext.Provider value={{ isAdmin, toggleAdmin, data, updateData }}>
+    <AdminContext.Provider value={{ isAdmin, toggleAdmin, data, updateData, resetData }}>
       {children}
     </AdminContext.Provider>
   );

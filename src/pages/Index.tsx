@@ -2,6 +2,9 @@ import { AdminProvider } from '@/context/AdminContext';
 import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { AboutSection } from '@/components/sections/AboutSection';
+import { HomeSection } from '@/components/sections/HomeSection';
+import { FamilyFriendsSection } from '@/components/sections/FamilyFriendsSection';
+import { OurLifeSection } from '@/components/sections/OurLifeSection';
 import { TimelineSection } from '@/components/sections/TimelineSection';
 import { GallerySection } from '@/components/sections/GallerySection';
 import { PromiseSection } from '@/components/sections/PromiseSection';
@@ -23,6 +26,9 @@ const Index = () => {
         <main>
           <HeroSection />
           <AboutSection />
+          <HomeSection />
+          <FamilyFriendsSection />
+          <OurLifeSection />
           <TimelineSection />
           <GallerySection />
           <PromiseSection />
