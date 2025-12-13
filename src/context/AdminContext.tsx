@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, ReactNode, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User, Session } from '@supabase/supabase-js';
 
 // Import default images
 import partner1Image from '@/assets/partner1.jpg';
@@ -275,55 +277,125 @@ interface AdminContextType {
   data: ProfileData;
   updateData: (path: string, value: any) => void;
   resetData: () => void;
+  // Auth
+  user: User | null;
+  session: Session | null;
+  isAuthenticated: boolean;
+  authLoading: boolean;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signOut: () => Promise<{ error: any }>;
 }
 
 const AdminContext = createContext<AdminContextType | undefined>(undefined);
 
-// Helper to safely save to localStorage (only saves text content, not base64 images)
-const saveToLocalStorage = (data: ProfileData) => {
-  try {
-    // Only save text content, not image data URLs
-    const dataToSave = JSON.stringify(data, (key, value) => {
-      // Skip base64 image data
-      if (typeof value === 'string' && value.startsWith('data:image')) {
-        return undefined;
-      }
-      return value;
-    });
-    localStorage.setItem('adoptionProfileData', dataToSave);
-  } catch (e) {
-    console.warn('Could not save to localStorage:', e);
-    // Clear storage if quota exceeded
-    try {
-      localStorage.removeItem('adoptionProfileData');
-    } catch {
-      // Ignore
-    }
-  }
-};
-
 export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  const [data, setData] = useState<ProfileData>(() => {
-    try {
-      const saved = localStorage.getItem('adoptionProfileData');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        // Merge with defaults to ensure new fields exist and images are restored
-        return { ...defaultData, ...parsed };
+  const [data, setData] = useState<ProfileData>(defaultData);
+  
+  // Auth state
+  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // Set up auth listener
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setAuthLoading(false);
       }
-    } catch (e) {
-      console.warn('Could not load from localStorage:', e);
-      localStorage.removeItem('adoptionProfileData');
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Load data from database on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const { data: contentData, error } = await supabase
+          .from('profile_content')
+          .select('content_key, content_value');
+
+        if (error) {
+          console.error('Error loading profile data:', error);
+          return;
+        }
+
+        if (contentData && contentData.length > 0) {
+          const loadedData = { ...defaultData };
+          
+          contentData.forEach((item) => {
+            if (item.content_value) {
+              const keys = item.content_key.split('.');
+              let current: any = loadedData;
+              
+              for (let i = 0; i < keys.length - 1; i++) {
+                if (current[keys[i]] !== undefined) {
+                  current = current[keys[i]];
+                }
+              }
+              
+              const lastKey = keys[keys.length - 1];
+              if (current && lastKey in current) {
+                try {
+                  // Try to parse JSON for arrays/objects
+                  current[lastKey] = JSON.parse(item.content_value);
+                } catch {
+                  // If not JSON, use as string
+                  current[lastKey] = item.content_value;
+                }
+              }
+            }
+          });
+          
+          setData(loadedData);
+        }
+      } catch (error) {
+        console.error('Error loading profile data:', error);
+      }
+    };
+
+    loadData();
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    return { error };
+  };
+
+  const signUp = async (email: string, password: string) => {
+    const redirectUrl = `${window.location.origin}/`;
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: redirectUrl }
+    });
+    return { error };
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      setIsAdmin(false);
     }
-    return defaultData;
-  });
+    return { error };
+  };
 
   const toggleAdmin = useCallback(() => {
     setIsAdmin(prev => !prev);
   }, []);
 
-  const updateData = useCallback((path: string, value: any) => {
+  const updateData = useCallback(async (path: string, value: any) => {
+    // Update local state immediately
     setData(prev => {
       const newData = { ...prev };
       const keys = path.split('.');
@@ -339,22 +411,57 @@ export const AdminProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       }
       
       current[keys[keys.length - 1]] = value;
-      saveToLocalStorage(newData);
       return newData;
     });
-  }, []);
 
-  const resetData = useCallback(() => {
-    try {
-      localStorage.removeItem('adoptionProfileData');
-    } catch {
-      // Ignore
+    // Save to database if authenticated
+    if (session) {
+      try {
+        const valueToSave = typeof value === 'object' ? JSON.stringify(value) : String(value);
+        
+        const { error } = await supabase
+          .from('profile_content')
+          .upsert(
+            { content_key: path, content_value: valueToSave },
+            { onConflict: 'content_key' }
+          );
+
+        if (error) {
+          console.error('Error saving to database:', error);
+        }
+      } catch (error) {
+        console.error('Error saving to database:', error);
+      }
     }
+  }, [session]);
+
+  const resetData = useCallback(async () => {
     setData(defaultData);
-  }, []);
+    
+    if (session) {
+      try {
+        await supabase.from('profile_content').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      } catch (error) {
+        console.error('Error resetting data:', error);
+      }
+    }
+  }, [session]);
 
   return (
-    <AdminContext.Provider value={{ isAdmin, toggleAdmin, data, updateData, resetData }}>
+    <AdminContext.Provider value={{ 
+      isAdmin, 
+      toggleAdmin, 
+      data, 
+      updateData, 
+      resetData,
+      user,
+      session,
+      isAuthenticated: !!session,
+      authLoading,
+      signIn,
+      signUp,
+      signOut,
+    }}>
       {children}
     </AdminContext.Provider>
   );

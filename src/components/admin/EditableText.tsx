@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { useAdmin } from '@/context/AdminContext';
 import { cn } from '@/lib/utils';
 
@@ -10,13 +10,13 @@ interface EditableTextProps {
   multiline?: boolean;
 }
 
-export const EditableText: React.FC<EditableTextProps> = ({
+export const EditableText = forwardRef<HTMLElement, EditableTextProps>(({
   path,
   value,
   as: Component = 'p',
   className,
   multiline = false,
-}) => {
+}, ref) => {
   const { isAdmin, updateData } = useAdmin();
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(value);
@@ -49,7 +49,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
   };
 
   if (!isAdmin) {
-    return <Component className={className}>{value}</Component>;
+    return <Component ref={ref as any} className={className}>{value}</Component>;
   }
 
   if (isEditing) {
@@ -73,6 +73,7 @@ export const EditableText: React.FC<EditableTextProps> = ({
 
   return (
     <Component
+      ref={ref as any}
       onClick={() => setIsEditing(true)}
       className={cn(
         className,
@@ -83,4 +84,6 @@ export const EditableText: React.FC<EditableTextProps> = ({
       {value}
     </Component>
   );
-};
+});
+
+EditableText.displayName = 'EditableText';
