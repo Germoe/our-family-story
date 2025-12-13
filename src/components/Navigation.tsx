@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Heart } from 'lucide-react';
+import { Menu, X, Heart, ChevronDown } from 'lucide-react';
 
 const navItems = [
   { label: 'About Us', href: '#about' },
-  { label: 'Our Journey', href: '#timeline' },
+  { label: 'Our Home', href: '#home' },
+  { label: 'Family & Friends', href: '#family' },
+  { label: 'Our Life', href: '#life' },
   { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' },
 ];
 
 export const Navigation: React.FC = () => {
@@ -55,12 +56,12 @@ export const Navigation: React.FC = () => {
             </a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden lg:flex items-center gap-6">
               {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => scrollTo(item.href)}
-                  className="text-muted-foreground hover:text-foreground transition-colors font-medium"
+                  className="text-muted-foreground hover:text-foreground transition-colors font-medium text-sm"
                 >
                   {item.label}
                 </button>
@@ -76,7 +77,7 @@ export const Navigation: React.FC = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
+              className="lg:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             >
               {isMobileMenuOpen ? (
                 <X className="w-6 h-6 text-foreground" />
@@ -95,7 +96,7 @@ export const Navigation: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-x-0 top-16 z-30 md:hidden"
+            className="fixed inset-x-0 top-16 z-30 lg:hidden"
           >
             <div className="bg-background/95 backdrop-blur-lg border-b border-border shadow-medium">
               <div className="section-container py-4 space-y-2">
