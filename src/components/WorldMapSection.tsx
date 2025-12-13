@@ -62,8 +62,8 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                     <button
                       type="button"
                       className={`group relative flex h-8 w-8 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-soft focus-ring pressable ${isActive
-                          ? "scale-105 border-terracotta bg-terracotta text-white shadow-glow"
-                          : "border-terracotta/50 bg-white/80 text-terracotta-dark"
+                        ? "scale-105 border-terracotta bg-terracotta text-white shadow-glow"
+                        : "border-terracotta/50 bg-white/80 text-terracotta-dark"
                         }`}
                       aria-label={`${marker.title} marker`}
                       aria-pressed={isActive}
@@ -71,7 +71,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                       onFocus={() => setActiveTitle(marker.title)}
                       onClick={() => setActiveTitle(marker.title)}
                     >
-                      <span className="text-sm md:text-xl">❤</span>
+                      <span className="text-sm md:text-xl">&#x2764;&#xFE0E;</span>
                       <span className="sr-only">{marker.subtitle}</span>
                     </button>
 
