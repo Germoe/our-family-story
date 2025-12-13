@@ -161,19 +161,26 @@ const App = () => {
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
       <header className="sticky top-0 z-10 backdrop-blur bg-background/75 border-b border-border/60">
         <div className="section-container py-5 flex items-center justify-between gap-4">
-          <a href="#top" className="flex items-center gap-2 font-semibold text-terracotta-dark text-lg">
+          <a
+            href="#top"
+            className="flex items-center gap-2 font-semibold text-terracotta-dark text-lg focus-ring pressable"
+          >
             <span className="h-10 w-10 rounded-full bg-terracotta/15 border border-terracotta/30 flex items-center justify-center text-terracotta-dark font-serif text-xl">❤</span>
             {brand}
           </a>
           <nav className="hidden md:flex items-center gap-8 text-sm text-foreground/70">
             {navigation.map((item) => (
-              <a key={item.href} href={item.href} className="hover:text-terracotta-dark transition-colors">
+              <a
+                key={item.href}
+                href={item.href}
+                className="hover:text-terracotta-dark transition-colors focus-ring pressable"
+              >
                 {item.label}
               </a>
             ))}
           </nav>
           <a
-            className="px-4 py-2 rounded-full bg-terracotta text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition-shadow"
+            className="px-4 py-2 rounded-full bg-terracotta text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition-shadow focus-ring pressable"
             href={cta.href}
           >
             {cta.label}
@@ -193,7 +200,7 @@ const App = () => {
             <p className="body-large max-w-3xl text-foreground/80">{hero.description}</p>
             <a
               href={hero.cta_href}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
             >
               {hero.cta_label}
             </a>
@@ -229,7 +236,7 @@ const App = () => {
           <div className="text-center pt-4">
             <a
               href={hero.cta_href}
-              className="inline-flex items-center gap-2 text-terracotta-dark font-semibold hover:underline"
+              className="inline-flex items-center gap-2 text-terracotta-dark font-semibold hover:underline focus-ring pressable"
             >
               {hero.cta_label}
             </a>
@@ -314,7 +321,7 @@ const App = () => {
           <p className="body-large max-w-3xl mx-auto text-foreground/80">{contact.message}</p>
           <a
             href={contact.button_href}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-terracotta text-primary-foreground font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
           >
             {contact.button_label}
           </a>

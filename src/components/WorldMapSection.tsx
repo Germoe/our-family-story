@@ -61,8 +61,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                   >
                     <button
                       type="button"
-                      className={`group relative flex h-6 w-6 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracotta focus-visible:ring-offset-2 focus-visible:ring-offset-white ${isActive ? "scale-105 shadow-glow" : "hover:scale-105"
-                        }`}
+                      className={`group relative flex h-6 w-6 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-terracotta/50 bg-white/80 text-terracotta-dark shadow-soft focus-ring pressable ${isActive ? "scale-105 shadow-glow" : ""}`}
                       aria-label={`${marker.title} marker`}
                       aria-pressed={isActive}
                       onMouseEnter={() => setActiveTitle(marker.title)}
