@@ -98,6 +98,19 @@ home_life:
   title: "Our Home & Neighborhood"
   subtitle: "Where love lives and memories are made"
   description: "Our cozy four-bedroom home sits on a tree-lined street in a welcoming neighborhood. We have a big backyard perfect for playing, a sunny kitchen where we love to cook together, and a dedicated playroom ready for a child's imagination. The neighborhood is full of friends, and there's always someone to wave hello to on our evening walks."
+  explore:
+    title: "Step inside and stay awhile"
+    subtitle: "Explore the heart of our home"
+    description: "Click to peek into the spaces where we spend our days—sunny rooms for creativity, cozy corners for story time, and a backyard made for play."
+    photos:
+      - image: "our-house.jpg"
+        caption: "Our cheerful front porch, always dressed with fresh flowers and a welcome mat."
+      - image: "home-exterior.jpg"
+        caption: "A closer look at the backyard patio where we grill and host friends."
+      - image: "cooking-together.jpg"
+        caption: "The bright kitchen where we cook side-by-side and try new recipes."
+      - image: "reading-book-to-linus.jpg"
+        caption: "A favorite reading spot filled with sunlight and storybooks."
   spotlights:
     - title: "Our Home"
       image: "our-house.jpg"

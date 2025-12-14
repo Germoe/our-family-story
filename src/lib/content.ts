@@ -27,6 +27,20 @@ const homeFeatureSchema = z.object({
   icon: z.string().min(1, "Feature icon is required"),
 });
 
+const explorePhotoSchema = z.object({
+  image: z.string().min(1, "Explore photo image is required"),
+  caption: z.string().min(1, "Explore photo caption is required"),
+});
+
+const exploreSectionSchema = z.object({
+  title: z.string().min(1, "Explore section title is required"),
+  subtitle: z.string().min(1, "Explore section subtitle is required"),
+  description: z.string().min(1, "Explore section description is required"),
+  photos: z
+    .array(explorePhotoSchema)
+    .min(1, "At least one explore photo is required"),
+});
+
 const activitySchema = z.object({
   title: z.string().min(1, "Activity title is required"),
   description: z.string().min(1, "Activity description is required"),
@@ -139,6 +153,7 @@ const siteSchema = z.object({
     features: z
       .array(homeFeatureSchema)
       .min(1, "At least one feature is required"),
+    explore: exploreSectionSchema,
   }),
   map: z.object({
     heading: z.string().optional(),
@@ -193,6 +208,7 @@ export type NavigationItem = z.infer<typeof navigationSchema>;
 export type Person = z.infer<typeof personSchema>;
 export type HomeSpotlight = z.infer<typeof homeSpotlightSchema>;
 export type HomeFeature = z.infer<typeof homeFeatureSchema>;
+export type HomeExplore = z.infer<typeof exploreSectionSchema>;
 export type Activity = z.infer<typeof activitySchema>;
 export type GalleryImage = z.infer<typeof galleryImageSchema>;
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
