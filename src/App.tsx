@@ -1,6 +1,42 @@
+import { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
 import useInViewAnimation from "./hooks/useInViewAnimation";
+
+const CarouselControls = ({
+  onPrev,
+  onNext,
+  canPrev,
+  canNext,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  canPrev: boolean;
+  canNext: boolean;
+}) => (
+  <div className="flex gap-3">
+    <button
+      type="button"
+      onClick={onPrev}
+      disabled={!canPrev}
+      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Previous slides"
+    >
+      ←
+    </button>
+    <button
+      type="button"
+      onClick={onNext}
+      disabled={!canNext}
+      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Next slides"
+    >
+      →
+    </button>
+  </div>
+);
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -271,6 +307,51 @@ const App = () => {
   } = siteContent;
 
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
+  const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [villageCanPrev, setVillageCanPrev] = useState(false);
+  const [villageCanNext, setVillageCanNext] = useState(false);
+  const [shortsCanPrev, setShortsCanPrev] = useState(false);
+  const [shortsCanNext, setShortsCanNext] = useState(false);
+
+  const updateVillageButtons = useCallback(() => {
+    if (!villageEmblaApi) return;
+    setVillageCanPrev(villageEmblaApi.canScrollPrev());
+    setVillageCanNext(villageEmblaApi.canScrollNext());
+  }, [villageEmblaApi]);
+
+  const updateShortsButtons = useCallback(() => {
+    if (!shortsEmblaApi) return;
+    setShortsCanPrev(shortsEmblaApi.canScrollPrev());
+    setShortsCanNext(shortsEmblaApi.canScrollNext());
+  }, [shortsEmblaApi]);
+
+  const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
+  const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
+  const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
+  const scrollShortsNext = useCallback(() => shortsEmblaApi?.scrollNext(), [shortsEmblaApi]);
+
+  useEffect(() => {
+    if (!villageEmblaApi) return;
+    updateVillageButtons();
+    villageEmblaApi.on("select", updateVillageButtons);
+    villageEmblaApi.on("reInit", updateVillageButtons);
+    return () => {
+      villageEmblaApi.off("select", updateVillageButtons);
+      villageEmblaApi.off("reInit", updateVillageButtons);
+    };
+  }, [villageEmblaApi, updateVillageButtons]);
+
+  useEffect(() => {
+    if (!shortsEmblaApi) return;
+    updateShortsButtons();
+    shortsEmblaApi.on("select", updateShortsButtons);
+    shortsEmblaApi.on("reInit", updateShortsButtons);
+    return () => {
+      shortsEmblaApi.off("select", updateShortsButtons);
+      shortsEmblaApi.off("reInit", updateShortsButtons);
+    };
+  }, [shortsEmblaApi, updateShortsButtons]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -382,10 +463,27 @@ const App = () => {
         <section id="our-village" className="section-container space-y-8">
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {our_village.entries.map((entry, index) => (
-              <VillageCard key={entry.title} entry={entry} index={index} />
-            ))}
+          <div className="relative">
+            <div className="overflow-hidden" ref={villageEmblaRef}>
+              <div className="flex gap-6">
+                {our_village.entries.map((entry, index) => (
+                  <div
+                    key={entry.title}
+                    className="min-w-0 flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_40%] xl:flex-[0_0_33.333%]"
+                  >
+                    <VillageCard entry={entry} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollVillagePrev}
+                onNext={scrollVillageNext}
+                canPrev={villageCanPrev}
+                canNext={villageCanNext}
+              />
+            </div>
           </div>
         </section>
 
@@ -429,10 +527,27 @@ const App = () => {
         <section id="shorts" className="section-container space-y-8">
           <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{shorts.description}</p>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {shorts.videos.map((short, index) => (
-              <VideoShortCard key={short.title} short={short} index={index} />
-            ))}
+          <div className="relative">
+            <div className="overflow-hidden" ref={shortsEmblaRef}>
+              <div className="flex gap-6">
+                {shorts.videos.map((short, index) => (
+                  <div
+                    key={short.title}
+                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_40%]"
+                  >
+                    <VideoShortCard short={short} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollShortsPrev}
+                onNext={scrollShortsNext}
+                canPrev={shortsCanPrev}
+                canNext={shortsCanNext}
+              />
+            </div>
           </div>
         </section>
 
