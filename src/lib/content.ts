@@ -54,6 +54,16 @@ const timelineEventSchema = z.object({
   timestamp: z.string().min(1, "Timeline timestamp is required"),
 });
 
+const letterSectionSchema = z.object({
+  title: z.string().min(1, "Letter section title is required"),
+  subtitle: z.string().optional(),
+  greeting: z.string().min(1, "Letter greeting is required"),
+  intro: z.string().min(1, "Letter intro is required"),
+  body: z.array(z.string().min(1, "Letter paragraph is required")).min(1, "At least one letter paragraph is required"),
+  closing: z.string().min(1, "Letter closing is required"),
+  signature: z.string().min(1, "Letter signature is required"),
+});
+
 const villageEntrySchema = z.object({
   title: z.string().min(1, "Village entry title is required"),
   subtitle: z.string().min(1, "Village entry subtitle is required"),
@@ -136,6 +146,7 @@ const siteSchema = z.object({
     subtitle: z.string().min(1, "Quick answers subtitle is required"),
     items: z.array(quickAnswerSchema).min(1, "At least one quick answer is required"),
   }),
+  letter_to_birth_mother: letterSectionSchema,
   contact: z.object({
     title: z.string().min(1, "Contact title is required"),
     message: z.string().min(1, "Contact message is required"),
@@ -154,6 +165,7 @@ export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type VillageEntry = z.infer<typeof villageEntrySchema>;
 export type MapMarker = z.infer<typeof mapMarkerSchema>;
 export type QuickAnswer = z.infer<typeof quickAnswerSchema>;
+export type LetterSection = z.infer<typeof letterSectionSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 
 const parsed = YAML.parse(rawSiteContent);

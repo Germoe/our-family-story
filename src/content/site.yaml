@@ -176,6 +176,17 @@ gallery:
       image: "cooking-together.jpg"
     - caption: "Quiet evenings in the neighborhood park"
       image: "couple-together.jpg"
+letter_to_birth_mother:
+  title: "A letter to the birth mother"
+  subtitle: "From our hearts to yours"
+  greeting: "Dear birth mother,"  
+  intro: "We honor your strength, courage, and the love you hold for your child."
+  body:
+    - "Thank you for considering us as adoptive parents. We approach this journey with deep respect for you and the hopes and dreams you carry for your baby."
+    - "Our home is filled with kindness, laughter, and a community ready to support your child. We promise to create a space where they always feel safe, cherished, and celebrated for exactly who they are."
+    - "We will speak about you with love and gratitude, sharing your story as part of our family's story. You will always hold an honored place in our hearts and in the life of your child."
+  closing: "With gratitude and care,"
+  signature: "Brett & Sebastian"
 contact:
   title: "Let's connect"
   message: "If you'd like to know more about us or our story, we'd love to hear from you."
