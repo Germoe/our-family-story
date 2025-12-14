@@ -435,6 +435,28 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [galleryCanPrev, setGalleryCanPrev] = useState(false);
   const [galleryCanNext, setGalleryCanNext] = useState(false);
+  const [activeHomeTab, setActiveHomeTab] = useState<"home" | "neighborhood" | "highlights">("home");
+
+  const homeTabs = [
+    {
+      key: "home" as const,
+      label: "Home",
+      spotlight: home_life.spotlights[0],
+    },
+    {
+      key: "neighborhood" as const,
+      label: "Neighborhood",
+      spotlight: home_life.spotlights[1] ?? home_life.spotlights[0],
+    },
+    {
+      key: "highlights" as const,
+      label: "Highlights",
+      spotlight: home_life.spotlights[1] ?? home_life.spotlights[0],
+    },
+  ];
+
+  const activeHomeTabConfig = homeTabs.find((tab) => tab.key === activeHomeTab) ?? homeTabs[0];
+  const activeSpotlight = activeHomeTabConfig.spotlight;
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -619,18 +641,93 @@ const App = () => {
           </div>
         </section>
 
-        <section id="home-life" className="section-container space-y-8">
+        <section id="home-life" className="section-container space-y-6">
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
-          <div className="grid md:grid-cols-2 gap-6">
-            {home_life.spotlights.map((spotlight, index) => (
-              <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} index={index} />
-            ))}
+          <div className="mx-auto max-w-3xl text-center text-sm text-foreground/70">
+            {home_life.description}
           </div>
-          <p className="text-center max-w-4xl mx-auto body-large text-foreground/80">{home_life.description}</p>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {home_life.features.map((feature, index) => (
-              <HomeFeatureCard key={feature.title} feature={feature} index={index} />
-            ))}
+
+          <div className="space-y-4">
+            <div className="flex flex-wrap justify-center gap-3 rounded-full bg-white/60 p-2 shadow-soft border border-border/70">
+              {homeTabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveHomeTab(tab.key)}
+                  className={`pressable min-w-[120px] rounded-full px-4 py-2 text-sm font-semibold transition focus-ring ${
+                    activeHomeTab === tab.key
+                      ? "bg-terracotta text-primary-foreground shadow-glow"
+                      : "bg-transparent text-terracotta-dark hover:bg-terracotta/10"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-5 items-stretch">
+              <div className="lg:col-span-3">
+                <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
+                  <div className="aspect-[4/3] lg:aspect-[5/4] overflow-hidden">
+                    <img
+                      src={getAssetUrl(activeSpotlight.image)}
+                      alt={activeSpotlight.title}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-terracotta/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white space-y-2">
+                    <p className="text-xs uppercase tracking-[0.25em] text-white/80">{home_life.subtitle}</p>
+                    <h3 className="text-2xl font-semibold drop-shadow">{activeSpotlight.title}</h3>
+                    <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.description}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-2 flex flex-col gap-4 rounded-3xl border border-border/70 bg-white/80 p-5 shadow-soft">
+                <div className="space-y-2 text-left">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-terracotta-dark/70">Explore</p>
+                  <h3 className="text-xl font-semibold text-terracotta-dark">{home_life.title}</h3>
+                  <p className="text-sm text-foreground/80 leading-relaxed">{home_life.description}</p>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{activeHomeTabConfig.spotlight.description}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={hero.cta_href}
+                    className="inline-flex items-center gap-2 rounded-full bg-terracotta px-4 py-2 text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
+                  >
+                    {hero.cta_label}
+                  </a>
+                  <span className="inline-flex items-center rounded-full bg-terracotta/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-dark">
+                    {activeHomeTabConfig.label}
+                  </span>
+                </div>
+
+                {activeHomeTab === "highlights" ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h4 className="text-lg font-semibold text-terracotta-dark">Neighborhood highlights</h4>
+                      <span className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">Swipe to see more</span>
+                    </div>
+
+                    <div className="-mx-4 flex gap-4 overflow-x-auto pb-2 md:hidden snap-x snap-mandatory">
+                      {home_life.features.map((feature, index) => (
+                        <div key={feature.title} className="snap-start px-1 min-w-[240px] max-w-[260px]">
+                          <HomeFeatureCard feature={feature} index={index} />
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="hidden md:grid gap-4 md:grid-cols-2">
+                      {home_life.features.map((feature, index) => (
+                        <HomeFeatureCard key={feature.title} feature={feature} index={index} />
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
           </div>
         </section>
 
