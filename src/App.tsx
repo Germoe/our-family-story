@@ -10,33 +10,41 @@ const CarouselControls = ({
   onNext,
   canPrev,
   canNext,
+  orientation = "horizontal",
 }: {
   onPrev: () => void;
   onNext: () => void;
   canPrev: boolean;
   canNext: boolean;
-}) => (
-  <div className="flex gap-3">
-    <button
-      type="button"
-      onClick={onPrev}
-      disabled={!canPrev}
-      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
-      aria-label="Previous slides"
-    >
-      ←
-    </button>
-    <button
-      type="button"
-      onClick={onNext}
-      disabled={!canNext}
-      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
-      aria-label="Next slides"
-    >
-      →
-    </button>
-  </div>
-);
+  orientation?: "horizontal" | "vertical";
+}) => {
+  const isVertical = orientation === "vertical";
+  const prevIcon = isVertical ? "↑" : "←";
+  const nextIcon = isVertical ? "↓" : "→";
+
+  return (
+    <div className={`flex gap-3 ${isVertical ? "flex-col" : "flex-row"}`}>
+      <button
+        type="button"
+        onClick={onPrev}
+        disabled={!canPrev}
+        className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+        aria-label="Previous slides"
+      >
+        {prevIcon}
+      </button>
+      <button
+        type="button"
+        onClick={onNext}
+        disabled={!canNext}
+        className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+        aria-label="Next slides"
+      >
+        {nextIcon}
+      </button>
+    </div>
+  );
+};
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -170,23 +178,40 @@ const ActivityCard = ({ activity, index }: { activity: (typeof siteContent.daily
   );
 };
 
-const GalleryCard = ({ item, index }: { item: (typeof siteContent.gallery.images)[number]; index: number }) => {
+const GalleryCard = ({
+  item,
+  index,
+  layout = "grid",
+}: {
+  item: (typeof siteContent.gallery.images)[number];
+  index: number;
+  layout?: "grid" | "carousel";
+}) => {
   const imageUrl = getAssetUrl(item.image);
-  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+  const animation = useInViewAnimation({ threshold: 0.05, delay: `${index * 10}ms` });
+  const isCarousel = layout === "carousel";
+  const imageFitClass = "object-cover";
+  const imageWrapperClass = isCarousel ? "aspect-square bg-terracotta/5" : "md:h-80";
+
   return (
     <figure
-      className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${animation.className}`}
+      className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${isCarousel ? "h-full flex flex-col" : ""
+        } ${animation.className}`}
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="md:h-80 overflow-hidden">
+      <div className={`${imageWrapperClass} overflow-hidden flex items-center justify-center`}>
         <img
           src={imageUrl}
           alt={item.caption ? item.caption : imageUrl}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className={`w-full h-full ${imageFitClass} transition-transform duration-300 group-hover:scale-105`}
         />
       </div>
-      {item.caption ? <figcaption className="p-4 text-sm text-foreground/80">{item.caption}</figcaption> : null}
+      {item.caption ? (
+        <figcaption className={`p-4 text-sm text-foreground/80 ${isCarousel ? "bg-white/85" : ""}`}>
+          {item.caption}
+        </figcaption>
+      ) : null}
     </figure>
   );
 };
@@ -313,9 +338,8 @@ const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_villa
               key={`village-dot-${index}`}
               type="button"
               onClick={() => goToSlide(index)}
-              className={`h-2.5 w-2.5 rounded-full transition ${
-                activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
-              }`}
+              className={`h-2.5 w-2.5 rounded-full transition ${activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
+                }`}
               aria-label={`Go to slide ${index + 1}`}
               aria-pressed={activeIndex === index}
             />
@@ -355,11 +379,11 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
 };
 
 const VideoShortCard = ({ short, index }: { short: (typeof siteContent.shorts.videos)[number]; index: number }) => {
-  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+  const animation = useInViewAnimation({ delay: `${index * 40}ms` });
 
   return (
     <article
-      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-4 ${animation.className}`}
+      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-6 ${animation.className}`}
       ref={animation.ref}
       style={animation.style}
     >
@@ -403,10 +427,13 @@ const App = () => {
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
   const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
   const [shortsCanNext, setShortsCanNext] = useState(false);
+  const [galleryCanPrev, setGalleryCanPrev] = useState(false);
+  const [galleryCanNext, setGalleryCanNext] = useState(false);
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -420,10 +447,18 @@ const App = () => {
     setShortsCanNext(shortsEmblaApi.canScrollNext());
   }, [shortsEmblaApi]);
 
+  const updateGalleryButtons = useCallback(() => {
+    if (!galleryEmblaApi) return;
+    setGalleryCanPrev(galleryEmblaApi.canScrollPrev());
+    setGalleryCanNext(galleryEmblaApi.canScrollNext());
+  }, [galleryEmblaApi]);
+
   const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
   const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
   const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
   const scrollShortsNext = useCallback(() => shortsEmblaApi?.scrollNext(), [shortsEmblaApi]);
+  const scrollGalleryPrev = useCallback(() => galleryEmblaApi?.scrollPrev(), [galleryEmblaApi]);
+  const scrollGalleryNext = useCallback(() => galleryEmblaApi?.scrollNext(), [galleryEmblaApi]);
 
   useEffect(() => {
     if (!villageEmblaApi) return;
@@ -446,6 +481,17 @@ const App = () => {
       shortsEmblaApi.off("reInit", updateShortsButtons);
     };
   }, [shortsEmblaApi, updateShortsButtons]);
+
+  useEffect(() => {
+    if (!galleryEmblaApi) return;
+    updateGalleryButtons();
+    galleryEmblaApi.on("select", updateGalleryButtons);
+    galleryEmblaApi.on("reInit", updateGalleryButtons);
+    return () => {
+      galleryEmblaApi.off("select", updateGalleryButtons);
+      galleryEmblaApi.off("reInit", updateGalleryButtons);
+    };
+  }, [galleryEmblaApi, updateGalleryButtons]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -627,7 +673,7 @@ const App = () => {
                 {shorts.videos.map((short, index) => (
                   <div
                     key={short.title}
-                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_40%]"
+                    className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_60%] md:flex-[0_0_45%] lg:flex-[0_0_30%]"
                   >
                     <VideoShortCard short={short} index={index} />
                   </div>
@@ -647,10 +693,31 @@ const App = () => {
 
         <section id="gallery" className="section-container space-y-8">
           <SectionHeading title={gallery.title} subtitle="Photos" />
-          <div className="grid md:grid-cols-3 gap-6">
-            {gallery.images.map((item, index) => (
-              <GalleryCard key={item.caption} item={item} index={index} />
-            ))}
+          <div className="space-y-6">
+            <div
+              className="overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
+              ref={galleryEmblaRef}
+            >
+              <div className="flex gap-6 p-4">
+                {gallery.images.map((item, index) => (
+                  <div
+                    key={item.caption ?? item.image}
+                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                  >
+                    <GalleryCard item={item} index={index} layout="carousel" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-end">
+              <CarouselControls
+                onPrev={scrollGalleryPrev}
+                onNext={scrollGalleryNext}
+                canPrev={galleryCanPrev}
+                canNext={galleryCanNext}
+              />
+            </div>
           </div>
         </section>
 

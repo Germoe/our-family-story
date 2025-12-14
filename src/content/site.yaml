@@ -100,7 +100,7 @@ home_life:
   description: "Our cozy four-bedroom home sits on a tree-lined street in a welcoming neighborhood. We have a big backyard perfect for playing, a sunny kitchen where we love to cook together, and a dedicated playroom ready for a child's imagination. The neighborhood is full of friends, and there's always someone to wave hello to on our evening walks."
   spotlights:
     - title: "Our Home"
-      image: "home-exterior.jpg"
+      image: "our-house.jpg"
       description: "A warm, inviting space filled with light and laughter"
     - title: "Our Neighborhood"
       image: "neighborhood.png"
