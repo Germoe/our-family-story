@@ -1,5 +1,6 @@
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
+import useInViewAnimation from "./hooks/useInViewAnimation";
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -10,11 +11,16 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
   </div>
 );
 
-const AboutCard = ({ person }: { person: (typeof siteContent.about.people)[number] }) => {
+const AboutCard = ({ person, index }: { person: (typeof siteContent.about.people)[number]; index: number }) => {
   const imageUrl = getAssetUrl(person.image);
+  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
 
   return (
-    <article className="bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden">
+    <article
+      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
       <div className="h-64 overflow-hidden">
         <img src={imageUrl} alt={person.name} className="w-full h-full object-cover" />
       </div>
@@ -35,11 +41,22 @@ const AboutCard = ({ person }: { person: (typeof siteContent.about.people)[numbe
   );
 };
 
-const HomeSpotlightCard = ({ spotlight }: { spotlight: (typeof siteContent.home_life.spotlights)[number] }) => {
+const HomeSpotlightCard = ({
+  spotlight,
+  index,
+}: {
+  spotlight: (typeof siteContent.home_life.spotlights)[number];
+  index: number;
+}) => {
   const imageUrl = getAssetUrl(spotlight.image);
+  const animation = useInViewAnimation({ delay: `${index * 100}ms` });
 
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 shadow-soft">
+    <div
+      className={`group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 shadow-soft ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
       <div className="h-64 md:h-72 overflow-hidden">
         <img
           src={imageUrl}
@@ -70,23 +87,36 @@ const getFeatureIconSymbol = (icon: string) => {
   return map[icon] ?? "★";
 };
 
-const HomeFeatureCard = ({ feature }: { feature: (typeof siteContent.home_life.features)[number] }) => (
-  <div className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center">
-    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-2xl">
-      {getFeatureIconSymbol(feature.icon)}
-    </div>
-    <div className="space-y-2">
-      <h3 className="text-lg font-semibold text-terracotta-dark">{feature.title}</h3>
-      <p className="text-sm text-foreground/80 leading-relaxed">{feature.description}</p>
-    </div>
-  </div>
-);
-
-const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimpse.activities)[number] }) => {
-  const imageUrl = getAssetUrl(activity.image);
+const HomeFeatureCard = ({ feature, index }: { feature: (typeof siteContent.home_life.features)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 70}ms` });
 
   return (
-    <article className="group overflow-hidden rounded-3xl border border-border/60 bg-white/90 shadow-soft transition-transform duration-300 hover:-translate-y-1">
+    <div
+      className={`flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-2xl">
+        {getFeatureIconSymbol(feature.icon)}
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-lg font-semibold text-terracotta-dark">{feature.title}</h3>
+        <p className="text-sm text-foreground/80 leading-relaxed">{feature.description}</p>
+      </div>
+    </div>
+  );
+};
+
+const ActivityCard = ({ activity, index }: { activity: (typeof siteContent.daily_glimpse.activities)[number]; index: number }) => {
+  const imageUrl = getAssetUrl(activity.image);
+  const animation = useInViewAnimation({ delay: `${index * 90}ms` });
+
+  return (
+    <article
+      className={`group overflow-hidden rounded-3xl border border-border/60 bg-white/90 shadow-soft transition-transform duration-300 hover:-translate-y-1 ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
       <div className="flex flex-col md:flex-row md:items-stretch">
         <div className="md:w-1/2 h-48 md:h-auto overflow-hidden">
           <img
@@ -104,10 +134,15 @@ const ActivityCard = ({ activity }: { activity: (typeof siteContent.daily_glimps
   );
 };
 
-const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[number] }) => {
+const GalleryCard = ({ item, index }: { item: (typeof siteContent.gallery.images)[number]; index: number }) => {
   const imageUrl = getAssetUrl(item.image);
+  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
   return (
-    <figure className="group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft">
+    <figure
+      className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
       <div className="h-48 overflow-hidden">
         <img
           src={imageUrl}
@@ -120,11 +155,16 @@ const GalleryCard = ({ item }: { item: (typeof siteContent.gallery.images)[numbe
   );
 };
 
-const VillageCard = ({ entry }: { entry: (typeof siteContent.our_village.entries)[number] }) => {
+const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.entries)[number]; index: number }) => {
   const imageUrl = getAssetUrl(entry.image);
+  const animation = useInViewAnimation({ delay: `${index * 90}ms` });
 
   return (
-    <article className="bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden h-full flex flex-col">
+    <article
+      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden h-full flex flex-col ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
       <div className="h-56 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
       </div>
@@ -139,23 +179,29 @@ const VillageCard = ({ entry }: { entry: (typeof siteContent.our_village.entries
   );
 };
 
-const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[number] }) => (
-  <div className="relative pl-12 md:pl-0 ml-6 md:ml-0">
-    <div className="absolute -left-1 top-24 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[2px] ring-white md:hidden" />
-    <div className="bg-white/80 border border-border/70 rounded-2xl shadow-soft p-6 md:p-7 space-y-3">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage/30 text-sage-dark text-sm font-semibold">
-        <span className="h-2 w-2 rounded-full bg-terracotta-dark" />
-        {event.timestamp}
+const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.events)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 70}ms` });
+
+  return (
+    <div className={`relative pl-12 md:pl-0 ml-6 md:ml-0 ${animation.className}`} ref={animation.ref} style={animation.style}>
+      <div className="absolute -left-1 top-24 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[2px] ring-white md:hidden" />
+      <div className="bg-white/80 border border-border/70 rounded-2xl shadow-soft p-6 md:p-7 space-y-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage/30 text-sage-dark text-sm font-semibold">
+          <span className="h-2 w-2 rounded-full bg-terracotta-dark" />
+          {event.timestamp}
+        </div>
+        <h3 className="text-xl font-semibold text-terracotta-dark">{event.title}</h3>
+        <p className="text-sm text-foreground/80 leading-relaxed">{event.description}</p>
       </div>
-      <h3 className="text-xl font-semibold text-terracotta-dark">{event.title}</h3>
-      <p className="text-sm text-foreground/80 leading-relaxed">{event.description}</p>
     </div>
-  </div>
-);
+  );
+};
 
 const App = () => {
   const { brand, navigation, cta, hero, about, our_village, home_life, map, daily_glimpse, timeline, gallery, contact } =
     siteContent;
+
+  const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -189,7 +235,11 @@ const App = () => {
       </header>
 
       <main id="top" className="space-y-20 pb-20">
-        <section className="relative overflow-hidden">
+        <section
+          className={`relative overflow-hidden ${heroAnimation.className}`}
+          ref={heroAnimation.ref}
+          style={heroAnimation.style}
+        >
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -left-20 -top-20 h-64 w-64 bg-terracotta/10 rounded-full blur-3xl" />
             <div className="absolute right-10 top-20 h-72 w-72 bg-sage/20 rounded-full blur-3xl" />
@@ -229,8 +279,8 @@ const App = () => {
           <SectionHeading title={about.title} subtitle="Who we are" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{about.intro}</p>
           <div className="grid md:grid-cols-2 gap-8">
-            {about.people.map((person) => (
-              <AboutCard key={person.name} person={person} />
+            {about.people.map((person, index) => (
+              <AboutCard key={person.name} person={person} index={index} />
             ))}
           </div>
           <div className="text-center pt-4">
@@ -246,14 +296,14 @@ const App = () => {
         <section id="home-life" className="section-container space-y-8">
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
           <div className="grid md:grid-cols-2 gap-6">
-            {home_life.spotlights.map((spotlight) => (
-              <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} />
+            {home_life.spotlights.map((spotlight, index) => (
+              <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} index={index} />
             ))}
           </div>
           <p className="text-center max-w-4xl mx-auto body-large text-foreground/80">{home_life.description}</p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {home_life.features.map((feature) => (
-              <HomeFeatureCard key={feature.title} feature={feature} />
+            {home_life.features.map((feature, index) => (
+              <HomeFeatureCard key={feature.title} feature={feature} index={index} />
             ))}
           </div>
         </section>
@@ -264,8 +314,8 @@ const App = () => {
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
           <div className="grid md:grid-cols-2 gap-6">
-            {our_village.entries.map((entry) => (
-              <VillageCard key={entry.title} entry={entry} />
+            {our_village.entries.map((entry, index) => (
+              <VillageCard key={entry.title} entry={entry} index={index} />
             ))}
           </div>
         </section>
@@ -282,7 +332,7 @@ const App = () => {
                 return (
                   <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start md:gap-12">
                     <div className={`${isLeft ? "md:pr-10" : "md:col-start-2 md:pl-10"}`}>
-                      <TimelineCard event={event} />
+                      <TimelineCard event={event} index={index} />
                     </div>
                     <div
                       className={`${isLeft ? "hidden md:block" : "hidden md:block md:col-start-1"} md:pr-10 md:pl-10`}
@@ -301,8 +351,8 @@ const App = () => {
           <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
           <div className="space-y-6">
-            {daily_glimpse.activities.map((activity) => (
-              <ActivityCard key={activity.title} activity={activity} />
+            {daily_glimpse.activities.map((activity, index) => (
+              <ActivityCard key={activity.title} activity={activity} index={index} />
             ))}
           </div>
         </section>
@@ -310,8 +360,8 @@ const App = () => {
         <section id="gallery" className="section-container space-y-8">
           <SectionHeading title={gallery.title} subtitle="Photos" />
           <div className="grid md:grid-cols-3 gap-6">
-            {gallery.images.map((item) => (
-              <GalleryCard key={item.caption} item={item} />
+            {gallery.images.map((item, index) => (
+              <GalleryCard key={item.caption} item={item} index={index} />
             ))}
           </div>
         </section>

@@ -33,3 +33,23 @@ The static files are emitted to `dist/` and can be deployed to any static host.
 
 - **Vercel:** Import the repo and use the `npm run build` command. Set the output directory to `dist`.
 - **GitHub Pages / Actions:** Build with `npm run build` in a workflow and publish the `dist` folder with the `actions/upload-pages-artifact` and `actions/deploy-pages` actions. Configure the repository’s Pages source to **GitHub Actions** (not a branch such as `gh-pages`) so the deployed site serves the built files under `dist/`.
+
+## In-view animations
+
+Use the `useInViewAnimation` hook to gently reveal sections once they enter the viewport. Attach the returned `ref` to the element and spread the generated class name (and optional style values) onto it:
+
+```tsx
+import useInViewAnimation from "./hooks/useInViewAnimation";
+
+const Example = () => {
+  const animation = useInViewAnimation({ delay: "120ms", duration: "800ms" });
+
+  return (
+    <section ref={animation.ref} className={`section-container ${animation.className}`} style={animation.style}>
+      {/* content */}
+    </section>
+  );
+};
+```
+
+Options let you customize the `threshold`, `rootMargin`, and whether animations run once or repeat when scrolled back into view.
