@@ -428,6 +428,7 @@ const App = () => {
   const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [homeEmblaRef, homeEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
@@ -435,6 +436,9 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [galleryCanPrev, setGalleryCanPrev] = useState(false);
   const [galleryCanNext, setGalleryCanNext] = useState(false);
+  const [homeCanPrev, setHomeCanPrev] = useState(false);
+  const [homeCanNext, setHomeCanNext] = useState(false);
+  const [activeHomeSlide, setActiveHomeSlide] = useState(0);
   const [activeHomeTab, setActiveHomeTab] = useState<"home" | "neighborhood" | "highlights">("home");
 
   const homeTabs = [
@@ -456,7 +460,7 @@ const App = () => {
   ];
 
   const activeHomeTabConfig = homeTabs.find((tab) => tab.key === activeHomeTab) ?? homeTabs[0];
-  const activeSpotlight = activeHomeTabConfig.spotlight;
+  const activeSpotlight = home_life.spotlights[activeHomeSlide] ?? homeTabs[0].spotlight;
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -476,12 +480,21 @@ const App = () => {
     setGalleryCanNext(galleryEmblaApi.canScrollNext());
   }, [galleryEmblaApi]);
 
+  const updateHomeButtons = useCallback(() => {
+    if (!homeEmblaApi) return;
+    setHomeCanPrev(homeEmblaApi.canScrollPrev());
+    setHomeCanNext(homeEmblaApi.canScrollNext());
+    setActiveHomeSlide(homeEmblaApi.selectedScrollSnap());
+  }, [homeEmblaApi]);
+
   const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
   const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
   const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
   const scrollShortsNext = useCallback(() => shortsEmblaApi?.scrollNext(), [shortsEmblaApi]);
   const scrollGalleryPrev = useCallback(() => galleryEmblaApi?.scrollPrev(), [galleryEmblaApi]);
   const scrollGalleryNext = useCallback(() => galleryEmblaApi?.scrollNext(), [galleryEmblaApi]);
+  const scrollHomePrev = useCallback(() => homeEmblaApi?.scrollPrev(), [homeEmblaApi]);
+  const scrollHomeNext = useCallback(() => homeEmblaApi?.scrollNext(), [homeEmblaApi]);
 
   useEffect(() => {
     if (!villageEmblaApi) return;
@@ -515,6 +528,26 @@ const App = () => {
       galleryEmblaApi.off("reInit", updateGalleryButtons);
     };
   }, [galleryEmblaApi, updateGalleryButtons]);
+
+  useEffect(() => {
+    if (!homeEmblaApi) return;
+    updateHomeButtons();
+    homeEmblaApi.on("select", updateHomeButtons);
+    homeEmblaApi.on("reInit", updateHomeButtons);
+    return () => {
+      homeEmblaApi.off("select", updateHomeButtons);
+      homeEmblaApi.off("reInit", updateHomeButtons);
+    };
+  }, [homeEmblaApi, updateHomeButtons]);
+
+  useEffect(() => {
+    const targetIndex = home_life.spotlights.findIndex(
+      (spotlight) => spotlight.title === activeHomeTabConfig.spotlight.title,
+    );
+    if (targetIndex >= 0) {
+      homeEmblaApi?.scrollTo(targetIndex);
+    }
+  }, [activeHomeTabConfig.spotlight.title, homeEmblaApi, home_life.spotlights]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -668,18 +701,39 @@ const App = () => {
             <div className="grid gap-6 lg:grid-cols-5 items-stretch">
               <div className="lg:col-span-3">
                 <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
-                  <div className="aspect-[4/3] lg:aspect-[5/4] overflow-hidden">
-                    <img
-                      src={getAssetUrl(activeSpotlight.image)}
-                      alt={activeSpotlight.title}
-                      className="h-full w-full object-cover"
-                    />
+                  <div className="overflow-hidden" ref={homeEmblaRef}>
+                    <div className="flex gap-6">
+                      {home_life.spotlights.map((spotlight, index) => (
+                        <div
+                          key={spotlight.title}
+                          className="min-w-0 flex-[0_0_100%] rounded-3xl overflow-hidden"
+                        >
+                          <div className="aspect-[4/3] lg:aspect-[5/4] overflow-hidden">
+                            <img
+                              src={getAssetUrl(spotlight.image)}
+                              alt={spotlight.title}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-terracotta/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white space-y-2">
-                    <p className="text-xs uppercase tracking-[0.25em] text-white/80">{home_life.subtitle}</p>
-                    <h3 className="text-2xl font-semibold drop-shadow">{activeSpotlight.title}</h3>
-                    <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.description}</p>
+                  <div className="absolute inset-0 flex flex-col justify-between p-6">
+                    <div className="flex justify-end">
+                      <CarouselControls
+                        onPrev={scrollHomePrev}
+                        onNext={scrollHomeNext}
+                        canPrev={homeCanPrev}
+                        canNext={homeCanNext}
+                      />
+                    </div>
+                    <div className="text-white space-y-2">
+                      <p className="text-xs uppercase tracking-[0.25em] text-white/80">{home_life.subtitle}</p>
+                      <h3 className="text-2xl font-semibold drop-shadow">{activeSpotlight.title}</h3>
+                      <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.description}</p>
+                    </div>
                   </div>
                 </div>
               </div>
