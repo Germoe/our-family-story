@@ -198,8 +198,21 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
 };
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, our_village, home_life, map, daily_glimpse, timeline, gallery, contact } =
-    siteContent;
+  const {
+    brand,
+    navigation,
+    cta,
+    hero,
+    about,
+    our_village,
+    home_life,
+    map,
+    daily_glimpse,
+    timeline,
+    gallery,
+    letter_to_birth_mother,
+    contact,
+  } = siteContent;
 
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
 
@@ -363,6 +376,23 @@ const App = () => {
             {gallery.images.map((item, index) => (
               <GalleryCard key={item.caption} item={item} index={index} />
             ))}
+          </div>
+        </section>
+
+        <section id="letter" className="section-container space-y-8">
+          <SectionHeading title={letter_to_birth_mother.title} subtitle={letter_to_birth_mother.subtitle} />
+          <div className="max-w-4xl mx-auto bg-white/80 border border-terracotta/15 shadow-soft rounded-3xl p-8 md:p-10 space-y-6 text-left">
+            <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/70">{letter_to_birth_mother.greeting}</p>
+            <p className="body-large text-foreground/80">{letter_to_birth_mother.intro}</p>
+            <div className="space-y-3 text-base leading-relaxed text-foreground/80">
+              {letter_to_birth_mother.body.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
+            </div>
+            <div className="pt-2 space-y-1 text-foreground/80">
+              <p className="italic">{letter_to_birth_mother.closing}</p>
+              <p className="font-semibold text-terracotta-dark">{letter_to_birth_mother.signature}</p>
+            </div>
           </div>
         </section>
 
