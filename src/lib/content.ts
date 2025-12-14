@@ -34,7 +34,7 @@ const activitySchema = z.object({
 });
 
 const galleryImageSchema = z.object({
-  caption: z.string().min(1, "Image caption is required"),
+  // caption: z.string().min(1, "Image caption is required"),
   image: z.string().min(1, "Gallery image is required"),
 });
 
@@ -45,7 +45,9 @@ const quickAnswerResponseSchema = z.object({
 
 const quickAnswerSchema = z.object({
   question: z.string().min(1, "Quick answer question is required"),
-  answers: z.array(quickAnswerResponseSchema).min(1, "At least one quick answer response is required"),
+  answers: z
+    .array(quickAnswerResponseSchema)
+    .min(1, "At least one quick answer response is required"),
 });
 
 const timelineEventSchema = z.object({
@@ -59,7 +61,9 @@ const letterSectionSchema = z.object({
   subtitle: z.string().optional(),
   greeting: z.string().min(1, "Letter greeting is required"),
   intro: z.string().min(1, "Letter intro is required"),
-  body: z.array(z.string().min(1, "Letter paragraph is required")).min(1, "At least one letter paragraph is required"),
+  body: z
+    .array(z.string().min(1, "Letter paragraph is required"))
+    .min(1, "At least one letter paragraph is required"),
   closing: z.string().min(1, "Letter closing is required"),
   signature: z.string().min(1, "Letter signature is required"),
 });
@@ -88,7 +92,9 @@ const mapMarkerSchema = z.object({
 
 const siteSchema = z.object({
   brand: z.string().min(1, "Brand is required"),
-  navigation: z.array(navigationSchema).min(1, "At least one navigation item is required"),
+  navigation: z
+    .array(navigationSchema)
+    .min(1, "At least one navigation item is required"),
   cta: z.object({
     label: z.string().min(1, "CTA label is required"),
     href: z.string().min(1, "CTA href is required"),
@@ -113,38 +119,54 @@ const siteSchema = z.object({
     title: z.string().min(1, "Our village title is required"),
     subtitle: z.string().min(1, "Our village subtitle is required"),
     intro: z.string().min(1, "Our village intro is required"),
-    entries: z.array(villageEntrySchema).min(1, "At least one village entry is required"),
+    entries: z
+      .array(villageEntrySchema)
+      .min(1, "At least one village entry is required"),
   }),
   home_life: z.object({
     title: z.string().min(1, "Home & life title is required"),
     subtitle: z.string().min(1, "Home & life subtitle is required"),
     description: z.string().min(1, "Home & life description is required"),
-    spotlights: z.array(homeSpotlightSchema).min(1, "At least one spotlight is required"),
-    features: z.array(homeFeatureSchema).min(1, "At least one feature is required"),
+    spotlights: z
+      .array(homeSpotlightSchema)
+      .min(1, "At least one spotlight is required"),
+    features: z
+      .array(homeFeatureSchema)
+      .min(1, "At least one feature is required"),
   }),
   map: z.object({
     heading: z.string().optional(),
     intro: z.string().optional(),
-    markers: z.array(mapMarkerSchema).min(1, "At least one map marker is required"),
+    markers: z
+      .array(mapMarkerSchema)
+      .min(1, "At least one map marker is required"),
   }),
   daily_glimpse: z.object({
     title: z.string().min(1, "Daily glimpse title is required"),
     description: z.string().min(1, "Daily glimpse description is required"),
-    activities: z.array(activitySchema).min(1, "At least one daily activity is required"),
+    activities: z
+      .array(activitySchema)
+      .min(1, "At least one daily activity is required"),
   }),
   timeline: z.object({
     title: z.string().min(1, "Timeline title is required"),
     description: z.string().min(1, "Timeline description is required"),
-    events: z.array(timelineEventSchema).min(1, "At least one timeline event is required"),
+    events: z
+      .array(timelineEventSchema)
+      .min(1, "At least one timeline event is required"),
   }),
   gallery: z.object({
     title: z.string().min(1, "Gallery title is required"),
-    images: z.array(galleryImageSchema).min(1, "At least one gallery image is required"),
+    images: z
+      .array(galleryImageSchema)
+      .min(1, "At least one gallery image is required"),
   }),
   quick_answers: z.object({
     title: z.string().min(1, "Quick answers title is required"),
     subtitle: z.string().min(1, "Quick answers subtitle is required"),
-    items: z.array(quickAnswerSchema).min(1, "At least one quick answer is required"),
+    items: z
+      .array(quickAnswerSchema)
+      .min(1, "At least one quick answer is required"),
   }),
   letter_to_birth_mother: letterSectionSchema,
   contact: z.object({
@@ -176,7 +198,9 @@ if (!result.success) {
   const issueList = result.error.issues
     .map((issue) => `- ${issue.path.join(".") || "root"}: ${issue.message}`)
     .join("\n");
-  throw new Error(`Invalid site content. Please fix src/content/site.yaml:\n${issueList}`);
+  throw new Error(
+    `Invalid site content. Please fix src/content/site.yaml:\n${issueList}`
+  );
 }
 
 export const siteContent: SiteContent = result.data;
