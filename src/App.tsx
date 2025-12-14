@@ -188,16 +188,15 @@ const GalleryCard = ({
   layout?: "grid" | "carousel";
 }) => {
   const imageUrl = getAssetUrl(item.image);
-  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+  const animation = useInViewAnimation({ threshold: 0.05, delay: `${index * 10}ms` });
   const isCarousel = layout === "carousel";
-  const imageFitClass = isCarousel ? "object-contain" : "object-cover";
+  const imageFitClass = "object-cover";
   const imageWrapperClass = isCarousel ? "aspect-square bg-terracotta/5" : "md:h-80";
 
   return (
     <figure
-      className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${
-        isCarousel ? "h-full flex flex-col" : ""
-      } ${animation.className}`}
+      className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${isCarousel ? "h-full flex flex-col" : ""
+        } ${animation.className}`}
       ref={animation.ref}
       style={animation.style}
     >
@@ -339,9 +338,8 @@ const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_villa
               key={`village-dot-${index}`}
               type="button"
               onClick={() => goToSlide(index)}
-              className={`h-2.5 w-2.5 rounded-full transition ${
-                activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
-              }`}
+              className={`h-2.5 w-2.5 rounded-full transition ${activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
+                }`}
               aria-label={`Go to slide ${index + 1}`}
               aria-pressed={activeIndex === index}
             />
@@ -381,11 +379,11 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
 };
 
 const VideoShortCard = ({ short, index }: { short: (typeof siteContent.shorts.videos)[number]; index: number }) => {
-  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+  const animation = useInViewAnimation({ delay: `${index * 40}ms` });
 
   return (
     <article
-      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-4 ${animation.className}`}
+      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-6 ${animation.className}`}
       ref={animation.ref}
       style={animation.style}
     >
@@ -675,7 +673,7 @@ const App = () => {
                 {shorts.videos.map((short, index) => (
                   <div
                     key={short.title}
-                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_40%]"
+                    className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_60%] md:flex-[0_0_45%] lg:flex-[0_0_30%]"
                   >
                     <VideoShortCard short={short} index={index} />
                   </div>
