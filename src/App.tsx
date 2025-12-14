@@ -427,7 +427,7 @@ const App = () => {
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
   const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
-  const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true, axis: "y" });
+  const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
@@ -693,29 +693,29 @@ const App = () => {
 
         <section id="gallery" className="section-container space-y-8">
           <SectionHeading title={gallery.title} subtitle="Photos" />
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-            <div className="relative h-[520px] md:h-[660px]">
-              <div
-                className="absolute inset-0 overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
-                ref={galleryEmblaRef}
-              >
-                <div className="flex h-full flex-col">
-                  {gallery.images.map((item, index) => (
-                    <div key={item.caption ?? item.image} className="flex-[0_0_100%] p-4">
-                      <GalleryCard item={item} index={index} layout="carousel" />
-                    </div>
-                  ))}
-                </div>
+          <div className="space-y-6">
+            <div
+              className="overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
+              ref={galleryEmblaRef}
+            >
+              <div className="flex gap-6 p-4">
+                {gallery.images.map((item, index) => (
+                  <div
+                    key={item.caption ?? item.image}
+                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                  >
+                    <GalleryCard item={item} index={index} layout="carousel" />
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="flex items-center justify-center lg:justify-start">
+            <div className="flex justify-end">
               <CarouselControls
                 onPrev={scrollGalleryPrev}
                 onNext={scrollGalleryNext}
                 canPrev={galleryCanPrev}
                 canNext={galleryCanNext}
-                orientation="vertical"
               />
             </div>
           </div>
