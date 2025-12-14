@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
 import useInViewAnimation from "./hooks/useInViewAnimation";
@@ -209,25 +209,52 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
 
 const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_village.entries }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(1);
+
+  const calculateSlidesPerView = () => {
+    if (typeof window === "undefined") return 1;
+    if (window.innerWidth >= 1024) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  };
+
+  useEffect(() => {
+    const updateSlidesPerView = () => {
+      setSlidesPerView(calculateSlidesPerView());
+    };
+
+    updateSlidesPerView();
+    window.addEventListener("resize", updateSlidesPerView);
+    return () => window.removeEventListener("resize", updateSlidesPerView);
+  }, []);
 
   const goToSlide = (index: number) => {
-    const total = entries.length;
-    setActiveIndex(((index % total) + total) % total);
+    const maxIndex = Math.max(entries.length - slidesPerView, 0);
+    const safeRange = maxIndex + 1;
+    setActiveIndex(((index % safeRange) + safeRange) % safeRange);
   };
 
   const nextSlide = () => goToSlide(activeIndex + 1);
   const previousSlide = () => goToSlide(activeIndex - 1);
 
+  useEffect(() => {
+    goToSlide(activeIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slidesPerView, entries.length]);
+
+  const slideWidth = 100 / slidesPerView;
+  const slidePositions = Math.max(entries.length - slidesPerView + 1, 1);
+
   return (
-    <div className="relative max-w-5xl mx-auto">
+    <div className="relative max-w-6xl mx-auto">
       <div className="overflow-hidden rounded-[28px]">
         <div
           className="flex transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          style={{ transform: `translateX(-${activeIndex * slideWidth}%)` }}
           aria-live="polite"
         >
           {entries.map((entry, index) => (
-            <div key={entry.title} className="w-full flex-shrink-0 px-1">
+            <div key={entry.title} className="flex-shrink-0 px-1" style={{ width: `${slideWidth}%` }}>
               <VillageCard entry={entry} index={index} />
             </div>
           ))}
@@ -246,15 +273,15 @@ const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_villa
         </button>
 
         <div className="flex items-center gap-2">
-          {entries.map((entry, index) => (
+          {Array.from({ length: slidePositions }).map((_, index) => (
             <button
-              key={`${entry.title}-dot`}
+              key={`village-dot-${index}`}
               type="button"
               onClick={() => goToSlide(index)}
               className={`h-2.5 w-2.5 rounded-full transition ${
                 activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
               }`}
-              aria-label={`Go to ${entry.title}`}
+              aria-label={`Go to slide ${index + 1}`}
               aria-pressed={activeIndex === index}
             />
           ))}
