@@ -19,9 +19,11 @@ const homeSpotlightSchema = z.object({
   title: z.string().min(1, "Spotlight title is required"),
   description: z.string().min(1, "Spotlight description is required"),
   image: z.string().min(1, "Spotlight image is required"),
+  caption: z.string().min(1, "Caption is required"),
   category: z.enum(["home", "neighborhood", "highlights"], {
     required_error: "Spotlight category is required",
-    invalid_type_error: "Spotlight category must be one of home, neighborhood, or highlights",
+    invalid_type_error:
+      "Spotlight category must be one of home, neighborhood, or highlights",
   }),
 });
 
@@ -162,7 +164,9 @@ const siteSchema = z.object({
     title: z.string().min(1, "Video shorts title is required"),
     subtitle: z.string().optional(),
     description: z.string().min(1, "Video shorts description is required"),
-    videos: z.array(videoShortSchema).min(1, "At least one video short is required"),
+    videos: z
+      .array(videoShortSchema)
+      .min(1, "At least one video short is required"),
   }),
   timeline: z.object({
     title: z.string().min(1, "Timeline title is required"),

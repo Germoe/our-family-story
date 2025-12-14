@@ -450,10 +450,6 @@ const App = () => {
       key: "neighborhood" as const,
       label: "Neighborhood",
     },
-    {
-      key: "highlights" as const,
-      label: "Highlights",
-    },
   ];
 
   const activeTabSpotlights =
@@ -688,11 +684,10 @@ const App = () => {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveHomeTab(tab.key)}
-                  className={`pressable min-w-[120px] rounded-full px-4 py-2 text-sm font-semibold transition focus-ring ${
-                    activeHomeTab === tab.key
-                      ? "bg-terracotta text-primary-foreground shadow-glow"
-                      : "bg-transparent text-terracotta-dark hover:bg-terracotta/10"
-                  }`}
+                  className={`pressable min-w-[120px] rounded-full px-4 py-2 text-sm font-semibold transition focus-ring ${activeHomeTab === tab.key
+                    ? "bg-terracotta text-primary-foreground shadow-glow"
+                    : "bg-transparent text-terracotta-dark hover:bg-terracotta/10"
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -700,7 +695,7 @@ const App = () => {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-5 items-stretch">
-                  <div className="lg:col-span-3">
+              <div className="lg:col-span-3">
                 <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
                   <div className="overflow-hidden" ref={homeEmblaRef}>
                     <div className="flex gap-6">
@@ -733,7 +728,7 @@ const App = () => {
                     <div className="text-white space-y-2">
                       <p className="text-xs uppercase tracking-[0.25em] text-white/80">{home_life.subtitle}</p>
                       <h3 className="text-2xl font-semibold drop-shadow">{activeSpotlight.title}</h3>
-                      <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.description}</p>
+                      <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.caption}</p>
                     </div>
                   </div>
                 </div>
@@ -743,7 +738,6 @@ const App = () => {
                 <div className="space-y-2 text-left">
                   <p className="text-[11px] uppercase tracking-[0.25em] text-terracotta-dark/70">Explore</p>
                   <h3 className="text-xl font-semibold text-terracotta-dark">{home_life.title}</h3>
-                  <p className="text-sm text-foreground/80 leading-relaxed">{home_life.description}</p>
                   <p className="text-sm text-foreground/70 leading-relaxed">{activeTabHero.description}</p>
                 </div>
 
@@ -758,29 +752,6 @@ const App = () => {
                     {activeHomeTabConfig.label}
                   </span>
                 </div>
-
-                {activeHomeTab === "highlights" ? (
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-lg font-semibold text-terracotta-dark">Neighborhood highlights</h4>
-                      <span className="text-xs uppercase tracking-[0.2em] text-terracotta-dark/70">Swipe to see more</span>
-                    </div>
-
-                    <div className="-mx-4 flex gap-4 overflow-x-auto pb-2 md:hidden snap-x snap-mandatory">
-                      {home_life.features.map((feature, index) => (
-                        <div key={feature.title} className="snap-start px-1 min-w-[240px] max-w-[260px]">
-                          <HomeFeatureCard feature={feature} index={index} />
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="hidden md:grid gap-4 md:grid-cols-2">
-                      {home_life.features.map((feature, index) => (
-                        <HomeFeatureCard key={feature.title} feature={feature} index={index} />
-                      ))}
-                    </div>
-                  </div>
-                ) : null}
               </div>
             </div>
           </div>
