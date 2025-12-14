@@ -428,6 +428,7 @@ const App = () => {
   const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [homeEmblaRef, homeEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
@@ -435,6 +436,28 @@ const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [galleryCanPrev, setGalleryCanPrev] = useState(false);
   const [galleryCanNext, setGalleryCanNext] = useState(false);
+  const [homeCanPrev, setHomeCanPrev] = useState(false);
+  const [homeCanNext, setHomeCanNext] = useState(false);
+  const [activeHomeSlide, setActiveHomeSlide] = useState(0);
+  const [activeHomeTab, setActiveHomeTab] = useState<"home" | "neighborhood" | "highlights">("home");
+
+  const homeTabs = [
+    {
+      key: "home" as const,
+      label: "Home",
+    },
+    {
+      key: "neighborhood" as const,
+      label: "Neighborhood",
+    },
+  ];
+
+  const activeTabSpotlights =
+    home_life.spotlights.filter((spotlight) => spotlight.category === activeHomeTab) || home_life.spotlights;
+  const tabSpotlights = activeTabSpotlights.length ? activeTabSpotlights : home_life.spotlights;
+  const activeSpotlight = tabSpotlights[activeHomeSlide] ?? tabSpotlights[0];
+  const activeHomeTabConfig = homeTabs.find((tab) => tab.key === activeHomeTab) ?? homeTabs[0];
+  const activeTabHero = tabSpotlights[0] ?? home_life.spotlights[0];
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -454,12 +477,21 @@ const App = () => {
     setGalleryCanNext(galleryEmblaApi.canScrollNext());
   }, [galleryEmblaApi]);
 
+  const updateHomeButtons = useCallback(() => {
+    if (!homeEmblaApi) return;
+    setHomeCanPrev(homeEmblaApi.canScrollPrev());
+    setHomeCanNext(homeEmblaApi.canScrollNext());
+    setActiveHomeSlide(homeEmblaApi.selectedScrollSnap());
+  }, [homeEmblaApi]);
+
   const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
   const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
   const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
   const scrollShortsNext = useCallback(() => shortsEmblaApi?.scrollNext(), [shortsEmblaApi]);
   const scrollGalleryPrev = useCallback(() => galleryEmblaApi?.scrollPrev(), [galleryEmblaApi]);
   const scrollGalleryNext = useCallback(() => galleryEmblaApi?.scrollNext(), [galleryEmblaApi]);
+  const scrollHomePrev = useCallback(() => homeEmblaApi?.scrollPrev(), [homeEmblaApi]);
+  const scrollHomeNext = useCallback(() => homeEmblaApi?.scrollNext(), [homeEmblaApi]);
 
   useEffect(() => {
     if (!villageEmblaApi) return;
@@ -493,6 +525,26 @@ const App = () => {
       galleryEmblaApi.off("reInit", updateGalleryButtons);
     };
   }, [galleryEmblaApi, updateGalleryButtons]);
+
+  useEffect(() => {
+    if (!homeEmblaApi) return;
+    updateHomeButtons();
+    homeEmblaApi.on("select", updateHomeButtons);
+    homeEmblaApi.on("reInit", updateHomeButtons);
+    return () => {
+      homeEmblaApi.off("select", updateHomeButtons);
+      homeEmblaApi.off("reInit", updateHomeButtons);
+    };
+  }, [homeEmblaApi, updateHomeButtons]);
+
+  useEffect(() => {
+    if (!homeEmblaApi) return;
+
+    homeEmblaApi.reInit();
+    homeEmblaApi.scrollTo(0);
+    setActiveHomeSlide(0);
+    updateHomeButtons();
+  }, [activeHomeTab, tabSpotlights.length, homeEmblaApi, updateHomeButtons]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -619,18 +671,89 @@ const App = () => {
           </div>
         </section>
 
-        <section id="home-life" className="section-container space-y-8">
+        <section id="home-life" className="section-container space-y-6">
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
-          <div className="grid md:grid-cols-2 gap-6">
-            {home_life.spotlights.map((spotlight, index) => (
-              <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} index={index} />
-            ))}
+          <div className="mx-auto max-w-3xl text-center text-sm text-foreground/70">
+            {home_life.description}
           </div>
-          <p className="text-center max-w-4xl mx-auto body-large text-foreground/80">{home_life.description}</p>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {home_life.features.map((feature, index) => (
-              <HomeFeatureCard key={feature.title} feature={feature} index={index} />
-            ))}
+
+          <div className="space-y-4">
+            <div className="flex flex-wrap justify-center gap-3 rounded-full bg-white/60 p-2 shadow-soft border border-border/70">
+              {homeTabs.map((tab) => (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveHomeTab(tab.key)}
+                  className={`pressable min-w-[120px] rounded-full px-4 py-2 text-sm font-semibold transition focus-ring ${activeHomeTab === tab.key
+                    ? "bg-terracotta text-primary-foreground shadow-glow"
+                    : "bg-transparent text-terracotta-dark hover:bg-terracotta/10"
+                    }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-5 items-stretch">
+              <div className="lg:col-span-3">
+                <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
+                  <div className="overflow-hidden" ref={homeEmblaRef}>
+                    <div className="flex gap-6">
+                      {tabSpotlights.map((spotlight, index) => (
+                        <div
+                          key={spotlight.title}
+                          className="min-w-0 flex-[0_0_100%] rounded-3xl overflow-hidden"
+                        >
+                          <div className="aspect-[4/3] lg:aspect-[5/4] overflow-hidden">
+                            <img
+                              src={getAssetUrl(spotlight.image)}
+                              alt={spotlight.title}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-terracotta/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 flex flex-col justify-between p-6">
+                    <div className="flex justify-end">
+                      <CarouselControls
+                        onPrev={scrollHomePrev}
+                        onNext={scrollHomeNext}
+                        canPrev={homeCanPrev}
+                        canNext={homeCanNext}
+                      />
+                    </div>
+                    <div className="text-white space-y-2">
+                      <p className="text-xs uppercase tracking-[0.25em] text-white/80">{home_life.subtitle}</p>
+                      <h3 className="text-2xl font-semibold drop-shadow">{activeSpotlight.title}</h3>
+                      <p className="text-sm leading-relaxed text-white/90 drop-shadow max-w-2xl">{activeSpotlight.caption}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="lg:col-span-2 flex flex-col gap-4 rounded-3xl border border-border/70 bg-white/80 p-5 shadow-soft">
+                <div className="space-y-2 text-left">
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-terracotta-dark/70">Explore</p>
+                  <h3 className="text-xl font-semibold text-terracotta-dark">{home_life.title}</h3>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{activeTabHero.description}</p>
+                </div>
+
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href={hero.cta_href}
+                    className="inline-flex items-center gap-2 rounded-full bg-terracotta px-4 py-2 text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
+                  >
+                    {hero.cta_label}
+                  </a>
+                  <span className="inline-flex items-center rounded-full bg-terracotta/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-dark">
+                    {activeHomeTabConfig.label}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
