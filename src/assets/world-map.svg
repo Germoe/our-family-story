@@ -970,11 +970,53 @@ THE SOFTWARE.
  </path>
 </g>
 </defs>
-<svg x="0" y="0" width="450" height="450" viewBox="100 60 800 400" preserveAspectRatio="xMidYMid slice">
-<use href="#map" />
-</svg>
-<svg x="500" y="0" width="550" height="450" viewBox="750 0 700 350" preserveAspectRatio="xMidYMid slice">
-<use href="#map" transform="(200,)" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 520">
+
+  <!-- LEFT: North America -->
+
+  <text
+    x="225"
+    y="30"
+    text-anchor="middle"
+    font-size="16"
+    fill="currentColor"
+  >
+    North America
+  </text>
+
+  <svg
+    x="0"
+    y="60"
+    width="500"
+    height="450"
+    viewBox="200 100 600 300"
+    preserveAspectRatio="xMidYMid slice"
+  >
+    <use href="#map" />
+  </svg>
+
+  <!-- RIGHT: Europe -->
+
+  <text
+    x="775"
+    y="30"
+    text-anchor="middle"
+    font-size="16"
+    fill="currentColor"
+  >
+    Europe
+  </text>
+  <svg
+    x="500"
+    y="60"
+    width="500"
+    height="450"
+    viewBox="850 0 300 350"
+    preserveAspectRatio="xMidYMid slice"
+  >
+    <use href="#map" />
+  </svg>
+
 </svg>
  <circle cx="997.9" cy="189.1" id="0">
  </circle>

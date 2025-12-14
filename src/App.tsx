@@ -143,14 +143,14 @@ const GalleryCard = ({ item, index }: { item: (typeof siteContent.gallery.images
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="h-48 overflow-hidden">
+      <div className="md:h-80 overflow-hidden">
         <img
           src={imageUrl}
-          alt={item.caption}
+          alt={item.caption ? item.caption : imageUrl}
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
       </div>
-      <figcaption className="p-4 text-sm text-foreground/80">{item.caption}</figcaption>
+      {item.caption ? <figcaption className="p-4 text-sm text-foreground/80">{item.caption}</figcaption> : null}
     </figure>
   );
 };
@@ -192,7 +192,7 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="h-56 overflow-hidden">
+      <div className="h-80 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
       </div>
       <div className="p-8 space-y-3 flex-1 flex flex-col">
@@ -231,13 +231,13 @@ const App = () => {
     cta,
     hero,
     about,
-    quick_answers,
     our_village,
     home_life,
     map,
     daily_glimpse,
     timeline,
     gallery,
+    quick_answers,
     letter_to_birth_mother,
     contact,
   } = siteContent;
@@ -334,15 +334,6 @@ const App = () => {
           </div>
         </section>
 
-        <section id="quick-answers" className="section-container space-y-8">
-          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {quick_answers.items.map((item, index) => (
-              <QuickAnswerCard key={item.question} item={item} index={index} />
-            ))}
-          </div>
-        </section>
-
         <section id="home-life" className="section-container space-y-8">
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
           <div className="grid md:grid-cols-2 gap-6">
@@ -412,6 +403,15 @@ const App = () => {
           <div className="grid md:grid-cols-3 gap-6">
             {gallery.images.map((item, index) => (
               <GalleryCard key={item.caption} item={item} index={index} />
+            ))}
+          </div>
+        </section>
+
+        <section id="quick-answers" className="section-container space-y-8">
+          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {quick_answers.items.map((item, index) => (
+              <QuickAnswerCard key={item.question} item={item} index={index} />
             ))}
           </div>
         </section>
