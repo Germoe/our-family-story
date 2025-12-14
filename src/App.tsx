@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
 import useInViewAnimation from "./hooks/useInViewAnimation";
@@ -206,6 +207,73 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
   );
 };
 
+const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_village.entries }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const goToSlide = (index: number) => {
+    const total = entries.length;
+    setActiveIndex(((index % total) + total) % total);
+  };
+
+  const nextSlide = () => goToSlide(activeIndex + 1);
+  const previousSlide = () => goToSlide(activeIndex - 1);
+
+  return (
+    <div className="relative max-w-5xl mx-auto">
+      <div className="overflow-hidden rounded-[28px]">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          aria-live="polite"
+        >
+          {entries.map((entry, index) => (
+            <div key={entry.title} className="w-full flex-shrink-0 px-1">
+              <VillageCard entry={entry} index={index} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between gap-4 md:justify-center md:gap-8">
+        <button
+          type="button"
+          onClick={previousSlide}
+          className="inline-flex items-center gap-2 rounded-full border border-terracotta/40 bg-white px-4 py-2 text-terracotta-dark shadow-soft transition hover:shadow-glow focus-ring pressable"
+          aria-label="Previous person"
+        >
+          <span aria-hidden>←</span>
+          <span className="hidden sm:inline">Previous</span>
+        </button>
+
+        <div className="flex items-center gap-2">
+          {entries.map((entry, index) => (
+            <button
+              key={`${entry.title}-dot`}
+              type="button"
+              onClick={() => goToSlide(index)}
+              className={`h-2.5 w-2.5 rounded-full transition ${
+                activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
+              }`}
+              aria-label={`Go to ${entry.title}`}
+              aria-pressed={activeIndex === index}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={nextSlide}
+          className="inline-flex items-center gap-2 rounded-full border border-terracotta/40 bg-white px-4 py-2 text-terracotta-dark shadow-soft transition hover:shadow-glow focus-ring pressable"
+          aria-label="Next person"
+        >
+          <span className="hidden sm:inline">Next</span>
+          <span aria-hidden>→</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.events)[number]; index: number }) => {
   const animation = useInViewAnimation({ delay: `${index * 70}ms` });
 
@@ -354,11 +422,7 @@ const App = () => {
         <section id="our-village" className="section-container space-y-8">
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {our_village.entries.map((entry, index) => (
-              <VillageCard key={entry.title} entry={entry} index={index} />
-            ))}
-          </div>
+          <OurVillageCarousel entries={our_village.entries} />
         </section>
 
         <section id="timeline" className="section-container space-y-8">
