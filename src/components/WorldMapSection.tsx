@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { getAssetUrl, type SiteContent } from "@/lib/content";
-import useInViewAnimation from "@/hooks/useInViewAnimation";
 
 const getPopoverAlignment = (xPercent: number) => {
   if (xPercent > 75) return "right";
@@ -11,17 +10,11 @@ const getPopoverAlignment = (xPercent: number) => {
 const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
   const [activeTitle, setActiveTitle] = useState(map.markers[0]?.title ?? "");
   const mapIllustration = useMemo(() => getAssetUrl("world-map.svg"), []);
-  const animation = useInViewAnimation({ delay: "80ms" });
 
   const activeMarker = map.markers.find((marker) => marker.title === activeTitle) ?? map.markers[0];
 
   return (
-    <section
-      id="map"
-      className={`section-container space-y-8 ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
-    >
+    <section id="map" className="section-container space-y-8">
       <div className="text-center max-w-3xl mx-auto space-y-4">
         <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/70">Our world</p>
         <h2 className="heading-section text-terracotta-dark">{map.heading ?? "Places we love"}</h2>
