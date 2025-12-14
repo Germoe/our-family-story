@@ -407,6 +407,7 @@ const App = () => {
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
   const [shortsCanNext, setShortsCanNext] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -469,13 +470,48 @@ const App = () => {
               </a>
             ))}
           </nav>
-          <a
-            className="px-4 py-2 rounded-full bg-terracotta text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition-shadow focus-ring pressable"
-            href={cta.href}
-          >
-            {cta.label}
-          </a>
+          <div className="flex items-center gap-3">
+            <a
+              className="hidden md:inline-flex px-4 py-2 rounded-full bg-terracotta text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition-shadow focus-ring pressable"
+              href={cta.href}
+            >
+              {cta.label}
+            </a>
+            <button
+              type="button"
+              className="md:hidden inline-flex items-center gap-2 rounded-full border border-border/70 bg-white/90 px-4 py-2 text-sm font-semibold text-terracotta-dark shadow-soft focus-ring pressable"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-navigation"
+              onClick={() => setIsMenuOpen((prev) => !prev)}
+            >
+              <span aria-hidden>{isMenuOpen ? "Close" : "Menu"}</span>
+              <span className="sr-only">Toggle navigation</span>
+            </button>
+          </div>
         </div>
+        {isMenuOpen ? (
+          <div className="md:hidden border-t border-border/60 bg-white/95 shadow-soft" id="mobile-navigation">
+            <div className="section-container py-4 flex flex-col gap-3 text-sm text-foreground/80">
+              {navigation.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="pressable rounded-lg px-4 py-3 hover:bg-terracotta/10 focus-ring"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              ))}
+              <a
+                className="inline-flex justify-center px-4 py-3 rounded-full bg-terracotta text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition-shadow focus-ring pressable"
+                href={cta.href}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {cta.label}
+              </a>
+            </div>
+          </div>
+        ) : null}
       </header>
 
       <main id="top" className="space-y-20 pb-20">
