@@ -155,6 +155,33 @@ const GalleryCard = ({ item, index }: { item: (typeof siteContent.gallery.images
   );
 };
 
+const QuickAnswerCard = ({ item, index }: { item: (typeof siteContent.quick_answers.items)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 60}ms` });
+
+  return (
+    <article
+      className={`rounded-2xl border border-border/60 bg-white/85 p-6 shadow-soft h-full ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
+      <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{item.question}</p>
+      <div className="mt-4 space-y-4">
+        {item.answers.map((entry) => (
+          <div key={`${item.question}-${entry.person}`} className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-full bg-terracotta/10 text-terracotta-dark font-semibold flex items-center justify-center border border-terracotta/20">
+              {entry.person.charAt(0)}
+            </div>
+            <div className="space-y-1">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-terracotta-dark/70">{entry.person}</p>
+              <p className="text-base text-foreground/85 leading-relaxed">{entry.response}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
+  );
+};
+
 const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.entries)[number]; index: number }) => {
   const imageUrl = getAssetUrl(entry.image);
   const animation = useInViewAnimation({ delay: `${index * 90}ms` });
@@ -204,6 +231,7 @@ const App = () => {
     cta,
     hero,
     about,
+    quick_answers,
     our_village,
     home_life,
     map,
@@ -303,6 +331,15 @@ const App = () => {
             >
               {hero.cta_label}
             </a>
+          </div>
+        </section>
+
+        <section id="quick-answers" className="section-container space-y-8">
+          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {quick_answers.items.map((item, index) => (
+              <QuickAnswerCard key={item.question} item={item} index={index} />
+            ))}
           </div>
         </section>
 

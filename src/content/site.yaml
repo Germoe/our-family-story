@@ -4,6 +4,8 @@ navigation:
     href: "#about"
   - label: "Home & Life"
     href: "#home-life"
+  - label: "Fun Facts"
+    href: "#quick-answers"
   - label: "Our World"
     href: "#map"
   - label: "Our Village"
@@ -43,6 +45,40 @@ about:
       bio: "Sebastian is a data scientist who loves building connections. Their favorite place is the local park, where we spend weekends walking our dog and meeting neighbors."
       quote: "I'm looking forward to sharing life with a child and creating memories in the everyday moments."
       image: "sebastian.jpg"
+quick_answers:
+  title: "Quick questions, honest answers"
+  subtitle: "A few of our favorites right now"
+  items:
+    - question: "Favorite superhero"
+      answers:
+        - person: "Brett"
+          response: "Miles Morales—his courage and creativity remind me to stay curious and kind."
+        - person: "Sebastian"
+          response: "Ms. Marvel. I love her optimism, humor, and commitment to community."
+    - question: "Go-to comfort meal"
+      answers:
+        - person: "Brett"
+          response: "Veggie lasagna layered with ricotta and roasted veggies—cozy every time."
+        - person: "Sebastian"
+          response: "Tomato basil soup with crusty bread, especially on rainy evenings."
+    - question: "Favorite children's book"
+      answers:
+        - person: "Brett"
+          response: "'The Snowy Day'—I love its gentle magic and beautiful illustrations."
+        - person: "Sebastian"
+          response: "'Last Stop on Market Street' because it celebrates gratitude and community."
+    - question: "Weekend ritual"
+      answers:
+        - person: "Brett"
+          response: "Farmer's market stroll, then we cook something new together."
+        - person: "Sebastian"
+          response: "Bike to the park, throw a frisbee, and grab coffee on the way home."
+    - question: "Favorite color"
+      answers:
+        - person: "Brett"
+          response: "Warm terracotta—it's earthy, cozy, and shows up all over our home."
+        - person: "Sebastian"
+          response: "Deep forest green because it reminds me of hiking under tall trees."
 our_village:
   title: "Our Village"
   subtitle: "The people who cheer us on"
@@ -85,8 +121,8 @@ map:
   intro: "From coastlines to mountain trails, these are the places that have shaped our love story, family traditions, and dreams for the future."
   markers:
     - title: "Hometown"
-      subtitle: "Alex's roots"
-      description: "The small coastal city where Alex grew up biking to the pier, visiting the farmer's market, and learning to cook with their grandmother."
+      subtitle: "Brett's roots"
+      description: "The small coastal city where Brett grew up biking to the pier, visiting the farmer's market, and learning to cook with their grandmother."
       image: "home-exterior.jpg"
       x_percent: 32
       y_percent: 42
@@ -114,7 +150,7 @@ timeline:
       description: "After finding our cozy house, we painted the walls, filled the rooms with plants, and hosted a housewarming dinner that truly made it feel like ours."
     - title: "Celebrating our engagement"
       timestamp: "Spring 2019"
-      description: "Jordan proposed during a sunrise hike on our favorite trail. We toasted with thermos coffee and promised to keep adventuring side by side."
+      description: "Sebastian proposed during a sunrise hike on our favorite trail. We toasted with thermos coffee and promised to keep adventuring side by side."
     - title: "Choosing adoption with full hearts"
       timestamp: "This year"
       description: "After years of conversations, volunteering with kids, and dreaming about the future, we knew adoption was the path meant for us."
