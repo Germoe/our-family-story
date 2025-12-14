@@ -190,6 +190,8 @@ const GalleryCard = ({
   const imageUrl = getAssetUrl(item.image);
   const animation = useInViewAnimation({ delay: `${index * 80}ms` });
   const isCarousel = layout === "carousel";
+  const imageFitClass = isCarousel ? "object-contain" : "object-cover";
+  const imageWrapperClass = isCarousel ? "aspect-square bg-terracotta/5" : "md:h-80";
 
   return (
     <figure
@@ -199,11 +201,11 @@ const GalleryCard = ({
       ref={animation.ref}
       style={animation.style}
     >
-      <div className={`${isCarousel ? "flex-1 min-h-[320px]" : "md:h-80"} overflow-hidden`}>
+      <div className={`${imageWrapperClass} overflow-hidden flex items-center justify-center`}>
         <img
           src={imageUrl}
           alt={item.caption ? item.caption : imageUrl}
-          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          className={`w-full h-full ${imageFitClass} transition-transform duration-300 group-hover:scale-105`}
         />
       </div>
       {item.caption ? (
