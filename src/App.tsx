@@ -313,8 +313,9 @@ const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_villa
               key={`village-dot-${index}`}
               type="button"
               onClick={() => goToSlide(index)}
-              className={`h-2.5 w-2.5 rounded-full transition ${activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
-                }`}
+              className={`h-2.5 w-2.5 rounded-full transition ${
+                activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
+              }`}
               aria-label={`Go to slide ${index + 1}`}
               aria-pressed={activeIndex === index}
             />
