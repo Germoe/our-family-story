@@ -19,6 +19,10 @@ const homeSpotlightSchema = z.object({
   title: z.string().min(1, "Spotlight title is required"),
   description: z.string().min(1, "Spotlight description is required"),
   image: z.string().min(1, "Spotlight image is required"),
+  category: z.enum(["home", "neighborhood", "highlights"], {
+    required_error: "Spotlight category is required",
+    invalid_type_error: "Spotlight category must be one of home, neighborhood, or highlights",
+  }),
 });
 
 const homeFeatureSchema = z.object({

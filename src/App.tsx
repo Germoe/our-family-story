@@ -445,22 +445,23 @@ const App = () => {
     {
       key: "home" as const,
       label: "Home",
-      spotlight: home_life.spotlights[0],
     },
     {
       key: "neighborhood" as const,
       label: "Neighborhood",
-      spotlight: home_life.spotlights[1] ?? home_life.spotlights[0],
     },
     {
       key: "highlights" as const,
       label: "Highlights",
-      spotlight: home_life.spotlights[1] ?? home_life.spotlights[0],
     },
   ];
 
+  const activeTabSpotlights =
+    home_life.spotlights.filter((spotlight) => spotlight.category === activeHomeTab) || home_life.spotlights;
+  const tabSpotlights = activeTabSpotlights.length ? activeTabSpotlights : home_life.spotlights;
+  const activeSpotlight = tabSpotlights[activeHomeSlide] ?? tabSpotlights[0];
   const activeHomeTabConfig = homeTabs.find((tab) => tab.key === activeHomeTab) ?? homeTabs[0];
-  const activeSpotlight = home_life.spotlights[activeHomeSlide] ?? homeTabs[0].spotlight;
+  const activeTabHero = tabSpotlights[0] ?? home_life.spotlights[0];
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -541,13 +542,13 @@ const App = () => {
   }, [homeEmblaApi, updateHomeButtons]);
 
   useEffect(() => {
-    const targetIndex = home_life.spotlights.findIndex(
-      (spotlight) => spotlight.title === activeHomeTabConfig.spotlight.title,
-    );
-    if (targetIndex >= 0) {
-      homeEmblaApi?.scrollTo(targetIndex);
-    }
-  }, [activeHomeTabConfig.spotlight.title, homeEmblaApi, home_life.spotlights]);
+    if (!homeEmblaApi) return;
+
+    homeEmblaApi.reInit();
+    homeEmblaApi.scrollTo(0);
+    setActiveHomeSlide(0);
+    updateHomeButtons();
+  }, [activeHomeTab, tabSpotlights.length, homeEmblaApi, updateHomeButtons]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -699,11 +700,11 @@ const App = () => {
             </div>
 
             <div className="grid gap-6 lg:grid-cols-5 items-stretch">
-              <div className="lg:col-span-3">
+                  <div className="lg:col-span-3">
                 <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
                   <div className="overflow-hidden" ref={homeEmblaRef}>
                     <div className="flex gap-6">
-                      {home_life.spotlights.map((spotlight, index) => (
+                      {tabSpotlights.map((spotlight, index) => (
                         <div
                           key={spotlight.title}
                           className="min-w-0 flex-[0_0_100%] rounded-3xl overflow-hidden"
@@ -743,7 +744,7 @@ const App = () => {
                   <p className="text-[11px] uppercase tracking-[0.25em] text-terracotta-dark/70">Explore</p>
                   <h3 className="text-xl font-semibold text-terracotta-dark">{home_life.title}</h3>
                   <p className="text-sm text-foreground/80 leading-relaxed">{home_life.description}</p>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{activeHomeTabConfig.spotlight.description}</p>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{activeTabHero.description}</p>
                 </div>
 
                 <div className="flex flex-wrap gap-3">
