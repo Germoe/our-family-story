@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type RefObject,
+} from "react";
 
 type UseInViewAnimationOptions = {
   /** Adjust when the animation triggers relative to the viewport. */
@@ -24,17 +31,15 @@ type UseInViewAnimationResult = {
   style?: CSSProperties;
 };
 
-const useInViewAnimation = (
-  {
-    rootMargin = "0px 0px -10% 0px",
-    threshold = 0.3,
-    once = true,
-    baseClass = "inview-base",
-    activeClass = "inview-active",
-    delay,
-    duration,
-  }: UseInViewAnimationOptions = {},
-): UseInViewAnimationResult => {
+const useInViewAnimation = ({
+  rootMargin = "0px 0px -10% 0px",
+  threshold = 0.3,
+  once = true,
+  baseClass = "inview-base",
+  activeClass = "inview-active",
+  delay,
+  duration,
+}: UseInViewAnimationOptions = {}): UseInViewAnimationResult => {
   const ref = useRef<HTMLElement | null>(null);
   const [isIntersecting, setIsIntersecting] = useState(false);
   const [hasAnimated, setHasAnimated] = useState(false);
@@ -62,7 +67,7 @@ const useInViewAnimation = (
           }
         });
       },
-      { rootMargin, threshold },
+      { rootMargin, threshold }
     );
 
     observer.observe(node);
@@ -88,7 +93,12 @@ const useInViewAnimation = (
     return styleObject;
   }, [delay, duration]);
 
-  return { ref, isInView, className, style: Object.keys(style).length ? style : undefined };
+  return {
+    ref,
+    isInView,
+    className,
+    style: Object.keys(style).length ? style : undefined,
+  };
 };
 
 export default useInViewAnimation;
