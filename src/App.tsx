@@ -155,6 +155,21 @@ const GalleryCard = ({ item, index }: { item: (typeof siteContent.gallery.images
   );
 };
 
+const QuickAnswerCard = ({ item, index }: { item: (typeof siteContent.quick_answers.items)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 60}ms` });
+
+  return (
+    <article
+      className={`rounded-2xl border border-border/60 bg-white/85 p-6 shadow-soft h-full ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
+      <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{item.question}</p>
+      <p className="mt-3 text-lg font-semibold text-terracotta-dark leading-relaxed">{item.answer}</p>
+    </article>
+  );
+};
+
 const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.entries)[number]; index: number }) => {
   const imageUrl = getAssetUrl(entry.image);
   const animation = useInViewAnimation({ delay: `${index * 90}ms` });
@@ -198,8 +213,21 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
 };
 
 const App = () => {
-  const { brand, navigation, cta, hero, about, our_village, home_life, map, daily_glimpse, timeline, gallery, contact } =
-    siteContent;
+  const {
+    brand,
+    navigation,
+    cta,
+    hero,
+    about,
+    quick_answers,
+    our_village,
+    home_life,
+    map,
+    daily_glimpse,
+    timeline,
+    gallery,
+    contact,
+  } = siteContent;
 
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
 
@@ -290,6 +318,15 @@ const App = () => {
             >
               {hero.cta_label}
             </a>
+          </div>
+        </section>
+
+        <section id="quick-answers" className="section-container space-y-8">
+          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {quick_answers.items.map((item, index) => (
+              <QuickAnswerCard key={item.question} item={item} index={index} />
+            ))}
           </div>
         </section>
 

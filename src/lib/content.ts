@@ -38,6 +38,11 @@ const galleryImageSchema = z.object({
   image: z.string().min(1, "Gallery image is required"),
 });
 
+const quickAnswerSchema = z.object({
+  question: z.string().min(1, "Quick answer question is required"),
+  answer: z.string().min(1, "Quick answer response is required"),
+});
+
 const timelineEventSchema = z.object({
   title: z.string().min(1, "Timeline title is required"),
   description: z.string().min(1, "Timeline description is required"),
@@ -121,6 +126,11 @@ const siteSchema = z.object({
     title: z.string().min(1, "Gallery title is required"),
     images: z.array(galleryImageSchema).min(1, "At least one gallery image is required"),
   }),
+  quick_answers: z.object({
+    title: z.string().min(1, "Quick answers title is required"),
+    subtitle: z.string().min(1, "Quick answers subtitle is required"),
+    items: z.array(quickAnswerSchema).min(1, "At least one quick answer is required"),
+  }),
   contact: z.object({
     title: z.string().min(1, "Contact title is required"),
     message: z.string().min(1, "Contact message is required"),
@@ -138,6 +148,7 @@ export type GalleryImage = z.infer<typeof galleryImageSchema>;
 export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type VillageEntry = z.infer<typeof villageEntrySchema>;
 export type MapMarker = z.infer<typeof mapMarkerSchema>;
+export type QuickAnswer = z.infer<typeof quickAnswerSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 
 const parsed = YAML.parse(rawSiteContent);
