@@ -165,7 +165,19 @@ const QuickAnswerCard = ({ item, index }: { item: (typeof siteContent.quick_answ
       style={animation.style}
     >
       <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{item.question}</p>
-      <p className="mt-3 text-lg font-semibold text-terracotta-dark leading-relaxed">{item.answer}</p>
+      <div className="mt-4 space-y-4">
+        {item.answers.map((entry) => (
+          <div key={`${item.question}-${entry.person}`} className="flex items-start gap-3">
+            <div className="h-10 w-10 rounded-full bg-terracotta/10 text-terracotta-dark font-semibold flex items-center justify-center border border-terracotta/20">
+              {entry.person.charAt(0)}
+            </div>
+            <div className="space-y-1">
+              <p className="text-[11px] uppercase tracking-[0.18em] text-terracotta-dark/70">{entry.person}</p>
+              <p className="text-base text-foreground/85 leading-relaxed">{entry.response}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </article>
   );
 };

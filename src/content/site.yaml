@@ -50,15 +50,35 @@ quick_answers:
   subtitle: "A few of our favorites right now"
   items:
     - question: "Favorite superhero"
-      answer: "Miles Morales—because he's courageous, creative, and leads with heart."
+      answers:
+        - person: "Brett"
+          response: "Miles Morales—his courage and creativity remind me to stay curious and kind."
+        - person: "Sebastian"
+          response: "Ms. Marvel. I love her optimism, humor, and commitment to community."
     - question: "Go-to comfort meal"
-      answer: "Homemade veggie lasagna with garlic bread fresh from the oven."
+      answers:
+        - person: "Brett"
+          response: "Veggie lasagna layered with ricotta and roasted veggies—cozy every time."
+        - person: "Sebastian"
+          response: "Tomato basil soup with crusty bread, especially on rainy evenings."
     - question: "Favorite children's book"
-      answer: "'The Snowy Day'—we love its cozy wonder and timeless illustrations."
+      answers:
+        - person: "Brett"
+          response: "'The Snowy Day'—I love its gentle magic and beautiful illustrations."
+        - person: "Sebastian"
+          response: "'Last Stop on Market Street' because it celebrates gratitude and community."
     - question: "Weekend ritual"
-      answer: "Saturday morning farmer's market run followed by pancakes at home."
+      answers:
+        - person: "Brett"
+          response: "Farmer's market stroll, then we cook something new together."
+        - person: "Sebastian"
+          response: "Bike to the park, throw a frisbee, and grab coffee on the way home."
     - question: "Favorite color"
-      answer: "Sage green—it reminds us of the forests we explore together."
+      answers:
+        - person: "Brett"
+          response: "Warm terracotta—it's earthy, cozy, and shows up all over our home."
+        - person: "Sebastian"
+          response: "Deep forest green because it reminds me of hiking under tall trees."
 our_village:
   title: "Our Village"
   subtitle: "The people who cheer us on"

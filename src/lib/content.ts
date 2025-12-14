@@ -38,9 +38,14 @@ const galleryImageSchema = z.object({
   image: z.string().min(1, "Gallery image is required"),
 });
 
+const quickAnswerResponseSchema = z.object({
+  person: z.string().min(1, "Quick answer person is required"),
+  response: z.string().min(1, "Quick answer response is required"),
+});
+
 const quickAnswerSchema = z.object({
   question: z.string().min(1, "Quick answer question is required"),
-  answer: z.string().min(1, "Quick answer response is required"),
+  answers: z.array(quickAnswerResponseSchema).min(1, "At least one quick answer response is required"),
 });
 
 const timelineEventSchema = z.object({
