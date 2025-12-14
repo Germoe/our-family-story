@@ -192,7 +192,7 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="h-56 overflow-hidden">
+      <div className="h-80 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
       </div>
       <div className="p-8 space-y-3 flex-1 flex flex-col">
@@ -231,7 +231,6 @@ const App = () => {
     cta,
     hero,
     about,
-    quick_answers,
     our_village,
     home_life,
     map,
@@ -332,15 +331,6 @@ const App = () => {
             >
               {hero.cta_label}
             </a>
-          </div>
-        </section>
-
-        <section id="quick-answers" className="section-container space-y-8">
-          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {quick_answers.items.map((item, index) => (
-              <QuickAnswerCard key={item.question} item={item} index={index} />
-            ))}
           </div>
         </section>
 
