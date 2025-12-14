@@ -1,7 +1,42 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
 import useInViewAnimation from "./hooks/useInViewAnimation";
+
+const CarouselControls = ({
+  onPrev,
+  onNext,
+  canPrev,
+  canNext,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  canPrev: boolean;
+  canNext: boolean;
+}) => (
+  <div className="flex gap-3">
+    <button
+      type="button"
+      onClick={onPrev}
+      disabled={!canPrev}
+      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Previous slides"
+    >
+      ←
+    </button>
+    <button
+      type="button"
+      onClick={onNext}
+      disabled={!canNext}
+      className="pressable flex h-11 w-11 items-center justify-center rounded-full border border-border/70 bg-white/80 text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Next slides"
+    >
+      →
+    </button>
+  </div>
+);
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -319,6 +354,33 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
   );
 };
 
+const VideoShortCard = ({ short, index }: { short: (typeof siteContent.shorts.videos)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+
+  return (
+    <article
+      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-4 ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
+      <div className="relative aspect-[9/16] bg-black overflow-hidden">
+        <iframe
+          src={short.video_url}
+          title={short.title}
+          className="h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent h-20 pointer-events-none" />
+      </div>
+      <div className="px-5 pb-5 space-y-2">
+        <h3 className="text-lg font-semibold text-terracotta-dark">{short.title}</h3>
+        <p className="text-sm text-foreground/80 leading-relaxed">{short.description}</p>
+      </div>
+    </article>
+  );
+};
+
 const App = () => {
   const {
     brand,
@@ -330,6 +392,7 @@ const App = () => {
     home_life,
     map,
     daily_glimpse,
+    shorts,
     timeline,
     gallery,
     quick_answers,
@@ -338,6 +401,51 @@ const App = () => {
   } = siteContent;
 
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
+  const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [villageCanPrev, setVillageCanPrev] = useState(false);
+  const [villageCanNext, setVillageCanNext] = useState(false);
+  const [shortsCanPrev, setShortsCanPrev] = useState(false);
+  const [shortsCanNext, setShortsCanNext] = useState(false);
+
+  const updateVillageButtons = useCallback(() => {
+    if (!villageEmblaApi) return;
+    setVillageCanPrev(villageEmblaApi.canScrollPrev());
+    setVillageCanNext(villageEmblaApi.canScrollNext());
+  }, [villageEmblaApi]);
+
+  const updateShortsButtons = useCallback(() => {
+    if (!shortsEmblaApi) return;
+    setShortsCanPrev(shortsEmblaApi.canScrollPrev());
+    setShortsCanNext(shortsEmblaApi.canScrollNext());
+  }, [shortsEmblaApi]);
+
+  const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
+  const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
+  const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
+  const scrollShortsNext = useCallback(() => shortsEmblaApi?.scrollNext(), [shortsEmblaApi]);
+
+  useEffect(() => {
+    if (!villageEmblaApi) return;
+    updateVillageButtons();
+    villageEmblaApi.on("select", updateVillageButtons);
+    villageEmblaApi.on("reInit", updateVillageButtons);
+    return () => {
+      villageEmblaApi.off("select", updateVillageButtons);
+      villageEmblaApi.off("reInit", updateVillageButtons);
+    };
+  }, [villageEmblaApi, updateVillageButtons]);
+
+  useEffect(() => {
+    if (!shortsEmblaApi) return;
+    updateShortsButtons();
+    shortsEmblaApi.on("select", updateShortsButtons);
+    shortsEmblaApi.on("reInit", updateShortsButtons);
+    return () => {
+      shortsEmblaApi.off("select", updateShortsButtons);
+      shortsEmblaApi.off("reInit", updateShortsButtons);
+    };
+  }, [shortsEmblaApi, updateShortsButtons]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
@@ -444,13 +552,34 @@ const App = () => {
           </div>
         </section>
 
-        <WorldMapSection map={map} />
-
         <section id="our-village" className="section-container space-y-8">
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
-          <OurVillageCarousel entries={our_village.entries} />
+          <div className="relative">
+            <div className="overflow-hidden" ref={villageEmblaRef}>
+              <div className="flex gap-6">
+                {our_village.entries.map((entry, index) => (
+                  <div
+                    key={entry.title}
+                    className="min-w-0 flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_40%] xl:flex-[0_0_33.333%]"
+                  >
+                    <VillageCard entry={entry} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollVillagePrev}
+                onNext={scrollVillageNext}
+                canPrev={villageCanPrev}
+                canNext={villageCanNext}
+              />
+            </div>
+          </div>
         </section>
+
+        <WorldMapSection map={map} />
 
         <section id="timeline" className="section-container space-y-8">
           <SectionHeading title={timeline.title} subtitle="Our journey" />
@@ -486,6 +615,33 @@ const App = () => {
             {daily_glimpse.activities.map((activity, index) => (
               <ActivityCard key={activity.title} activity={activity} index={index} />
             ))}
+          </div>
+        </section>
+
+        <section id="shorts" className="section-container space-y-8">
+          <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{shorts.description}</p>
+          <div className="relative">
+            <div className="overflow-hidden" ref={shortsEmblaRef}>
+              <div className="flex gap-6">
+                {shorts.videos.map((short, index) => (
+                  <div
+                    key={short.title}
+                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_40%]"
+                  >
+                    <VideoShortCard short={short} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollShortsPrev}
+                onNext={scrollShortsNext}
+                canPrev={shortsCanPrev}
+                canNext={shortsCanNext}
+              />
+            </div>
           </div>
         </section>
 
