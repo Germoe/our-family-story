@@ -10,8 +10,8 @@ navigation:
     href: "#our-village"
   - label: "Our Journey"
     href: "#timeline"
-  - label: "Daily Glimpse"
-    href: "#glimpse"
+  - label: "Daily Life"
+    href: "#daily-life"
   - label: "Gallery"
     href: "#gallery"
   - label: "Contact"
@@ -21,7 +21,7 @@ cta:
   href: "#contact"
 hero:
   eyebrow: "Welcome to Our Family"
-  headline: "We're Alex & Jordan, and we can't wait to share our story with you."
+  headline: "We're Brett & Sebastian, and we can't wait to share our story with you."
   description: "We are a loving couple who have been together for 8 wonderful years. Our home is filled with laughter, kindness, and a deep sense of adventure."
   cta_label: "Learn more about us"
   cta_href: "#about"
@@ -33,29 +33,29 @@ about:
   title: "Meet Us"
   intro: "We believe that family is built on unconditional love, and we're excited to grow ours through adoption."
   people:
-    - name: "Alex"
-      title: "Teacher & Creative Soul"
-      bio: "Alex is a kindergarten teacher who finds joy in watching children discover and grow. They love biking around the neighborhood, hiking trails near our home, and hosting Sunday dinners."
+    - name: "Brett"
+      title: "Operations Manager & Board Game Lover"
+      bio: "Brett is an operations manager who finds joy in watching children discover and grow. They love biking around the neighborhood, hiking trails near our home, and hosting Sunday dinners."
       quote: "I'm passionate about learning, making, and trying new things—especially when we get to do it together."
-      image: "partner1.jpg"
-    - name: "Jordan"
-      title: "Outdoor Enthusiast & Nature Lover"
-      bio: "Jordan is a community organizer who loves building connections. Their favorite place is the local park, where we spend weekends walking our dog and meeting neighbors."
+      image: "brett.jpg"
+    - name: "Sebastian"
+      title: "Data Scientist & Outdoor Enthusiast"
+      bio: "Sebastian is a data scientist who loves building connections. Their favorite place is the local park, where we spend weekends walking our dog and meeting neighbors."
       quote: "I'm looking forward to sharing life with a child and creating memories in the everyday moments."
-      image: "partner2.jpg"
+      image: "sebastian.jpg"
 our_village:
   title: "Our Village"
   subtitle: "The people who cheer us on"
   intro: "We are surrounded by a loving circle of family and friends who are ready to welcome a child with open arms and warm hearts."
   entries:
-    - title: "Friends & Family"
-      subtitle: "Weekly traditions and constant support"
-      body: "Our closest friends and siblings gather for Sunday dinners, game nights, and backyard bonfires. They show up for every milestone and can't wait to share their joy, stories, and traditions with a little one."
-      image: "friends-gathering.jpg"
     - title: "Grandparents"
       subtitle: "Endless love and gentle wisdom"
       body: "Both sets of grandparents live nearby and bring patience, laughter, and the sweetest homemade treats. They are eager for park walks, library trips, and cozy storytimes with their future grandchild."
-      image: "couple-together.jpg"
+      image: "grandparents.jpg"
+    - title: "Friends & Family"
+      subtitle: "Weekly traditions and constant support"
+      body: "Our closest friends and siblings gather for Sunday dinners, game nights, and backyard bonfires. They show up for every milestone and can't wait to share their joy, stories, and traditions with a little one."
+      image: "friends-together.jpg"
 home_life:
   title: "Our Home & Neighborhood"
   subtitle: "Where love lives and memories are made"
@@ -65,7 +65,7 @@ home_life:
       image: "home-exterior.jpg"
       description: "A warm, inviting space filled with light and laughter"
     - title: "Our Neighborhood"
-      image: "neighborhood-park.jpg"
+      image: "neighborhood.png"
       description: "Tree-lined streets, playgrounds, and friendly neighbors"
   features:
     - title: "Cozy Family Home"
@@ -88,8 +88,8 @@ map:
       subtitle: "Alex's roots"
       description: "The small coastal city where Alex grew up biking to the pier, visiting the farmer's market, and learning to cook with their grandmother."
       image: "home-exterior.jpg"
-      x_percent: 30
-      y_percent: 46
+      x_percent: 32
+      y_percent: 42
     - title: "Where we met"
       subtitle: "A neighborhood concert"
       description: "We first crossed paths at a summer block party filled with live music, string lights, and the laughter of new friends."
@@ -100,8 +100,8 @@ map:
       subtitle: "Our favorite trail"
       description: "A mountain hike just a short drive away where we recharge with fresh air, big views, and quiet walks together."
       image: "hiking-adventure.jpg"
-      x_percent: 56
-      y_percent: 40
+      x_percent: 83
+      y_percent: 30
 timeline:
   title: "Our Journey to Adoption"
   description: "Moments that brought us from our first hello to the heartfelt decision to grow our family through adoption."
@@ -124,13 +124,13 @@ daily_glimpse:
   activities:
     - title: "Outdoor adventures"
       description: "We head to the nearby trails whenever we can—walking our dog, spotting wildlife, and soaking up fresh mountain air together."
-      image: "hiking-adventure.jpg"
+      image: "outdoor-hiking.jpg"
     - title: "Cooking & creating"
       description: "Our kitchen is the heart of our home. We cook side-by-side, try new recipes, and invite friends over for cozy dinners."
       image: "cooking-together.jpg"
     - title: "Time with friends"
       description: "Game nights, backyard bonfires, and block parties keep us close to the people we love and the community we cherish."
-      image: "friends-gathering.jpg"
+      image: "friends-hiking.jpg"
 gallery:
   title: "Little glimpses of our life"
   images:
