@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
 import useInViewAnimation from "./hooks/useInViewAnimation";
@@ -206,6 +207,100 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
   );
 };
 
+const OurVillageCarousel = ({ entries }: { entries: typeof siteContent.our_village.entries }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [slidesPerView, setSlidesPerView] = useState(1);
+
+  const calculateSlidesPerView = () => {
+    if (typeof window === "undefined") return 1;
+    if (window.innerWidth >= 1024) return 3;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  };
+
+  useEffect(() => {
+    const updateSlidesPerView = () => {
+      setSlidesPerView(calculateSlidesPerView());
+    };
+
+    updateSlidesPerView();
+    window.addEventListener("resize", updateSlidesPerView);
+    return () => window.removeEventListener("resize", updateSlidesPerView);
+  }, []);
+
+  const goToSlide = (index: number) => {
+    const maxIndex = Math.max(entries.length - slidesPerView, 0);
+    const safeRange = maxIndex + 1;
+    setActiveIndex(((index % safeRange) + safeRange) % safeRange);
+  };
+
+  const nextSlide = () => goToSlide(activeIndex + 1);
+  const previousSlide = () => goToSlide(activeIndex - 1);
+
+  useEffect(() => {
+    goToSlide(activeIndex);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slidesPerView, entries.length]);
+
+  const slideWidth = 100 / slidesPerView;
+  const slidePositions = Math.max(entries.length - slidesPerView + 1, 1);
+
+  return (
+    <div className="relative max-w-6xl mx-auto">
+      <div className="overflow-hidden rounded-[28px]">
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${activeIndex * slideWidth}%)` }}
+          aria-live="polite"
+        >
+          {entries.map((entry, index) => (
+            <div key={entry.title} className="flex-shrink-0 px-1" style={{ width: `${slideWidth}%` }}>
+              <VillageCard entry={entry} index={index} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between gap-4 md:justify-center md:gap-8">
+        <button
+          type="button"
+          onClick={previousSlide}
+          className="inline-flex items-center gap-2 rounded-full border border-terracotta/40 bg-white px-4 py-2 text-terracotta-dark shadow-soft transition hover:shadow-glow focus-ring pressable"
+          aria-label="Previous person"
+        >
+          <span aria-hidden>←</span>
+          <span className="hidden sm:inline">Previous</span>
+        </button>
+
+        <div className="flex items-center gap-2">
+          {Array.from({ length: slidePositions }).map((_, index) => (
+            <button
+              key={`village-dot-${index}`}
+              type="button"
+              onClick={() => goToSlide(index)}
+              className={`h-2.5 w-2.5 rounded-full transition ${
+                activeIndex === index ? "bg-terracotta-dark scale-110" : "bg-border hover:bg-terracotta/50"
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+              aria-pressed={activeIndex === index}
+            />
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={nextSlide}
+          className="inline-flex items-center gap-2 rounded-full border border-terracotta/40 bg-white px-4 py-2 text-terracotta-dark shadow-soft transition hover:shadow-glow focus-ring pressable"
+          aria-label="Next person"
+        >
+          <span className="hidden sm:inline">Next</span>
+          <span aria-hidden>→</span>
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.events)[number]; index: number }) => {
   const animation = useInViewAnimation({ delay: `${index * 70}ms` });
 
@@ -354,11 +449,7 @@ const App = () => {
         <section id="our-village" className="section-container space-y-8">
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
-          <div className="grid md:grid-cols-2 gap-6">
-            {our_village.entries.map((entry, index) => (
-              <VillageCard key={entry.title} entry={entry} index={index} />
-            ))}
-          </div>
+          <OurVillageCarousel entries={our_village.entries} />
         </section>
 
         <section id="timeline" className="section-container space-y-8">
