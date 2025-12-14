@@ -224,6 +224,33 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
   );
 };
 
+const VideoShortCard = ({ short, index }: { short: (typeof siteContent.shorts.videos)[number]; index: number }) => {
+  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+
+  return (
+    <article
+      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-4 ${animation.className}`}
+      ref={animation.ref}
+      style={animation.style}
+    >
+      <div className="relative aspect-[9/16] bg-black overflow-hidden">
+        <iframe
+          src={short.video_url}
+          title={short.title}
+          className="h-full w-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent h-20 pointer-events-none" />
+      </div>
+      <div className="px-5 pb-5 space-y-2">
+        <h3 className="text-lg font-semibold text-terracotta-dark">{short.title}</h3>
+        <p className="text-sm text-foreground/80 leading-relaxed">{short.description}</p>
+      </div>
+    </article>
+  );
+};
+
 const App = () => {
   const {
     brand,
@@ -235,6 +262,7 @@ const App = () => {
     home_life,
     map,
     daily_glimpse,
+    shorts,
     timeline,
     gallery,
     quick_answers,
@@ -394,6 +422,16 @@ const App = () => {
           <div className="space-y-6">
             {daily_glimpse.activities.map((activity, index) => (
               <ActivityCard key={activity.title} activity={activity} index={index} />
+            ))}
+          </div>
+        </section>
+
+        <section id="shorts" className="section-container space-y-8">
+          <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{shorts.description}</p>
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {shorts.videos.map((short, index) => (
+              <VideoShortCard key={short.title} short={short} index={index} />
             ))}
           </div>
         </section>

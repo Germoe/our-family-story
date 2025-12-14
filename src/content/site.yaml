@@ -14,6 +14,8 @@ navigation:
     href: "#timeline"
   - label: "Daily Life"
     href: "#daily-life"
+  - label: "Video Shorts"
+    href: "#shorts"
   - label: "Gallery"
     href: "#gallery"
   - label: "Contact"
@@ -167,6 +169,20 @@ daily_glimpse:
     - title: "Time with friends"
       description: "Game nights, backyard bonfires, and block parties keep us close to the people we love and the community we cherish."
       image: "friends-hiking.jpg"
+shorts:
+  title: "Video shorts"
+  subtitle: "Quick moments in vertical snapshots"
+  description: "Here are a few 30-second glimpses of the laughter, routines, and little adventures that shape our everyday life."
+  videos:
+    - title: "Weekend breakfast joy"
+      description: "Cooking pancakes together while the morning sun pours into our kitchen."
+      video_url: "https://www.youtube.com/embed/Obl8gBC2VuY"
+    - title: "Neighborhood stroll"
+      description: "A walk with our dog through the park, stopping to say hi to friends along the way."
+      video_url: "https://www.youtube.com/embed/bFvjViLe4Aw"
+    - title: "Game night laughs"
+      description: "Friends gathered around the table for our weekly board game night."
+      video_url: "https://www.youtube.com/embed/caMi4NdzrjI"
 gallery:
   title: "Little glimpses of our life"
   images:

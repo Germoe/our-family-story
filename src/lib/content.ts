@@ -56,6 +56,12 @@ const timelineEventSchema = z.object({
   timestamp: z.string().min(1, "Timeline timestamp is required"),
 });
 
+const videoShortSchema = z.object({
+  title: z.string().min(1, "Video short title is required"),
+  description: z.string().min(1, "Video short description is required"),
+  video_url: z.string().url("Video short URL must be a valid URL"),
+});
+
 const letterSectionSchema = z.object({
   title: z.string().min(1, "Letter section title is required"),
   subtitle: z.string().optional(),
@@ -148,6 +154,12 @@ const siteSchema = z.object({
       .array(activitySchema)
       .min(1, "At least one daily activity is required"),
   }),
+  shorts: z.object({
+    title: z.string().min(1, "Video shorts title is required"),
+    subtitle: z.string().optional(),
+    description: z.string().min(1, "Video shorts description is required"),
+    videos: z.array(videoShortSchema).min(1, "At least one video short is required"),
+  }),
   timeline: z.object({
     title: z.string().min(1, "Timeline title is required"),
     description: z.string().min(1, "Timeline description is required"),
@@ -187,6 +199,7 @@ export type TimelineEvent = z.infer<typeof timelineEventSchema>;
 export type VillageEntry = z.infer<typeof villageEntrySchema>;
 export type MapMarker = z.infer<typeof mapMarkerSchema>;
 export type QuickAnswer = z.infer<typeof quickAnswerSchema>;
+export type VideoShort = z.infer<typeof videoShortSchema>;
 export type LetterSection = z.infer<typeof letterSectionSchema>;
 export type SiteContent = z.infer<typeof siteSchema>;
 
