@@ -141,7 +141,7 @@ const VillageCard = ({ entry }: { entry: (typeof siteContent.our_village.entries
 
 const TimelineCard = ({ event }: { event: (typeof siteContent.timeline.events)[number] }) => (
   <div className="relative pl-12 md:pl-0 ml-6 md:ml-0">
-    <div className="absolute left-0 top-7 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[6px] ring-white md:hidden" />
+    <div className="absolute -left-1 top-24 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[2px] ring-white md:hidden" />
     <div className="bg-white/80 border border-border/70 rounded-2xl shadow-soft p-6 md:p-7 space-y-3">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage/30 text-sage-dark text-sm font-semibold">
         <span className="h-2 w-2 rounded-full bg-terracotta-dark" />
@@ -287,8 +287,8 @@ const App = () => {
                     <div
                       className={`${isLeft ? "hidden md:block" : "hidden md:block md:col-start-1"} md:pr-10 md:pl-10`}
                     />
-                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 top-7">
-                      <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-8 ring-white" />
+                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 md:top-24">
+                      <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-2 ring-white" />
                     </div>
                   </div>
                 );
