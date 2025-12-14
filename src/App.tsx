@@ -1,5 +1,6 @@
 import { siteContent, getAssetUrl } from "./lib/content";
 import WorldMapSection from "./components/WorldMapSection";
+import useInViewAnimation from "./hooks/useInViewAnimation";
 
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
@@ -157,6 +158,15 @@ const App = () => {
   const { brand, navigation, cta, hero, about, our_village, home_life, map, daily_glimpse, timeline, gallery, contact } =
     siteContent;
 
+  const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
+  const aboutAnimation = useInViewAnimation({ delay: "60ms" });
+  const homeLifeAnimation = useInViewAnimation({ delay: "80ms" });
+  const villageAnimation = useInViewAnimation({ delay: "100ms" });
+  const timelineAnimation = useInViewAnimation({ delay: "120ms" });
+  const glimpseAnimation = useInViewAnimation({ delay: "90ms" });
+  const galleryAnimation = useInViewAnimation({ delay: "70ms" });
+  const contactAnimation = useInViewAnimation({ delay: "50ms" });
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-cream via-background to-background text-foreground">
       <header className="sticky top-0 z-10 backdrop-blur bg-background/75 border-b border-border/60">
@@ -189,7 +199,11 @@ const App = () => {
       </header>
 
       <main id="top" className="space-y-20 pb-20">
-        <section className="relative overflow-hidden">
+        <section
+          className={`relative overflow-hidden ${heroAnimation.className}`}
+          ref={heroAnimation.ref}
+          style={heroAnimation.style}
+        >
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -left-20 -top-20 h-64 w-64 bg-terracotta/10 rounded-full blur-3xl" />
             <div className="absolute right-10 top-20 h-72 w-72 bg-sage/20 rounded-full blur-3xl" />
@@ -225,7 +239,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="about" className="section-container space-y-8">
+        <section
+          id="about"
+          className={`section-container space-y-8 ${aboutAnimation.className}`}
+          ref={aboutAnimation.ref}
+          style={aboutAnimation.style}
+        >
           <SectionHeading title={about.title} subtitle="Who we are" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{about.intro}</p>
           <div className="grid md:grid-cols-2 gap-8">
@@ -243,7 +262,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="home-life" className="section-container space-y-8">
+        <section
+          id="home-life"
+          className={`section-container space-y-8 ${homeLifeAnimation.className}`}
+          ref={homeLifeAnimation.ref}
+          style={homeLifeAnimation.style}
+        >
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
           <div className="grid md:grid-cols-2 gap-6">
             {home_life.spotlights.map((spotlight) => (
@@ -260,7 +284,12 @@ const App = () => {
 
         <WorldMapSection map={map} />
 
-        <section id="our-village" className="section-container space-y-8">
+        <section
+          id="our-village"
+          className={`section-container space-y-8 ${villageAnimation.className}`}
+          ref={villageAnimation.ref}
+          style={villageAnimation.style}
+        >
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
           <div className="grid md:grid-cols-2 gap-6">
@@ -270,7 +299,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="timeline" className="section-container space-y-8">
+        <section
+          id="timeline"
+          className={`section-container space-y-8 ${timelineAnimation.className}`}
+          ref={timelineAnimation.ref}
+          style={timelineAnimation.style}
+        >
           <SectionHeading title={timeline.title} subtitle="Our journey" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
           <div className="relative">
@@ -297,7 +331,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="glimpse" className="section-container space-y-8">
+        <section
+          id="glimpse"
+          className={`section-container space-y-8 ${glimpseAnimation.className}`}
+          ref={glimpseAnimation.ref}
+          style={glimpseAnimation.style}
+        >
           <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
           <div className="space-y-6">
@@ -307,7 +346,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="gallery" className="section-container space-y-8">
+        <section
+          id="gallery"
+          className={`section-container space-y-8 ${galleryAnimation.className}`}
+          ref={galleryAnimation.ref}
+          style={galleryAnimation.style}
+        >
           <SectionHeading title={gallery.title} subtitle="Photos" />
           <div className="grid md:grid-cols-3 gap-6">
             {gallery.images.map((item) => (
@@ -316,7 +360,12 @@ const App = () => {
           </div>
         </section>
 
-        <section id="contact" className="section-container text-center space-y-6">
+        <section
+          id="contact"
+          className={`section-container text-center space-y-6 ${contactAnimation.className}`}
+          ref={contactAnimation.ref}
+          style={contactAnimation.style}
+        >
           <SectionHeading title={contact.title} subtitle="Stay in touch" />
           <p className="body-large max-w-3xl mx-auto text-foreground/80">{contact.message}</p>
           <a
