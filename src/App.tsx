@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import useEmblaCarousel from "embla-carousel-react";
 
 import { siteContent, getAssetUrl } from "./lib/content";
@@ -148,6 +149,116 @@ const HomeFeatureCard = ({ feature, index }: { feature: (typeof siteContent.home
         <p className="text-sm text-foreground/80 leading-relaxed">{feature.description}</p>
       </div>
     </div>
+  );
+};
+
+const HomeExploreCard = ({
+  explore,
+}: {
+  explore: (typeof siteContent.home_life)["explore"];
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const animation = useInViewAnimation({ delay: "120ms" });
+  const previewPhotos = explore.photos.slice(0, 3);
+
+  return (
+    <Dialog.Root open={isOpen} onOpenChange={setIsOpen}>
+      <div
+        className={`overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft transition-transform duration-300 hover:-translate-y-0.5 ${animation.className}`}
+        ref={animation.ref}
+        style={animation.style}
+      >
+        <div className="grid gap-0 md:grid-cols-[1.1fr_1fr]">
+          <div className="p-8 md:p-10 space-y-4">
+            <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{explore.subtitle}</p>
+            <h3 className="text-2xl font-semibold text-terracotta-dark">{explore.title}</h3>
+            <p className="text-base text-foreground/80 leading-relaxed">{explore.description}</p>
+            <Dialog.Trigger asChild>
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 rounded-full bg-terracotta text-primary-foreground px-5 py-2 font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
+              >
+                Explore our home
+                <span aria-hidden>→</span>
+              </button>
+            </Dialog.Trigger>
+          </div>
+          <div className="grid grid-cols-2 gap-3 p-4 bg-terracotta/5 md:border-l md:border-border/70">
+            {previewPhotos.map((photo) => {
+              const imageUrl = getAssetUrl(photo.image);
+
+              return (
+                <figure
+                  key={photo.image}
+                  className="relative overflow-hidden rounded-xl border border-border/70 bg-white/80 shadow-soft"
+                >
+                  <div className="aspect-[4/3] overflow-hidden">
+                    <img
+                      src={imageUrl}
+                      alt={photo.caption}
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  </div>
+                  <figcaption className="p-3 text-xs text-foreground/80">{photo.caption}</figcaption>
+                </figure>
+              );
+            })}
+          </div>
+        </div>
+
+        <Dialog.Portal>
+          <Dialog.Overlay className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40" />
+          <Dialog.Content className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="relative max-w-5xl w-full overflow-hidden rounded-3xl border border-border/70 bg-white/95 shadow-glow">
+              <div className="flex flex-col gap-3 p-6 sm:p-8 border-b border-border/60">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="space-y-2">
+                    <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{explore.subtitle}</p>
+                    <h3 className="text-2xl sm:text-3xl font-semibold text-terracotta-dark">{explore.title}</h3>
+                  </div>
+                  <Dialog.Close asChild>
+                    <button
+                      type="button"
+                      className="h-10 w-10 rounded-full border border-border/70 bg-white text-terracotta-dark shadow-soft hover:shadow-glow transition focus-ring pressable"
+                      aria-label="Close"
+                    >
+                      ×
+                    </button>
+                  </Dialog.Close>
+                </div>
+                <p className="text-base text-foreground/80 leading-relaxed">{explore.description}</p>
+              </div>
+
+              <div className="p-6 sm:p-8 bg-terracotta/5">
+                <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                  {explore.photos.map((photo) => {
+                    const imageUrl = getAssetUrl(photo.image);
+
+                    return (
+                      <figure
+                        key={`explore-${photo.image}`}
+                        className="overflow-hidden rounded-2xl border border-border/70 bg-white/90 shadow-soft"
+                      >
+                        <div className="aspect-[4/3] overflow-hidden">
+                          <img
+                            src={imageUrl}
+                            alt={photo.caption}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <figcaption className="p-3 text-sm text-foreground/80 leading-relaxed">
+                          {photo.caption}
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </div>
+    </Dialog.Root>
   );
 };
 
@@ -626,6 +737,7 @@ const App = () => {
               <HomeSpotlightCard key={spotlight.title} spotlight={spotlight} index={index} />
             ))}
           </div>
+          <HomeExploreCard explore={home_life.explore} />
           <p className="text-center max-w-4xl mx-auto body-large text-foreground/80">{home_life.description}</p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {home_life.features.map((feature, index) => (
