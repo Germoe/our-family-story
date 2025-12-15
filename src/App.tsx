@@ -429,6 +429,7 @@ const App = () => {
   const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [homeEmblaRef, homeEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [quickAnswersEmblaRef, quickAnswersEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
@@ -438,6 +439,8 @@ const App = () => {
   const [galleryCanNext, setGalleryCanNext] = useState(false);
   const [homeCanPrev, setHomeCanPrev] = useState(false);
   const [homeCanNext, setHomeCanNext] = useState(false);
+  const [quickAnswersCanPrev, setQuickAnswersCanPrev] = useState(false);
+  const [quickAnswersCanNext, setQuickAnswersCanNext] = useState(false);
   const [activeHomeSlide, setActiveHomeSlide] = useState(0);
   const [activeHomeTab, setActiveHomeTab] = useState<"home" | "neighborhood" | "highlights">("home");
 
@@ -484,6 +487,12 @@ const App = () => {
     setActiveHomeSlide(homeEmblaApi.selectedScrollSnap());
   }, [homeEmblaApi]);
 
+  const updateQuickAnswersButtons = useCallback(() => {
+    if (!quickAnswersEmblaApi) return;
+    setQuickAnswersCanPrev(quickAnswersEmblaApi.canScrollPrev());
+    setQuickAnswersCanNext(quickAnswersEmblaApi.canScrollNext());
+  }, [quickAnswersEmblaApi]);
+
   const scrollVillagePrev = useCallback(() => villageEmblaApi?.scrollPrev(), [villageEmblaApi]);
   const scrollVillageNext = useCallback(() => villageEmblaApi?.scrollNext(), [villageEmblaApi]);
   const scrollShortsPrev = useCallback(() => shortsEmblaApi?.scrollPrev(), [shortsEmblaApi]);
@@ -492,6 +501,8 @@ const App = () => {
   const scrollGalleryNext = useCallback(() => galleryEmblaApi?.scrollNext(), [galleryEmblaApi]);
   const scrollHomePrev = useCallback(() => homeEmblaApi?.scrollPrev(), [homeEmblaApi]);
   const scrollHomeNext = useCallback(() => homeEmblaApi?.scrollNext(), [homeEmblaApi]);
+  const scrollQuickAnswersPrev = useCallback(() => quickAnswersEmblaApi?.scrollPrev(), [quickAnswersEmblaApi]);
+  const scrollQuickAnswersNext = useCallback(() => quickAnswersEmblaApi?.scrollNext(), [quickAnswersEmblaApi]);
 
   useEffect(() => {
     if (!villageEmblaApi) return;
@@ -536,6 +547,17 @@ const App = () => {
       homeEmblaApi.off("reInit", updateHomeButtons);
     };
   }, [homeEmblaApi, updateHomeButtons]);
+
+  useEffect(() => {
+    if (!quickAnswersEmblaApi) return;
+    updateQuickAnswersButtons();
+    quickAnswersEmblaApi.on("select", updateQuickAnswersButtons);
+    quickAnswersEmblaApi.on("reInit", updateQuickAnswersButtons);
+    return () => {
+      quickAnswersEmblaApi.off("select", updateQuickAnswersButtons);
+      quickAnswersEmblaApi.off("reInit", updateQuickAnswersButtons);
+    };
+  }, [quickAnswersEmblaApi, updateQuickAnswersButtons]);
 
   useEffect(() => {
     if (!homeEmblaApi) return;
@@ -882,10 +904,27 @@ const App = () => {
 
         <section id="quick-answers" className="section-container space-y-8">
           <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {quick_answers.items.map((item, index) => (
-              <QuickAnswerCard key={item.question} item={item} index={index} />
-            ))}
+          <div className="relative space-y-6">
+            <div className="overflow-hidden" ref={quickAnswersEmblaRef}>
+              <div className="flex gap-6">
+                {quick_answers.items.map((item, index) => (
+                  <div
+                    key={item.question}
+                    className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                  >
+                    <QuickAnswerCard item={item} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <CarouselControls
+                onPrev={scrollQuickAnswersPrev}
+                onNext={scrollQuickAnswersNext}
+                canPrev={quickAnswersCanPrev}
+                canNext={quickAnswersCanNext}
+              />
+            </div>
           </div>
         </section>
 
