@@ -425,11 +425,11 @@ const App = () => {
   } = siteContent;
 
   const heroAnimation = useInViewAnimation({ threshold: 0.2, duration: "900ms" });
-  const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
-  const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
-  const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
-  const [homeEmblaRef, homeEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
-  const [quickAnswersEmblaRef, quickAnswersEmblaApi] = useEmblaCarousel({ align: "start", loop: true });
+  const [villageEmblaRef, villageEmblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [shortsEmblaRef, shortsEmblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [galleryEmblaRef, galleryEmblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [homeEmblaRef, homeEmblaApi] = useEmblaCarousel({ align: "start", loop: false });
+  const [quickAnswersEmblaRef, quickAnswersEmblaApi] = useEmblaCarousel({ align: "start", loop: false });
   const [villageCanPrev, setVillageCanPrev] = useState(false);
   const [villageCanNext, setVillageCanNext] = useState(false);
   const [shortsCanPrev, setShortsCanPrev] = useState(false);
