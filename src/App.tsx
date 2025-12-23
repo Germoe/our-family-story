@@ -460,7 +460,6 @@ const App = () => {
   const tabSpotlights = activeTabSpotlights.length ? activeTabSpotlights : home_life.spotlights;
   const activeSpotlight = tabSpotlights[activeHomeSlide] ?? tabSpotlights[0];
   const activeHomeTabConfig = homeTabs.find((tab) => tab.key === activeHomeTab) ?? homeTabs[0];
-  const activeTabHero = tabSpotlights[0] ?? home_life.spotlights[0];
 
   const updateVillageButtons = useCallback(() => {
     if (!villageEmblaApi) return;
@@ -720,7 +719,7 @@ const App = () => {
               <div className="lg:col-span-3">
                 <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-white/80 shadow-soft h-full">
                   <div className="overflow-hidden" ref={homeEmblaRef}>
-                    <div className="flex gap-6">
+                    <div className="flex gap-6" key={activeHomeTab}>
                       {tabSpotlights.map((spotlight, index) => (
                         <div
                           key={spotlight.title}
@@ -760,7 +759,7 @@ const App = () => {
                 <div className="space-y-2 text-left">
                   <p className="text-[11px] uppercase tracking-[0.25em] text-terracotta-dark/70">Explore</p>
                   <h3 className="text-xl font-semibold text-terracotta-dark">{home_life.title}</h3>
-                  <p className="text-sm text-foreground/70 leading-relaxed">{activeTabHero.description}</p>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{activeSpotlight.description}</p>
                 </div>
 
                 <div className="flex flex-wrap gap-3">
