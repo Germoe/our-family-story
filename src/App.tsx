@@ -253,7 +253,7 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="h-40 md:h-60 overflow-hidden">
+      <div className="h-60 md:h-60 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
       </div>
       <div className="p-6 space-y-3 flex-1 flex flex-col">
@@ -643,7 +643,7 @@ const App = () => {
             <div className="absolute -left-20 -top-20 h-64 w-64 bg-terracotta/10 rounded-full blur-3xl" />
             <div className="absolute right-10 top-20 h-72 w-72 bg-sage/20 rounded-full blur-3xl" />
           </div>
-          <div className="section-container relative pt-16 pb-20 flex flex-col items-center text-center gap-6">
+          <div className="section-container relative pt-16 pb-16 flex flex-col items-center text-center gap-6">
             <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/80">{hero.eyebrow}</p>
             <h1 className="heading-display max-w-4xl text-terracotta-dark">{hero.headline}</h1>
             <p className="body-large max-w-3xl text-foreground/80">{hero.description}</p>
@@ -653,6 +653,10 @@ const App = () => {
             >
               {hero.cta_label}
             </a>
+            <div className="flex flex-col items-center pt-6 text-sm text-warm-gray">
+              <span>{hero.scroll_hint}</span>
+              <span aria-hidden className="text-2xl">↓</span>
+            </div>
             <div className="w-full max-w-4xl">
               <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
                 <div className="aspect-video">
@@ -667,10 +671,6 @@ const App = () => {
                 <div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
               </div>
             </div>
-            <div className="flex flex-col items-center pt-6 text-sm text-warm-gray">
-              <span>{hero.scroll_hint}</span>
-              <span aria-hidden className="text-2xl">↓</span>
-            </div>
           </div>
         </section>
 
@@ -681,14 +681,6 @@ const App = () => {
             {about.people.map((person, index) => (
               <AboutCard key={person.name} person={person} index={index} />
             ))}
-          </div>
-          <div className="text-center pt-4">
-            <a
-              href={hero.cta_href}
-              className="inline-flex items-center gap-2 text-terracotta-dark font-semibold hover:underline focus-ring pressable"
-            >
-              {hero.cta_label}
-            </a>
           </div>
         </section>
 
@@ -763,12 +755,6 @@ const App = () => {
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={hero.cta_href}
-                    className="inline-flex items-center gap-2 rounded-full bg-terracotta px-4 py-2 text-primary-foreground text-sm font-semibold shadow-soft hover:shadow-glow transition focus-ring pressable"
-                  >
-                    {hero.cta_label}
-                  </a>
                   <span className="inline-flex items-center rounded-full bg-terracotta/10 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta-dark">
                     {activeHomeTabConfig.label}
                   </span>
@@ -814,7 +800,7 @@ const App = () => {
             <div className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/80 md:-translate-x-1/2" />
             <div className="space-y-6 md:space-y-1">
               {timeline.events.map((event, index) => {
-                const isLeft = index % 2 === 1;
+                const isLeft = index % 2 === 0;
 
                 return (
                   <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start">
