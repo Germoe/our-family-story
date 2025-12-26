@@ -253,10 +253,10 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
       ref={animation.ref}
       style={animation.style}
     >
-      <div className="h-80 overflow-hidden">
+      <div className="h-40 md:h-60 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
       </div>
-      <div className="p-8 space-y-3 flex-1 flex flex-col">
+      <div className="p-6 space-y-3 flex-1 flex flex-col">
         <div className="space-y-1">
           <h3 className="text-xl font-semibold text-terracotta-dark">{entry.title}</h3>
           <p className="text-sm uppercase tracking-[0.2em] text-terracotta-dark/70">{entry.subtitle}</p>
@@ -812,12 +812,12 @@ const App = () => {
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
           <div className="relative">
             <div className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/80 md:-translate-x-1/2" />
-            <div className="space-y-10 md:space-y-14">
+            <div className="space-y-6 md:space-y-1">
               {timeline.events.map((event, index) => {
-                const isLeft = index % 2 === 0;
+                const isLeft = index % 2 === 1;
 
                 return (
-                  <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start md:gap-12">
+                  <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start">
                     <div className={`${isLeft ? "md:pr-10" : "md:col-start-2 md:pl-10"}`}>
                       <TimelineCard event={event} index={index} />
                     </div>
