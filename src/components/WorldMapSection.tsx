@@ -38,9 +38,9 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
         </div>
       ) : null}
 
-      <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-white/80 shadow-soft">
+      <div className="relative rounded-3xl border border-border/60 bg-white/80 shadow-soft">
         <div className="relative p-4 md:p-6">
-          <div className="relative aspect-[4/2] md:aspect-[16/8] overflow-hidden rounded-2xl bg-sage/10">
+          <div className="relative aspect-[4/2] md:aspect-[16/8] rounded-2xl bg-sage/10">
             <div className="absolute inset-0">
               <img
                 src={mapIllustration}
@@ -61,7 +61,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                   >
                     <button
                       type="button"
-                      className={`group relative flex h-8 w-8 md:h-12 md:w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-soft focus-ring pressable ${isActive
+                      className={`group relative flex h-6 w-6 md:h-6 md:w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border shadow-soft focus-ring pressable ${isActive
                         ? "scale-105 border-terracotta bg-terracotta text-white shadow-glow"
                         : "border-terracotta/50 bg-white/80 text-terracotta-dark"
                         }`}
@@ -71,7 +71,7 @@ const WorldMapSection = ({ map }: { map: SiteContent["map"] }) => {
                       onFocus={() => setActiveTitle(marker.title)}
                       onClick={() => setActiveTitle(marker.title)}
                     >
-                      <span className="text-sm md:text-xl">&#x2764;&#xFE0E;</span>
+                      <span className="text-sm md:text-sm">&#x2764;&#xFE0E;</span>
                       <span className="sr-only">{marker.subtitle}</span>
                     </button>
 
