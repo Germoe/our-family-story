@@ -127,7 +127,7 @@ our_village:
       body: "Dani is a friend from Sebastian's high school days. They've been close ever since and she has always been a big supporter of our relationship. Dani and her partner Mario live in Berlin with their two kids and are excited to be part of our journey to parenthood."
       image: "dani_mario.jpg"
     - title: "Sophia & Giovanni"
-      subtitle: "Close friends from School"
+      subtitle: "Friends from School"
       body: "Sebastian and Sophia went to elementary school together and reconnected at the end of high school. Sophia always loved Italy and moved there for university. Her and her partner Giovanni recently moved back to Italy after living in Berlin for a few years. They are our oasis of calm and kindness and can't wait to be part of our journey to parenthood. Even if they live far away, they are family to us."
       image: "sophia_giovanni.jpg"
 home_life:
@@ -161,11 +161,6 @@ home_life:
       image: "neighborhood.png"
       caption: "Room to roam, garden, and play—steps from the kitchen and ready for sandbox days."
       description: "Parks, playgrounds, and friendly neighbors who wave hello on every stroll. Parks, playgrounds, and friendly neighbors who wave hello on every stroll. Parks, playgrounds, and friendly neighbors who wave hello on every stroll. Parks, playgrounds, and friendly neighbors who wave hello on every stroll."
-    - title: "Block party evenings"
-      category: "neighborhood"
-      image: "friends-together.jpg"
-      caption: "Seasonal block parties, food trucks, and music that fill the street with community joy."
-      description: "Seasonal block parties, food trucks, and music that fill the street with community joy."
   features:
     - title: "Cozy Family Home"
       description: "4 bedrooms, a big backyard, and a bright living room ready for playtime and family gatherings."
@@ -244,19 +239,6 @@ timeline:
     - title: "Adoption Star"
       timestamp: "Summer 2025"
       description: "We begin our journey to start a family."
-daily_glimpse:
-  title: "A Glimpse Into Our Days"
-  description: "From slow mornings to weekend adventures, we love the simple rhythms that make our life feel warm, connected, and full of wonder."
-  activities:
-    - title: "Outdoor adventures"
-      description: "We head to the nearby trails whenever we can—walking our dog, spotting wildlife, and soaking up fresh mountain air together."
-      image: "outdoor-hiking.jpg"
-    - title: "Cooking & creating"
-      description: "Our kitchen is the heart of our home. We cook side-by-side, try new recipes, and invite friends over for cozy dinners."
-      image: "cooking-together.jpg"
-    - title: "Time with friends"
-      description: "Game nights, backyard bonfires, and block parties keep us close to the people we love and the community we cherish."
-      image: "friends-hiking.jpg"
 shorts:
   title: "Video shorts"
   subtitle: "Quick moments in vertical snapshots"

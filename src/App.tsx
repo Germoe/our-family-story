@@ -657,20 +657,22 @@ const App = () => {
               <span>{hero.scroll_hint}</span>
               <span aria-hidden className="text-2xl">↓</span>
             </div>
-            <div className="w-full max-w-4xl">
-              <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
-                <div className="aspect-video">
-                  <iframe
-                    src={hero.video_url}
-                    title={hero.video_title}
-                    className="h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-                <div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
-              </div>
-            </div>
+            {
+// 				<div className="w-full max-w-4xl">
+// 				  <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
+// 					<div className="aspect-video">
+// 					  <iframe
+// 						src={hero.video_url}
+// 						title={hero.video_title}
+// 						className="h-full w-full"
+// 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+// 						allowFullScreen
+// 					  />
+// 					</div>
+// 					<div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
+// 				  </div>
+// 				</div>
+            }
           </div>
         </section>
 
@@ -817,16 +819,6 @@ const App = () => {
                 );
               })}
             </div>
-          </div>
-        </section>
-
-        <section id="glimpse" className="section-container space-y-8">
-          <SectionHeading title={daily_glimpse.title} subtitle="The rhythms we love" />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{daily_glimpse.description}</p>
-          <div className="space-y-6">
-            {daily_glimpse.activities.map((activity, index) => (
-              <ActivityCard key={activity.title} activity={activity} index={index} />
-            ))}
           </div>
         </section>
 
