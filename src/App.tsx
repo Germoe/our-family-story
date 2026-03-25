@@ -796,14 +796,22 @@ const App = () => {
 
         <section id="shorts" className="section-container space-y-8">
           <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{shorts.description}</p>
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80  items-center">{shorts.description}</p>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollShortsPrev}
+                onNext={scrollShortsNext}
+                canPrev={shortsCanPrev}
+                canNext={shortsCanNext}
+              />
+            </div>
           <div className="relative">
             <div className="overflow-hidden" ref={shortsEmblaRef}>
               <div className="flex gap-6">
                 {shorts.videos.map((short, index) => (
                   <div
                     key={short.title}
-                    className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_60%] md:flex-[0_0_45%] lg:flex-[0_0_30%]"
+                    className="min-w-0 flex-[0_0_40%] sm:flex-[0_0_40%] md:flex-[0_0_25%] lg:flex-[0_0_25%]"
                   >
                     <VideoShortCard short={short} index={index} />
                   </div>
