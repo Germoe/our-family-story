@@ -153,13 +153,6 @@ const siteSchema = z.object({
       .array(mapMarkerSchema)
       .min(1, "At least one map marker is required"),
   }),
-  daily_glimpse: z.object({
-    title: z.string().min(1, "Daily glimpse title is required"),
-    description: z.string().min(1, "Daily glimpse description is required"),
-    activities: z
-      .array(activitySchema)
-      .min(1, "At least one daily activity is required"),
-  }),
   shorts: z.object({
     title: z.string().min(1, "Video shorts title is required"),
     subtitle: z.string().optional(),

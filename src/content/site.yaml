@@ -12,8 +12,6 @@ navigation:
     href: "#our-village"
   - label: "Our Journey"
     href: "#timeline"
-  - label: "Daily Life"
-    href: "#daily-life"
   - label: "Video Shorts"
     href: "#shorts"
   - label: "Gallery"

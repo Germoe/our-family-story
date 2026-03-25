@@ -151,33 +151,6 @@ const HomeFeatureCard = ({ feature, index }: { feature: (typeof siteContent.home
   );
 };
 
-const ActivityCard = ({ activity, index }: { activity: (typeof siteContent.daily_glimpse.activities)[number]; index: number }) => {
-  const imageUrl = getAssetUrl(activity.image);
-  const animation = useInViewAnimation({ delay: `${index * 90}ms` });
-
-  return (
-    <article
-      className={`group overflow-hidden rounded-3xl border border-border/60 bg-white/90 shadow-soft transition-transform duration-300 hover:-translate-y-1 ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
-    >
-      <div className="flex flex-col md:flex-row md:items-stretch">
-        <div className="md:w-1/2 h-48 md:h-auto overflow-hidden">
-          <img
-            src={imageUrl}
-            alt={activity.title}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-        <div className="flex-1 p-8 md:p-10 space-y-3 flex flex-col justify-center">
-          <h3 className="text-2xl font-semibold text-terracotta-dark">{activity.title}</h3>
-          <p className="text-base text-foreground/80 leading-relaxed">{activity.description}</p>
-        </div>
-      </div>
-    </article>
-  );
-};
-
 const GalleryCard = ({
   item,
   index,
@@ -415,7 +388,6 @@ const App = () => {
     our_village,
     home_life,
     map,
-    daily_glimpse,
     shorts,
     timeline,
     gallery,
