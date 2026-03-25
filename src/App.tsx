@@ -620,6 +620,32 @@ const App = () => {
           </div>
         </section>
 
+        <section id="quick-answers" className="section-container space-y-8">
+          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
+          <div className="relative space-y-6">
+            <div className="overflow-hidden" ref={quickAnswersEmblaRef}>
+              <div className="flex gap-6">
+                {quick_answers.items.map((item, index) => (
+                  <div
+                    key={item.question}
+                    className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                  >
+                    <QuickAnswerCard item={item} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex justify-end">
+              <CarouselControls
+                onPrev={scrollQuickAnswersPrev}
+                onNext={scrollQuickAnswersNext}
+                canPrev={quickAnswersCanPrev}
+                canNext={quickAnswersCanNext}
+              />
+            </div>
+          </div>
+        </section>
+
         <section id="home-life" className="section-container space-y-6">
           <SectionHeading title={home_life.title} subtitle={home_life.subtitle} />
           <div className="mx-auto max-w-3xl text-center text-sm text-foreground/70">
@@ -649,7 +675,6 @@ const App = () => {
                           {spotlight.category}
                         </span>
                       </div>
-                      <p className="text-sm text-foreground/70 leading-relaxed">{spotlight.caption}</p>
                       <p className="text-sm text-foreground/80 leading-relaxed">{spotlight.description}</p>
                     </div>
                   </article>
@@ -775,32 +800,6 @@ const App = () => {
                 onNext={scrollGalleryNext}
                 canPrev={galleryCanPrev}
                 canNext={galleryCanNext}
-              />
-            </div>
-          </div>
-        </section>
-
-        <section id="quick-answers" className="section-container space-y-8">
-          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
-          <div className="relative space-y-6">
-            <div className="overflow-hidden" ref={quickAnswersEmblaRef}>
-              <div className="flex gap-6">
-                {quick_answers.items.map((item, index) => (
-                  <div
-                    key={item.question}
-                    className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
-                  >
-                    <QuickAnswerCard item={item} index={index} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <CarouselControls
-                onPrev={scrollQuickAnswersPrev}
-                onNext={scrollQuickAnswersNext}
-                canPrev={quickAnswersCanPrev}
-                canNext={quickAnswersCanNext}
               />
             </div>
           </div>
