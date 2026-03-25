@@ -417,10 +417,6 @@ const App = () => {
       key: "home" as const,
       label: "Home",
     },
-    {
-      key: "neighborhood" as const,
-      label: "Neighborhood",
-    },
   ];
 
   const activeTabSpotlights =
@@ -631,31 +627,8 @@ const App = () => {
           </div>
 
           <div className="space-y-4">
-            <div className="flex flex-wrap justify-center gap-3 rounded-full bg-white/60 p-2 shadow-soft border border-border/70">
-              {homeTabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button"
-                  onClick={() => setActiveHomeTab(tab.key)}
-                  className={`pressable min-w-[120px] rounded-full px-4 py-2 text-sm font-semibold transition focus-ring ${activeHomeTab === tab.key
-                    ? "bg-terracotta text-primary-foreground shadow-glow"
-                    : "bg-transparent text-terracotta-dark hover:bg-terracotta/10"
-                    }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
 
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">
-                  Viewing: {activeHomeTabConfig.label}
-                </p>
-                <span className="rounded-full border border-terracotta/20 bg-terracotta/10 px-3 py-1 text-xs font-semibold text-terracotta-dark">
-                  {tabSpotlights.length} card{tabSpotlights.length === 1 ? "" : "s"}
-                </span>
-              </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {tabSpotlights.map((spotlight) => (
                   <article
@@ -788,7 +761,7 @@ const App = () => {
                 {gallery.images.map((item, index) => (
                   <div
                     key={item.caption ?? item.image}
-                    className="min-w-0 flex-[0_0_90%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                    className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_30%]"
                   >
                     <GalleryCard item={item} index={index} layout="carousel" />
                   </div>
