@@ -23,6 +23,7 @@ cta:
   href: "#contact"
 hero:
   eyebrow: "Welcome to Our Family"
+  image: "linus-playdate.jpg"
   headline: "We're Brett & Sebastian, and we can't wait to share our story with you."
   description: "We are a loving couple who have been together for 8 wonderful years. Our home is filled with laughter, kindness, and a deep sense of adventure."
   cta_label: "Learn more about us"
@@ -130,7 +131,6 @@ quick_answers:
         - person: "Brett & Sebastian"
           response: "Making a second coffee for the other person in the morning, buying Boom Chicka Pop Kettle Corn and hide it so it's ready for movie nights, planning weekends away for just the two of us, scraping the other person's car when you're out in the snow first. Giving a hug when the other person feels down. Talking about the things that bother us openly"
 
-
 our_village:
   title: "Our Village"
   subtitle: "The people who cheer us on"
@@ -230,34 +230,22 @@ map:
   markers:
     - title: "Brett's hometown"
       subtitle: "Alden, NY"
-      description: "The small coastal city where Brett grew up biking to the pier, visiting the farmer's market, and learning to cook with their grandmother."
+      description: "The small town outside of Buffalo where Brett grew up on a cul-de-sac playing with his friends."
       image: "mom_dad.jpg"
       x_percent: 43
       y_percent: 47
     - title: "Where we live now"
       subtitle: "Buffalo, NY"
-      description: "We first crossed paths at a summer block party filled with live music, string lights, and the laughter of new friends."
+      description: "We bought our home in February 2025."
       image: "our-house.jpg"
       x_percent: 41
       y_percent: 46
     - title: "Sebastian's hometown"
       subtitle: "Berlin, Germany"
-      description: "A mountain hike just a short drive away where we recharge with fresh air, big views, and quiet walks together."
+      description: "Sebastian was born in Berlin, Germany. This place is now our second home that we visit at least once a year to see family and friends."
       image: "mama_papa.jpg"
       x_percent: 78
       y_percent: 52
-    - title: "Hiking the Black Forest"
-      subtitle: "with Lilith & Gabriel"
-      description: "A mountain hike just a short drive away where we recharge with fresh air, big views, and quiet walks together."
-      image: "lilith_gabriel.jpg"
-      x_percent: 75
-      y_percent: 56
-    - title: "Diving into the Sea"
-      subtitle: "with Sophia & Giovanni"
-      description: "A mountain hike just a short drive away where we recharge with fresh air, big views, and quiet walks together."
-      image: "sophia_giovanni.jpg"
-      x_percent: 80
-      y_percent: 78
 timeline:
   title: "Our Journey to Adoption"
   description: "Moments that brought us from our first hello to the heartfelt decision to grow our family through adoption."

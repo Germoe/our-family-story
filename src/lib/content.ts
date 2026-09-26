@@ -113,6 +113,7 @@ const siteSchema = z.object({
   }),
   hero: z.object({
     eyebrow: z.string().min(1, "Hero eyebrow is required"),
+    image: z.string().min(1, "Image is required"),
     headline: z.string().min(1, "Hero headline is required"),
     description: z.string().min(1, "Hero description is required"),
     cta_label: z.string().min(1, "Hero CTA label is required"),
@@ -213,7 +214,7 @@ if (!result.success) {
     .map((issue) => `- ${issue.path.join(".") || "root"}: ${issue.message}`)
     .join("\n");
   throw new Error(
-    `Invalid site content. Please fix src/content/site.yaml:\n${issueList}`
+    `Invalid site content. Please fix src/content/site.yaml:\n${issueList}`,
   );
 }
 

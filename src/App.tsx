@@ -57,13 +57,11 @@ const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string 
 
 const AboutCard = ({ person, index }: { person: (typeof siteContent.about.people)[number]; index: number }) => {
   const imageUrl = getAssetUrl(person.image);
-  const animation = useInViewAnimation({ delay: `${index * 80}ms` });
+  const animation = useInViewAnimation({ delay: `${index * 0}ms` });
 
   return (
     <article
-      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden`}
     >
       <div className="h-64 overflow-hidden">
         <img src={imageUrl} alt={person.name} className="w-full h-full object-cover" />
@@ -97,9 +95,7 @@ const HomeSpotlightCard = ({
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 shadow-soft ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`group relative overflow-hidden rounded-3xl border border-border/60 bg-white/70 shadow-soft`}
     >
       <div className="h-64 md:h-72 overflow-hidden">
         <img
@@ -136,9 +132,7 @@ const HomeFeatureCard = ({ feature, index }: { feature: (typeof siteContent.home
 
   return (
     <div
-      className={`flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center`}
     >
       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-2xl">
         {getFeatureIconSymbol(feature.icon)}
@@ -169,9 +163,7 @@ const GalleryCard = ({
   return (
     <figure
       className={`group rounded-2xl overflow-hidden border border-border/60 bg-white/60 shadow-soft ${isCarousel ? "h-full flex flex-col" : ""
-        } ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+        }`}
     >
       <div className={`${imageWrapperClass} overflow-hidden flex items-center justify-center`}>
         <img
@@ -194,9 +186,7 @@ const QuickAnswerCard = ({ item, index }: { item: (typeof siteContent.quick_answ
 
   return (
     <article
-      className={`rounded-2xl border border-border/60 bg-white/85 p-6 shadow-soft h-full ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`rounded-2xl border border-border/60 bg-white/85 p-6 shadow-soft h-full`}
     >
       <p className="text-xs uppercase tracking-[0.25em] text-terracotta-dark/70">{item.question}</p>
       <div className="mt-4 space-y-4">
@@ -222,9 +212,7 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
 
   return (
     <article
-      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden h-full flex flex-col ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`bg-white/80 rounded-3xl border border-terracotta/10 shadow-soft overflow-hidden h-full flex flex-col`}
     >
       <div className="h-60 md:h-60 overflow-hidden">
         <img src={imageUrl} alt={entry.title} className="w-full h-full object-cover" />
@@ -337,7 +325,7 @@ const TimelineCard = ({ event, index }: { event: (typeof siteContent.timeline.ev
   const animation = useInViewAnimation({ delay: `${index * 70}ms` });
 
   return (
-    <div className={`relative pl-12 md:pl-0 ml-6 md:ml-0 ${animation.className}`} ref={animation.ref} style={animation.style}>
+    <div className={`relative pl-12 md:pl-0 ml-6 md:ml-0`}>
       <div className="absolute -left-1 top-24 h-3 w-3 rounded-full bg-terracotta shadow-soft ring-[2px] ring-white md:hidden" />
       <div className="bg-white/80 border border-border/70 rounded-2xl shadow-soft p-6 md:p-7 space-y-3">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage/30 text-sage-dark text-sm font-semibold">
@@ -356,9 +344,7 @@ const VideoShortCard = ({ short, index }: { short: (typeof siteContent.shorts.vi
 
   return (
     <article
-      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-6 ${animation.className}`}
-      ref={animation.ref}
-      style={animation.style}
+      className={`rounded-3xl border border-border/60 bg-white/80 shadow-soft overflow-hidden flex flex-col gap-6`}
     >
       <div className="relative aspect-[9/16] bg-black overflow-hidden">
         <iframe
@@ -579,6 +565,12 @@ const App = () => {
           </div>
           <div className="section-container relative pt-16 pb-16 flex flex-col items-center text-center gap-6">
             <p className="text-sm uppercase tracking-[0.3em] text-terracotta-dark/80">{hero.eyebrow}</p>
+            <div className={`md:h-80 overflow-hidden flex items-center justify-center`}>
+              <img
+                src={getAssetUrl(hero.image)}
+                className={`w-full h-full object-cover transition-transform duration-300 group-hover:scale-105`}
+              />
+            </div>
             <h1 className="heading-display max-w-4xl text-terracotta-dark">{hero.headline}</h1>
             <p className="body-large max-w-3xl text-foreground/80">{hero.description}</p>
             <a
@@ -592,27 +584,27 @@ const App = () => {
               <span aria-hidden className="text-2xl">↓</span>
             </div>
             {
-// 				<div className="w-full max-w-4xl">
-// 				  <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
-// 					<div className="aspect-video">
-// 					  <iframe
-// 						src={hero.video_url}
-// 						title={hero.video_title}
-// 						className="h-full w-full"
-// 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-// 						allowFullScreen
-// 					  />
-// 					</div>
-// 					<div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
-// 				  </div>
-// 				</div>
+              // 				<div className="w-full max-w-4xl">
+              // 				  <div className="overflow-hidden rounded-3xl border border-terracotta/20 bg-white/70 shadow-soft">
+              // 					<div className="aspect-video">
+              // 					  <iframe
+              // 						src={hero.video_url}
+              // 						title={hero.video_title}
+              // 						className="h-full w-full"
+              // 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              // 						allowFullScreen
+              // 					  />
+              // 					</div>
+              // 					<div className="p-4 text-sm text-foreground/80 bg-white/80 text-left">{hero.video_caption}</div>
+              // 				  </div>
+              // 				</div>
             }
           </div>
         </section>
 
         <section id="about" className="section-container space-y-8">
           <SectionHeading title={about.title} subtitle="Who we are" />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{about.intro}</p>
+          {/* <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{about.intro}</p> */}
           <div className="grid md:grid-cols-2 gap-8">
             {about.people.map((person, index) => (
               <AboutCard key={person.name} person={person} index={index} />
@@ -620,27 +612,122 @@ const App = () => {
           </div>
         </section>
 
-        <section id="quick-answers" className="section-container space-y-8">
-          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
-          <div className="relative space-y-6">
-            <div className="overflow-hidden" ref={quickAnswersEmblaRef}>
+        <section id="shorts" className="section-container space-y-8">
+          <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80  items-center">{shorts.description}</p>
+          <div className="mt-6 flex justify-end">
+            <CarouselControls
+              onPrev={scrollShortsPrev}
+              onNext={scrollShortsNext}
+              canPrev={shortsCanPrev}
+              canNext={shortsCanNext}
+            />
+          </div>
+          <div className="relative">
+            <div className="overflow-hidden" ref={shortsEmblaRef}>
               <div className="flex gap-6">
-                {quick_answers.items.map((item, index) => (
+                {shorts.videos.map((short, index) => (
                   <div
-                    key={item.question}
-                    className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
+                    key={short.title}
+                    className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_40%] md:flex-[0_0_25%] lg:flex-[0_0_25%]"
                   >
-                    <QuickAnswerCard item={item} index={index} />
+                    <VideoShortCard short={short} index={index} />
                   </div>
                 ))}
               </div>
             </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollShortsPrev}
+                onNext={scrollShortsNext}
+                canPrev={shortsCanPrev}
+                canNext={shortsCanNext}
+              />
+            </div>
+          </div>
+        </section>
+
+        <section id="timeline" className="section-container space-y-8">
+          <SectionHeading title={timeline.title} subtitle="Our journey" />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
+          <div className="relative">
+            <div className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/80 md:-translate-x-1/2" />
+            <div className="space-y-6 md:space-y-1">
+              {timeline.events.map((event, index) => {
+                const isLeft = index % 2 === 0;
+
+                return (
+                  <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start">
+                    <div className={`${isLeft ? "md:pr-10" : "md:col-start-2 md:pl-10"}`}>
+                      <TimelineCard event={event} index={index} />
+                    </div>
+                    <div
+                      className={`${isLeft ? "hidden md:block" : "hidden md:block md:col-start-1"} md:pr-10 md:pl-10`}
+                    />
+                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 md:top-24">
+                      <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-2 ring-white" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="gallery" className="section-container space-y-8">
+          <SectionHeading title={gallery.title} subtitle="Photos" />
+          <div className="space-y-6">
+            <div
+              className="overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
+              ref={galleryEmblaRef}
+            >
+              <div className="flex gap-6 p-4">
+                {gallery.images.map((item, index) => (
+                  <div
+                    key={item.caption ?? item.image}
+                    className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_30%]"
+                  >
+                    <GalleryCard item={item} index={index} layout="carousel" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="flex justify-end">
               <CarouselControls
-                onPrev={scrollQuickAnswersPrev}
-                onNext={scrollQuickAnswersNext}
-                canPrev={quickAnswersCanPrev}
-                canNext={quickAnswersCanNext}
+                onPrev={scrollGalleryPrev}
+                onNext={scrollGalleryNext}
+                canPrev={galleryCanPrev}
+                canNext={galleryCanNext}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* <WorldMapSection map={map} /> */}
+
+        <section id="our-village" className="section-container space-y-8">
+          <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
+          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
+          <div className="relative">
+            <div className="overflow-hidden" ref={villageEmblaRef}>
+              <div className="flex gap-6">
+                {our_village.entries.map((entry, index) => (
+                  <div
+                    key={entry.title}
+                    className="min-w-0 flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_40%] xl:flex-[0_0_33.333%]"
+                  >
+                    <VillageCard entry={entry} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+              <CarouselControls
+                onPrev={scrollVillagePrev}
+                onNext={scrollVillageNext}
+                canPrev={villageCanPrev}
+                canNext={villageCanNext}
               />
             </div>
           </div>
@@ -684,126 +771,31 @@ const App = () => {
           </div>
         </section>
 
-        <section id="our-village" className="section-container space-y-8">
-          <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
-          <div className="relative">
-            <div className="overflow-hidden" ref={villageEmblaRef}>
+        {/* <section id="quick-answers" className="section-container space-y-8">
+          <SectionHeading title={quick_answers.title} subtitle={quick_answers.subtitle} />
+          <div className="relative space-y-6">
+            <div className="overflow-hidden" ref={quickAnswersEmblaRef}>
               <div className="flex gap-6">
-                {our_village.entries.map((entry, index) => (
+                {quick_answers.items.map((item, index) => (
                   <div
-                    key={entry.title}
-                    className="min-w-0 flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_40%] xl:flex-[0_0_33.333%]"
+                    key={item.question}
+                    className="min-w-0 flex-[0_0_92%] sm:flex-[0_0_70%] md:flex-[0_0_55%] lg:flex-[0_0_45%]"
                   >
-                    <VillageCard entry={entry} index={index} />
+                    <QuickAnswerCard item={item} index={index} />
                   </div>
                 ))}
               </div>
             </div>
-            <div className="mt-6 flex justify-end">
-              <CarouselControls
-                onPrev={scrollVillagePrev}
-                onNext={scrollVillageNext}
-                canPrev={villageCanPrev}
-                canNext={villageCanNext}
-              />
-            </div>
-          </div>
-        </section>
-
-        <WorldMapSection map={map} />
-
-        <section id="timeline" className="section-container space-y-8">
-          <SectionHeading title={timeline.title} subtitle="Our journey" />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{timeline.description}</p>
-          <div className="relative">
-            <div className="pointer-events-none absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-border/80 md:-translate-x-1/2" />
-            <div className="space-y-6 md:space-y-1">
-              {timeline.events.map((event, index) => {
-                const isLeft = index % 2 === 0;
-
-                return (
-                  <div key={event.title} className="relative md:grid md:grid-cols-2 md:items-start">
-                    <div className={`${isLeft ? "md:pr-10" : "md:col-start-2 md:pl-10"}`}>
-                      <TimelineCard event={event} index={index} />
-                    </div>
-                    <div
-                      className={`${isLeft ? "hidden md:block" : "hidden md:block md:col-start-1"} md:pr-10 md:pl-10`}
-                    />
-                    <div className="hidden md:block absolute left-1/2 -translate-x-1/2 md:top-24">
-                      <div className="h-4 w-4 rounded-full bg-terracotta shadow-soft ring-2 ring-white" />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        <section id="shorts" className="section-container space-y-8">
-          <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
-          <p className="text-center max-w-3xl mx-auto body-large text-foreground/80  items-center">{shorts.description}</p>
-            <div className="mt-6 flex justify-end">
-              <CarouselControls
-                onPrev={scrollShortsPrev}
-                onNext={scrollShortsNext}
-                canPrev={shortsCanPrev}
-                canNext={shortsCanNext}
-              />
-            </div>
-          <div className="relative">
-            <div className="overflow-hidden" ref={shortsEmblaRef}>
-              <div className="flex gap-6">
-                {shorts.videos.map((short, index) => (
-                  <div
-                    key={short.title}
-                    className="min-w-0 flex-[0_0_80%] sm:flex-[0_0_40%] md:flex-[0_0_25%] lg:flex-[0_0_25%]"
-                  >
-                    <VideoShortCard short={short} index={index} />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <CarouselControls
-                onPrev={scrollShortsPrev}
-                onNext={scrollShortsNext}
-                canPrev={shortsCanPrev}
-                canNext={shortsCanNext}
-              />
-            </div>
-          </div>
-        </section>
-
-        <section id="gallery" className="section-container space-y-8">
-          <SectionHeading title={gallery.title} subtitle="Photos" />
-          <div className="space-y-6">
-            <div
-              className="overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
-              ref={galleryEmblaRef}
-            >
-              <div className="flex gap-6 p-4">
-                {gallery.images.map((item, index) => (
-                  <div
-                    key={item.caption ?? item.image}
-                    className="min-w-0 flex-[0_0_70%] sm:flex-[0_0_50%] md:flex-[0_0_35%] lg:flex-[0_0_30%]"
-                  >
-                    <GalleryCard item={item} index={index} layout="carousel" />
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="flex justify-end">
               <CarouselControls
-                onPrev={scrollGalleryPrev}
-                onNext={scrollGalleryNext}
-                canPrev={galleryCanPrev}
-                canNext={galleryCanNext}
+                onPrev={scrollQuickAnswersPrev}
+                onNext={scrollQuickAnswersNext}
+                canPrev={quickAnswersCanPrev}
+                canNext={quickAnswersCanNext}
               />
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section id="letter" className="section-container space-y-8">
           <SectionHeading title={letter_to_birth_mother.title} subtitle={letter_to_birth_mother.subtitle} />
