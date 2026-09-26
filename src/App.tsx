@@ -46,6 +46,39 @@ const CarouselControls = ({
   );
 };
 
+const CarouselSideControls = ({
+  onPrev,
+  onNext,
+  canPrev,
+  canNext,
+}: {
+  onPrev: () => void;
+  onNext: () => void;
+  canPrev: boolean;
+  canNext: boolean;
+}) => (
+  <>
+    <button
+      type="button"
+      onClick={onPrev}
+      disabled={!canPrev}
+      className="pressable absolute left-0 top-1/2 z-10 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-border/70 bg-white/90 text-3xl text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Previous slides"
+    >
+      ←
+    </button>
+    <button
+      type="button"
+      onClick={onNext}
+      disabled={!canNext}
+      className="pressable absolute right-0 top-1/2 z-10 flex h-16 w-16 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full border border-border/70 bg-white/90 text-3xl text-terracotta-dark shadow-soft transition hover:shadow-glow disabled:cursor-not-allowed disabled:opacity-40 focus-ring"
+      aria-label="Next slides"
+    >
+      →
+    </button>
+  </>
+);
+
 const SectionHeading = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center max-w-3xl mx-auto space-y-4">
     {subtitle ? (
@@ -108,7 +141,7 @@ const HomeSpotlightCard = ({
       <div className="absolute inset-0 flex items-end p-6">
         <div className="text-white space-y-1">
           <p className="text-sm uppercase tracking-[0.25em] text-white/80">Our place</p>
-          <h3 className="text-2xl font-semibold drop-shadow">{spotlight.title}</h3>
+          <h3 className="text-3xl font-semibold drop-shadow">{spotlight.title}</h3>
           <p className="text-sm text-white/90 leading-relaxed max-w-xl drop-shadow">{spotlight.description}</p>
         </div>
       </div>
@@ -134,7 +167,7 @@ const HomeFeatureCard = ({ feature, index }: { feature: (typeof siteContent.home
     <div
       className={`flex flex-col gap-4 rounded-2xl border border-border/60 bg-white/80 p-6 shadow-soft h-full text-center`}
     >
-      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-2xl">
+      <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-terracotta/15 text-3xl">
         {getFeatureIconSymbol(feature.icon)}
       </div>
       <div className="space-y-2">
@@ -581,7 +614,7 @@ const App = () => {
             </a>
             <div className="flex flex-col items-center pt-6 text-sm text-warm-gray">
               <span>{hero.scroll_hint}</span>
-              <span aria-hidden className="text-2xl">↓</span>
+              <span aria-hidden className="text-3xl">↓</span>
             </div>
             {
               // 				<div className="w-full max-w-4xl">
@@ -615,15 +648,13 @@ const App = () => {
         <section id="shorts" className="section-container space-y-8">
           <SectionHeading title={shorts.title} subtitle={shorts.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80  items-center">{shorts.description}</p>
-          <div className="mt-6 flex justify-end">
-            <CarouselControls
+          <div className="relative">
+            <CarouselSideControls
               onPrev={scrollShortsPrev}
               onNext={scrollShortsNext}
               canPrev={shortsCanPrev}
               canNext={shortsCanNext}
             />
-          </div>
-          <div className="relative">
             <div className="overflow-hidden" ref={shortsEmblaRef}>
               <div className="flex gap-6">
                 {shorts.videos.map((short, index) => (
@@ -635,14 +666,6 @@ const App = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <CarouselControls
-                onPrev={scrollShortsPrev}
-                onNext={scrollShortsNext}
-                canPrev={shortsCanPrev}
-                canNext={shortsCanNext}
-              />
             </div>
           </div>
         </section>
@@ -676,7 +699,13 @@ const App = () => {
 
         <section id="gallery" className="section-container space-y-8">
           <SectionHeading title={gallery.title} subtitle="Photos" />
-          <div className="space-y-6">
+          <div className="relative space-y-6">
+            <CarouselSideControls
+              onPrev={scrollGalleryPrev}
+              onNext={scrollGalleryNext}
+              canPrev={galleryCanPrev}
+              canNext={galleryCanNext}
+            />
             <div
               className="overflow-hidden rounded-[28px] border border-border/70 bg-white/70 shadow-soft"
               ref={galleryEmblaRef}
@@ -692,15 +721,6 @@ const App = () => {
                 ))}
               </div>
             </div>
-
-            <div className="flex justify-end">
-              <CarouselControls
-                onPrev={scrollGalleryPrev}
-                onNext={scrollGalleryNext}
-                canPrev={galleryCanPrev}
-                canNext={galleryCanNext}
-              />
-            </div>
           </div>
         </section>
 
@@ -710,6 +730,12 @@ const App = () => {
           <SectionHeading title={our_village.title} subtitle={our_village.subtitle} />
           <p className="text-center max-w-3xl mx-auto body-large text-foreground/80">{our_village.intro}</p>
           <div className="relative">
+            <CarouselSideControls
+              onPrev={scrollVillagePrev}
+              onNext={scrollVillageNext}
+              canPrev={villageCanPrev}
+              canNext={villageCanNext}
+            />
             <div className="overflow-hidden" ref={villageEmblaRef}>
               <div className="flex gap-6">
                 {our_village.entries.map((entry, index) => (
@@ -721,14 +747,6 @@ const App = () => {
                   </div>
                 ))}
               </div>
-            </div>
-            <div className="mt-6 flex justify-end">
-              <CarouselControls
-                onPrev={scrollVillagePrev}
-                onNext={scrollVillageNext}
-                canPrev={villageCanPrev}
-                canNext={villageCanNext}
-              />
             </div>
           </div>
         </section>
