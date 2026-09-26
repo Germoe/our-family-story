@@ -242,6 +242,7 @@ const QuickAnswerCard = ({ item, index }: { item: (typeof siteContent.quick_answ
 const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.entries)[number]; index: number }) => {
   const imageUrl = getAssetUrl(entry.image);
   const animation = useInViewAnimation({ delay: `${index * 90}ms` });
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <article
@@ -255,7 +256,16 @@ const VillageCard = ({ entry, index }: { entry: (typeof siteContent.our_village.
           <h3 className="text-xl font-semibold text-terracotta-dark">{entry.title}</h3>
           <p className="text-sm uppercase tracking-[0.2em] text-terracotta-dark/70">{entry.subtitle}</p>
         </div>
-        <p className="text-base leading-relaxed text-foreground/80">{entry.body}</p>
+        <p className={`text-base leading-relaxed text-foreground/80 ${isExpanded ? "" : "line-clamp-2"}`}>
+          {entry.body}
+        </p>
+        <button
+          type="button"
+          onClick={() => setIsExpanded((prev) => !prev)}
+          className="self-start text-sm font-semibold text-terracotta-dark underline decoration-terracotta/50 underline-offset-2 hover:decoration-terracotta focus-ring"
+        >
+          {isExpanded ? "Less" : "More"}
+        </button>
       </div>
     </article>
   );
